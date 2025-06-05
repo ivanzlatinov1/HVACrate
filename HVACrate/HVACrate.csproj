@@ -15,4 +15,8 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.13" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\HVACrate.Data\HVACrate.Data.csproj" />
+  </ItemGroup>
+
 </Project>
