@@ -1,6 +1,7 @@
-﻿@using Microsoft.AspNetCore.Identity
-@inject SignInManager<IdentityUser> SignInManager
-@inject UserManager<IdentityUser> UserManager
+﻿@using HVACrate.Data.Models
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<HVACUser> SignInManager
+@inject UserManager<HVACUser> UserManager
 
 <ul class="navbar-nav">
 @if (SignInManager.IsSignedIn(User))

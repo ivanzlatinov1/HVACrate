@@ -1,10 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-
-namespace HVACrate.Data.Models
+﻿namespace HVACrate.Data.Models
 {
     public class Building
     {
-        public Guid Id { get; set; } = Guid.NewGuid();
+        public Guid Id { get; set; }
 
         public string Name { get; set; } = null!;
 
@@ -19,8 +17,6 @@ namespace HVACrate.Data.Models
         public virtual Project Project { get; set; } = null!;
 
         public string? ImageUrl { get; set; }
-
-        public IFormFile? Image { get; set; }
 
         public virtual ICollection<Room> Rooms { get; set; } = [];
     }

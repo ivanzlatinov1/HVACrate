@@ -4,7 +4,7 @@ namespace HVACrate.Data.Models
 {
     public class BuildingEnvelope
     {
-        public Guid Id { get; set; } = Guid.NewGuid();
+        public Guid Id { get; set; }
 
         public BuildingEnvelopeType Type { get; set; }
 

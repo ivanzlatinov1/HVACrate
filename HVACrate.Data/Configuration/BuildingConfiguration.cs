@@ -52,9 +52,6 @@ namespace HVACrate.Data.Configuration
                 .HasComment("An image of the building");
 
             entity
-                .Ignore(b => b.Image);
-
-            entity
                 .Property(b => b.ProjectId)
                 .IsRequired()
                 .HasComment("Reference to the project this building belongs to");

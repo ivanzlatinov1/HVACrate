@@ -2,7 +2,7 @@
 {
     public class Material
     {
-        public Guid Id { get; set; } = Guid.NewGuid();
+        public Guid Id { get; set; }
 
         public string Type { get; set; } = null!;
 

@@ -1,5 +1,6 @@
 ﻿using HVACrate.Data;
 using HVACrate.Data.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 #pragma warning disable IDE0130
@@ -22,7 +23,7 @@ public static class ProgramExtensions
 
     public static void AddIdentity(this IServiceCollection services)
     {
-        services.AddDefaultIdentity<HVACUser>(options =>
+        services.AddIdentity<HVACUser, IdentityRole<Guid>>(options =>
         {
             options.SignIn.RequireConfirmedAccount = false;
 
@@ -31,7 +32,9 @@ public static class ProgramExtensions
             options.Password.RequireLowercase = false;
             options.Password.RequireUppercase = false;
             options.Password.RequiredLength = 3;
-        }).AddEntityFrameworkStores<HVACrateDbContext>();
+        })
+            .AddEntityFrameworkStores<HVACrateDbContext>()
+            .AddDefaultTokenProviders();
     }
 
     public static void AddServices(this IServiceCollection services)

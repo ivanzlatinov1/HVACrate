@@ -47,41 +47,49 @@ namespace HVACrate.Data.Configuration
             [
                 new Material
                 {
+                    Id = Guid.Parse("3fdb3840-69b2-459b-8942-cb8fe226b3aa"),
                     Type = "Brick",
                     ThermalConductivity = 0.67
                 },
                 new Material
                 {
+                    Id = Guid.Parse("1f507fc6-87f7-4552-9b44-3f810c3c1af4"),
                     Type = "Copper",
                     ThermalConductivity = 380.0
                 },
                 new Material
                 {
+                    Id = Guid.Parse("fcbe3b1c-aeb6-440e-b1cb-eb19591072b8"),
                     Type = "Wood",
                     ThermalConductivity = 0.15
                 },
                 new Material
                 {
+                    Id = Guid.Parse("63e6a38b-4514-4242-93e2-c3793d71c163"),
                     Type = "Glass",
                     ThermalConductivity = 1.15
                 },
                 new Material
                 {
+                    Id = Guid.Parse("d0e38ecc-fc39-49c6-8425-44b2a68801e3"),
                     Type = "Limestone",
                     ThermalConductivity = 1.7
                 },
                 new Material
                 {
+                    Id = Guid.Parse("5dfb9e64-b1a2-4332-841b-c9ee60e5126d"),
                     Type = "Aluminium",
                     ThermalConductivity = 230.0
                 },
                 new Material
                 {
+                    Id = Guid.Parse("cd2fbf4d-3005-494a-a3b6-5acad97ff86a"),
                     Type = "Stone",
                     ThermalConductivity = 1.4
                 },
                 new Material
                 {
+                    Id = Guid.Parse("927bdf77-0ba2-4b7f-a265-9c586c1fd4a9"),
                     Type = "Rubber",
                     ThermalConductivity = 0.15
                 }
