@@ -9,7 +9,10 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
     throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
 builder.Services.AddDbContext<HVACrateDbContext>(options =>
-    options.UseNpgsql(connectionString));
+{
+    options.UseNpgsql(connectionString);
+    options.UseLazyLoadingProxies();
+});
 
 // TODO: Add services to the container for Entity Framework Core and Identity.
 
