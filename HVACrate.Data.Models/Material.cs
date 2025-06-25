@@ -1,12 +1,10 @@
-﻿using HVACrate.Data.Models.Enums;
-
-namespace HVACrate.Data.Models
+﻿namespace HVACrate.Data.Models
 {
     public class Material
     {
         public Guid Id { get; set; } = Guid.NewGuid();
 
-        public MaterialType Type { get; set; }
+        public string Type { get; set; } = null!;
 
         public double ThermalConductivity { get; set; }
 

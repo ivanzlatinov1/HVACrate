@@ -26,5 +26,10 @@
         /// The maximum length of a room number string.
         /// </summary>
         public const int RoomNumberMaxLength = 10;
+
+        /// <summary>
+        /// The maximum length of a material type string.
+        /// </summary>
+        public const int MaterialTypeMaxLength = 60;
     }
 }
