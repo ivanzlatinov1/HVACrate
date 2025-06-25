@@ -2,7 +2,7 @@
 
 namespace HVACrate.Data.Models
 {
-    public class BuildingEnvelope
+    public class BuildingEnvelope : DeletableModel
     {
         public Guid Id { get; set; }
 

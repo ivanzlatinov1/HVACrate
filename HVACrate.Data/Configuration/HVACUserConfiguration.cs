@@ -8,6 +8,7 @@ namespace HVACrate.Data.Configuration
     {
         public void Configure(EntityTypeBuilder<HVACUser> entity)
         {
+            // Made primary key for HVACUser entity to be of type Guid
             entity
                 .Property(u => u.Id)
                 .ValueGeneratedOnAdd();

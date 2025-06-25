@@ -8,33 +8,43 @@ namespace HVACrate.Data.Configuration
     {
         public void Configure(EntityTypeBuilder<BuildingEnvelope> entity)
         {
+            // Define the table name and primary key for the BuildingEnvelope
             entity
                 .ToTable("BuildingEnvelopes")
                 .HasKey(be => be.Id);
 
+            // Define constraints for the Id column
             entity
                 .Property(be => be.Id)
                 .ValueGeneratedOnAdd()
                 .HasComment("Building envelope's unique identifier");
 
+            // Define constraints for the Type column
             entity
                 .Property(be => be.Type)
                 .IsRequired()
                 .HasConversion<string>()
                 .HasComment("Type of the building envelope, e.g., Wall, Roof, Floor");
 
+            // Define constraints for the Direction column
             entity
                 .Property(be => be.Direction)
                 .IsRequired()
                 .HasConversion<string>()
                 .HasComment("The direction of the building envelope, e.g., North, East");
 
+            // Define constraints for the ZOrientationCoefficient column
             entity
                 .Property(be => be.ZOrientationCoefficient)
                 .IsRequired()
                 .HasPrecision(18, 2)
                 .HasComment("Orientation coefficient (Zo)");
 
+            // Define a query filter to exclude soft-deleted entities
+            entity
+                .HasQueryFilter(b => !b.IsDeleted);
+
+            // Define constraints for the RoomId column and its relationship with the Room entity
             entity
                 .Property(be => be.RoomId)
                 .IsRequired()
@@ -46,6 +56,7 @@ namespace HVACrate.Data.Configuration
                 .HasForeignKey(be => be.RoomId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            // Define constraints for the MaterialId column and its relationship with the Material entity
             entity
                 .Property(be => be.MaterialId)
                 .IsRequired()

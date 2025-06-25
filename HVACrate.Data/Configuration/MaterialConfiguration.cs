@@ -10,15 +10,18 @@ namespace HVACrate.Data.Configuration
     {
         public void Configure(EntityTypeBuilder<Material> entity)
         {
+            // Define the table name and primary key for the Material
             entity
                 .ToTable("Materials")
                 .HasKey(m => m.Id);
 
+            // Define constraints for the Id column
             entity
                 .Property(m => m.Id)
                 .ValueGeneratedOnAdd()
                 .HasComment("Material's unique identifier");
 
+            // Define constraints for the Type column
             entity
                 .Property(m => m.Type)
                 .IsRequired()
@@ -26,17 +29,24 @@ namespace HVACrate.Data.Configuration
                 .HasMaxLength(MaterialTypeMaxLength)
                 .HasComment("Material's type, e.g., Brick, Concrete");
 
+            // Define constraints for the ThermalConductivity column
             entity
                 .Property(m => m.ThermalConductivity)
                 .IsRequired()
                 .HasComment("Thermal conductivity in W/mK");
 
+            // Define a query filter to exclude soft-deleted entities
+            entity
+                .HasQueryFilter(b => !b.IsDeleted);
+
+            // Define constraints for the BuildingEnvelopeId column and its relationship with the BuildingEnvelope entity
             entity
                 .HasMany(m => m.BuildingEnvelopes)
                 .WithOne(be => be.Material)
                 .HasForeignKey(be => be.MaterialId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            // Seed initial data for the Material entity
             entity
                 .HasData(SeedMaterials());
         }
