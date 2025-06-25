@@ -1,36 +1,15 @@
-using HVACrate.Data;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ??
-    throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-
-builder.Services.AddDbContext<HVACrateDbContext>(options =>
-{
-    options.UseNpgsql(connectionString);
-    options.UseLazyLoadingProxies();
-});
-
-// TODO: Add services to the container for Entity Framework Core and Identity.
-
+// Database concerns
+builder.Services.AddApplicationDbContext(builder.Configuration);
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options =>
-{
-    options.SignIn.RequireConfirmedAccount = false;
-
-    options.Password.RequireDigit = true;
-    options.Password.RequireNonAlphanumeric = false;
-    options.Password.RequireLowercase = false;
-    options.Password.RequireUppercase = false;
-    options.Password.RequiredLength = 3;
-})
-    .AddEntityFrameworkStores<HVACrateDbContext>();
-
+// App concerns
+builder.Services.AddIdentity();
+builder.Services.AddServices();
 builder.Services.AddControllersWithViews();
+
+// Identity scaffolding
 builder.Services.AddRazorPages();
 
 var app = builder.Build();
