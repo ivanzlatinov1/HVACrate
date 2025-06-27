@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 #pragma warning disable IDE0130
-namespace Microsoft.Extensions.DependencyInjection;
+namespace HVACrate.Extensions;
 #pragma warning restore IDE0130
 
 public static class ProgramExtensions

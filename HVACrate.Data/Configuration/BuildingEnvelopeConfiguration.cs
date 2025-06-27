@@ -2,6 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
+using static HVACrate.GCommon.GlobalConstants;
+
 namespace HVACrate.Data.Configuration
 {
     public class BuildingEnvelopeConfiguration : IEntityTypeConfiguration<BuildingEnvelope>
@@ -37,12 +39,17 @@ namespace HVACrate.Data.Configuration
             entity
                 .Property(be => be.ZOrientationCoefficient)
                 .IsRequired()
-                .HasPrecision(18, 2)
+                .HasPrecision(TotalPrecision, TotalScale)
                 .HasComment("Orientation coefficient (Zo)");
+
+            // Define default value for IsDeleted property for soft deletion
+            entity
+                .Property(be => be.IsDeleted)
+                .HasDefaultValue(false);
 
             // Define a query filter to exclude soft-deleted entities
             entity
-                .HasQueryFilter(b => !b.IsDeleted);
+                .HasQueryFilter(be => !be.IsDeleted);
 
             // Define constraints for the RoomId column and its relationship with the Room entity
             entity

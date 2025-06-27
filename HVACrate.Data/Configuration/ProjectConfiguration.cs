@@ -2,7 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-using static HVACrate.Data.Common.EntityConstants;
+using static HVACrate.Data.Common.ValidationConstants.Project;
+using static HVACrate.GCommon.GlobalConstants;
 
 namespace HVACrate.Data.Configuration
 {
@@ -32,18 +33,23 @@ namespace HVACrate.Data.Configuration
             // Define constraints for the Description column
             entity
                 .Property(p => p.RegionTemperature)
-                .HasPrecision(18, 2)
+                .HasPrecision(TotalPrecision, TotalScale)
                 .HasComment("Average external temperature of the region");
 
             // Define constraints for the RegionTemperature column
             entity
                 .Property(p => p.CreatedAt)
-                .HasDefaultValueSql("CURRENT_DATE")
+                .HasDefaultValue("CURRENT_DATE")
                 .HasComment("The date when the project was created");
+
+            // Define default value for IsDeleted property for soft deletion
+            entity
+                .Property(p => p.IsDeleted)
+                .HasDefaultValue(false);
 
             // Define a query filter to exclude soft-deleted entities
             entity
-                .HasQueryFilter(b => !b.IsDeleted);
+                .HasQueryFilter(p => !p.IsDeleted);
 
             // Define relationship constraints for the Project entity
             entity

@@ -1,6 +1,8 @@
-﻿namespace HVACrate.Data.Models
+﻿using HVACrate.Data.Models.Interfaces;
+
+namespace HVACrate.Data.Models
 {
-    public class Project : DeletableModel
+    public class Project : IDeletableModel
     {
         public Guid Id { get; set; }
 
@@ -8,7 +10,9 @@
 
         public double RegionTemperature { get; set; }
 
-        public DateOnly CreatedAt { get; set; } = DateOnly.FromDateTime(DateTime.Now);
+        public DateOnly CreatedAt { get; set; }
+
+        public bool IsDeleted { get; set; }
 
         public virtual ICollection<Building> Buildings { get; set; } = [];
     }

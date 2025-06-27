@@ -2,7 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-using static HVACrate.Data.Common.EntityConstants;
+using static HVACrate.Data.Common.ValidationConstants.Building;
+using static HVACrate.GCommon.GlobalConstants;
 
 namespace HVACrate.Data.Configuration
 {
@@ -41,14 +42,14 @@ namespace HVACrate.Data.Configuration
             entity
                 .Property(b => b.TotalHeight)
                 .IsRequired()
-                .HasPrecision(18, 2)
+                .HasPrecision(TotalPrecision, TotalScale)
                 .HasComment("Total height of the building");
 
             // Define constraints for WindSpeed column
             entity
                 .Property(b => b.WindSpeed)
                 .IsRequired()
-                .HasPrecision(18, 2)
+                .HasPrecision(TotalPrecision, TotalScale)
                 .HasComment("Wind speed used for infiltration");
 
             // Define constraints for ImageUrl column
@@ -63,6 +64,11 @@ namespace HVACrate.Data.Configuration
                 .Property(b => b.ProjectId)
                 .IsRequired()
                 .HasComment("Reference to the project this building belongs to");
+
+            // Define default value for IsDeleted property for soft deletion
+            entity
+                .Property(b => b.IsDeleted)
+                .HasDefaultValue(false);
 
             // Adding query filter to exclude soft-deleted entities
             entity

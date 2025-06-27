@@ -1,3 +1,5 @@
+using HVACrate.Extensions;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Database concerns

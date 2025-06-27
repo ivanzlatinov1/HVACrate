@@ -2,7 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-using static HVACrate.Data.Common.EntityConstants;
+using static HVACrate.Data.Common.ValidationConstants.Room;
+using static HVACrate.GCommon.GlobalConstants;
 
 namespace HVACrate.Data.Configuration
 {
@@ -26,7 +27,7 @@ namespace HVACrate.Data.Configuration
                 .Property(r => r.Type)
                 .IsRequired()
                 .IsUnicode()
-                .HasMaxLength(RoomTypeMaxLength)
+                .HasMaxLength(TypeMaxLength)
                 .HasComment("The type of the room, e.g., Bathroom, Bedroom");
 
             // Define constraints for the Number column
@@ -34,33 +35,38 @@ namespace HVACrate.Data.Configuration
                 .Property(r => r.Number)
                 .IsRequired(false)
                 .IsUnicode()
-                .HasMaxLength(RoomNumberMaxLength)
+                .HasMaxLength(NumberMaxLength)
                 .HasComment("Number of the room, e.g., A101, B102");
 
             // Define constraints for the Temperature column
             entity
                 .Property(r => r.Temperature)
                 .IsRequired()
-                .HasPrecision(5, 2)
+                .HasPrecision(TotalPrecision, TotalScale)
                 .HasComment("Internal room temperature");
 
             // Define constraints for the HeatLossTransmission column
             entity
                 .Property(r => r.HeatLossTransmission)
                 .IsRequired()
-                .HasPrecision(10, 2)
+                .HasPrecision(TotalPrecision, TotalScale)
                 .HasComment("Calculated heat loss from transmission");
 
             // Define constraints for the HeatLossInfiltration column
             entity
                 .Property(r => r.HeatLossInfiltration)
                 .IsRequired()
-                .HasPrecision(10, 2)
+                .HasPrecision(TotalPrecision, TotalScale)
                 .HasComment("Calculated heat loss from infiltration");
+
+            // Define default value for IsDeleted property for soft deletion
+            entity
+                .Property(r => r.IsDeleted)
+                .HasDefaultValue(false);
 
             // Define a query filter to exclude soft-deleted entities
             entity
-                .HasQueryFilter(b => !b.IsDeleted);
+                .HasQueryFilter(r => !r.IsDeleted);
 
             // Define constraints for the BuildingId column and its relationship with the Building entity
             entity

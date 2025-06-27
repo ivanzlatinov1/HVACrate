@@ -2,7 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-using static HVACrate.Data.Common.EntityConstants;
+using static HVACrate.Data.Common.ValidationConstants.Material;
+using static HVACrate.GCommon.GlobalConstants;
 
 namespace HVACrate.Data.Configuration
 {
@@ -26,18 +27,24 @@ namespace HVACrate.Data.Configuration
                 .Property(m => m.Type)
                 .IsRequired()
                 .IsUnicode()
-                .HasMaxLength(MaterialTypeMaxLength)
+                .HasMaxLength(TypeMaxLength)
                 .HasComment("Material's type, e.g., Brick, Concrete");
 
             // Define constraints for the ThermalConductivity column
             entity
                 .Property(m => m.ThermalConductivity)
                 .IsRequired()
+                .HasPrecision(TotalPrecision, TotalScale)
                 .HasComment("Thermal conductivity in W/mK");
+
+            // Define default value for IsDeleted property for soft deletion
+            entity
+                .Property(m => m.IsDeleted)
+                .HasDefaultValue(false);
 
             // Define a query filter to exclude soft-deleted entities
             entity
-                .HasQueryFilter(b => !b.IsDeleted);
+                .HasQueryFilter(m => !m.IsDeleted);
 
             // Define constraints for the BuildingEnvelopeId column and its relationship with the BuildingEnvelope entity
             entity

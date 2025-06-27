@@ -1,6 +1,8 @@
-﻿namespace HVACrate.Data.Models
+﻿using HVACrate.Data.Models.Interfaces;
+
+namespace HVACrate.Data.Models
 {
-    public class Building : DeletableModel
+    public class Building : IDeletableModel
     {
         public Guid Id { get; set; }
 
@@ -11,6 +13,8 @@
         public double TotalHeight { get; set; }
 
         public double WindSpeed { get; set; }
+
+        public bool IsDeleted { get; set; }
 
         public Guid ProjectId { get; set; }
 

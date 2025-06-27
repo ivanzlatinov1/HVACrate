@@ -1,6 +1,8 @@
-﻿namespace HVACrate.Data.Models
+﻿using HVACrate.Data.Models.Interfaces;
+
+namespace HVACrate.Data.Models
 {
-    public class Room : DeletableModel
+    public class Room : IDeletableModel
     {
         public Guid Id { get; set; }
 
@@ -13,6 +15,8 @@
         public double HeatLossTransmission { get; set; }
 
         public double HeatLossInfiltration { get; set; }
+
+        public bool IsDeleted { get; set; }
 
         public Guid BuildingId { get; set; }
 

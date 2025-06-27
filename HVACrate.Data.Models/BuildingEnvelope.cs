@@ -1,8 +1,9 @@
 ﻿using HVACrate.Data.Models.Enums;
+using HVACrate.Data.Models.Interfaces;
 
 namespace HVACrate.Data.Models
 {
-    public class BuildingEnvelope : DeletableModel
+    public class BuildingEnvelope : IDeletableModel
     {
         public Guid Id { get; set; }
 
@@ -11,6 +12,8 @@ namespace HVACrate.Data.Models
         public Direction Direction { get; set; }
 
         public double ZOrientationCoefficient { get; set; }
+
+        public bool IsDeleted { get; set; }
 
         public Guid RoomId { get; set; }
 
