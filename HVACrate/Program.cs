@@ -16,6 +16,9 @@ builder.Services.AddRazorPages();
 
 var app = builder.Build();
 
+// Seed identity data
+await app.Services.SeedIdentityDataAsync();
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

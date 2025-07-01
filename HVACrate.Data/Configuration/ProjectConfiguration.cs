@@ -39,7 +39,7 @@ namespace HVACrate.Data.Configuration
             // Define constraints for the RegionTemperature column
             entity
                 .Property(p => p.CreatedAt)
-                .HasDefaultValue("CURRENT_DATE")
+                .HasDefaultValueSql("CURRENT_DATE")
                 .HasComment("The date when the project was created");
 
             // Define default value for IsDeleted property for soft deletion
