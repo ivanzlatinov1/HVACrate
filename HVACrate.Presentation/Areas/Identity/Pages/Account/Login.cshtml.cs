@@ -9,10 +9,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace HVACrate.Presentation.Areas.Identity.Pages.Account
 {
-    public class LoginModel(SignInManager<HVACUser> signInManager, ILogger<LoginModel> logger) : PageModel
+    public class LoginModel(SignInManager<HVACUser> signInManager) : PageModel
     {
         private readonly SignInManager<HVACUser> _signInManager = signInManager;
-        private readonly ILogger<LoginModel> _logger = logger;
 
         [BindProperty]
         public InputModel Input { get; set; }
@@ -68,7 +67,6 @@ namespace HVACrate.Presentation.Areas.Identity.Pages.Account
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation("User logged in.");
                     return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)
@@ -77,7 +75,6 @@ namespace HVACrate.Presentation.Areas.Identity.Pages.Account
                 }
                 if (result.IsLockedOut)
                 {
-                    _logger.LogWarning("User account locked out.");
                     return RedirectToPage("./Lockout");
                 }
                 else

@@ -1,0 +1,25 @@
+﻿<header style="background: linear-gradient(to right, #0d1b2a, #4a3f35); box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark" style="padding: 10px 20px;">
+        <div class="container-fluid">
+            <a class="navbar-brand" style="font-family: 'Playfair Display', serif; font-size: 1.8rem; color: #ffd700;" asp-area="" asp-controller="Home" asp-action="Index">HVACrate</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation" style="border: none;">
+                <span class="navbar-toggler-icon" style="filter: invert(100%);"></span>
+            </button>
+            <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                <ul class="navbar-nav flex-grow-1">
+                    <li class="nav-item">
+                        <a class="nav-link text-light" style="font-family: 'Roboto', sans-serif; font-size: 1rem; margin-right: 15px; transition: color 0.3s ease;" asp-controller="Home" asp-action="Index">Home</a>
+                    </li>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link text-light" style="font-family: 'Roboto', sans-serif; font-size: 1rem; margin-right: 15px; transition: color 0.3s ease;" asp-controller="Users" asp-action="Index">Users</a>
+                        </li>
+                    }
+                </ul>
+                <partial name="_LoginPartial" />
+            </div>
+        </div>
+    </nav>
+</header>

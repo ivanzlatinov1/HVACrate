@@ -1,75 +1,82 @@
-﻿#nullable disable
-
-using HVACrate.Domain.Entities;
+﻿using HVACrate.Domain.Entities;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
 
+using static HVACrate.Domain.ValidationConstants.ErrorMessages;
+using static HVACrate.Domain.ValidationConstants.HVACUser;
+
 namespace HVACrate.Presentation.Areas.Identity.Pages.Account
 {
     public class RegisterModel(
         UserManager<HVACUser> userManager,
-        IUserStore<HVACUser> userStore,
-        SignInManager<HVACUser> signInManager,
-        ILogger<RegisterModel> logger) : PageModel
+        SignInManager<HVACUser> signInManager) : PageModel
     {
         private readonly SignInManager<HVACUser> _signInManager = signInManager;
         private readonly UserManager<HVACUser> _userManager = userManager;
-        private readonly IUserStore<HVACUser> _userStore = userStore;
-        private readonly IUserEmailStore<HVACUser> _emailStore;
-        private readonly ILogger<RegisterModel> _logger = logger;
 
         [BindProperty]
-        public InputModel Input { get; set; }
+        public InputModel Input { get; set; } = null!;
 
-        public string ReturnUrl { get; set; }
+        public string ReturnUrl { get; set; } = null!;
 
-        public IList<AuthenticationScheme> ExternalLogins { get; set; }
+        public IList<AuthenticationScheme> ExternalLogins { get; set; } = null!;
 
         public class InputModel
         {
+            [StringLength(FirstNameMaxLength, MinimumLength = FirstNameMinLength)]
+            [Display(Name = "First Name")]
+            public string? FirstName { get; set; }
+
+            [StringLength(LastNameMaxLength, MinimumLength = LastNameMinLength)]
+            [Display(Name = "Last Name")]
+            public string? LastName { get; set; }
+
+            [StringLength(UserNameMaxLength, MinimumLength = UserNameMinLength)]
+            [Display(Name = "Username")]
+            public string? UserName { get; set; }
+
             [Required]
             [EmailAddress]
             [Display(Name = "Email")]
-            public string Email { get; set; }
+            public string Email { get; set; } = null!;
 
             [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [StringLength(100, ErrorMessage = StringLength, MinimumLength = 6)]
             [DataType(DataType.Password)]
             [Display(Name = "Password")]
-            public string Password { get; set; }
+            public string Password { get; set; } = null!;
 
             [DataType(DataType.Password)]
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
-            public string ConfirmPassword { get; set; }
+            public string ConfirmPassword { get; set; } = null!;
         }
 
 
-        public async Task OnGetAsync(string returnUrl = null)
+        public async Task OnGetAsync(string returnUrl = null!)
         {
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
 
-        public async Task<IActionResult> OnPostAsync(string returnUrl = null)
+        public async Task<IActionResult> OnPostAsync(string returnUrl = null!)
         {
             returnUrl ??= Url.Content("~/");
-            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            ExternalLogins = [.. (await _signInManager.GetExternalAuthenticationSchemesAsync())];
             if (ModelState.IsValid)
             {
                 var user = CreateUser();
 
-                await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
-                await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+                user.UserName = Input.UserName;
+                user.Email = Input.Email;
+
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation("User created a new account with password.");
-
                     if (!await _userManager.IsInRoleAsync(user, "User"))
                     {
                         await _userManager.AddToRoleAsync(user, "User");

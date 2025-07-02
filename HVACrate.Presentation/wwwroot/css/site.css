@@ -17,6 +17,9 @@ html {
   min-height: 100%;
 }
 
-body {
-  margin-bottom: 60px;
+main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 80dvh;
 }
