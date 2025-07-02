@@ -5,11 +5,9 @@ VisualStudioVersion = 17.12.35728.132
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HVACrate", "HVACrate\HVACrate.csproj", "{140590B7-6D5A-4A37-A29E-8F4D0675E85D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HVACrate.Data", "HVACrate.Data\HVACrate.Data.csproj", "{2E8CCD29-7C61-490D-9C3E-182192092CEF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HVACrate.Persistence", "HVACrate.Persistence\HVACrate.Persistence.csproj", "{2E8CCD29-7C61-490D-9C3E-182192092CEF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HVACrate.Data.Models", "HVACrate.Data.Models\HVACrate.Data.Models.csproj", "{E68EB1D9-0B4D-47DF-BEEA-C71D92BF811E}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HVACrate.Data.Common", "HVACrate.Data.Common\HVACrate.Data.Common.csproj", "{5A08E901-C7EE-463F-8D9F-E140187F400C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HVACrate.Domain", "HVACrate.Domain\HVACrate.Domain.csproj", "{E68EB1D9-0B4D-47DF-BEEA-C71D92BF811E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HVACrate.GCommon", "HVACrate.GCommon\HVACrate.GCommon.csproj", "{E683C2E6-029A-4398-8FA1-79946DDC141D}"
 EndProject
@@ -31,10 +29,6 @@ Global
 		{E68EB1D9-0B4D-47DF-BEEA-C71D92BF811E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E68EB1D9-0B4D-47DF-BEEA-C71D92BF811E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E68EB1D9-0B4D-47DF-BEEA-C71D92BF811E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5A08E901-C7EE-463F-8D9F-E140187F400C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5A08E901-C7EE-463F-8D9F-E140187F400C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5A08E901-C7EE-463F-8D9F-E140187F400C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5A08E901-C7EE-463F-8D9F-E140187F400C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E683C2E6-029A-4398-8FA1-79946DDC141D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E683C2E6-029A-4398-8FA1-79946DDC141D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E683C2E6-029A-4398-8FA1-79946DDC141D}.Release|Any CPU.ActiveCfg = Release|Any CPU

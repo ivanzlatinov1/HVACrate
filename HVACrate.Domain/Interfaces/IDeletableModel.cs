@@ -1,4 +1,4 @@
-﻿namespace HVACrate.Data.Models.Interfaces
+﻿namespace HVACrate.Domain.Interfaces
 {
     public interface IDeletableModel
     {

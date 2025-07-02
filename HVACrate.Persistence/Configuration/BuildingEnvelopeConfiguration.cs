@@ -1,10 +1,9 @@
-﻿using HVACrate.Data.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 using static HVACrate.GCommon.GlobalConstants;
 
-namespace HVACrate.Data.Configuration
+namespace HVACrate.Persistence.Configuration
 {
     public class BuildingEnvelopeConfiguration : IEntityTypeConfiguration<BuildingEnvelope>
     {

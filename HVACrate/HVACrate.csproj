@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\HVACrate.Data\HVACrate.Data.csproj" />
+    <ProjectReference Include="..\HVACrate.Persistence\HVACrate.Persistence.csproj" />
   </ItemGroup>
 
 </Project>

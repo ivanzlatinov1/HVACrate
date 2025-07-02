@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace HVACrate.Data.Models
+namespace HVACrate.Domain.Entities
 {
     public class HVACUser : IdentityUser<Guid>
     {

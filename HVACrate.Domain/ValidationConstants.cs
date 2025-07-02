@@ -1,4 +1,4 @@
-﻿namespace HVACrate.Data.Common
+﻿namespace HVACrate.Domain
 {
     public static class ValidationConstants
     {

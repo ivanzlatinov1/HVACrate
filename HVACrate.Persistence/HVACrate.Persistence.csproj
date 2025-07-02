@@ -18,8 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\HVACrate.Data.Common\HVACrate.Data.Common.csproj" />
-    <ProjectReference Include="..\HVACrate.Data.Models\HVACrate.Data.Models.csproj" />
+    <ProjectReference Include="..\HVACrate.Domain\HVACrate.Domain.csproj" />
     <ProjectReference Include="..\HVACrate.GCommon\HVACrate.GCommon.csproj" />
   </ItemGroup>
 

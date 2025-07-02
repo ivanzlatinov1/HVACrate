@@ -1,11 +1,10 @@
-﻿using HVACrate.Data.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-using static HVACrate.Data.Common.ValidationConstants.Room;
 using static HVACrate.GCommon.GlobalConstants;
+using static HVACrate.Domain.ValidationConstants.Room;
 
-namespace HVACrate.Data.Configuration
+namespace HVACrate.Persistence.Configuration
 {
     public class RoomConfiguration : IEntityTypeConfiguration<Room>
     {

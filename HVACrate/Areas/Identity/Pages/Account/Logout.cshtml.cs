@@ -1,6 +1,6 @@
 ﻿#nullable disable
 
-using HVACrate.Data.Models;
+using HVACrate.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;

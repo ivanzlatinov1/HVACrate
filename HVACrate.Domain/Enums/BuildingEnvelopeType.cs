@@ -1,4 +1,4 @@
-﻿namespace HVACrate.Data.Models.Enums
+﻿namespace HVACrate.Domain.Enums
 {
     public enum BuildingEnvelopeType
     {

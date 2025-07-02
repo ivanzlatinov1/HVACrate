@@ -1,6 +1,6 @@
-﻿using HVACrate.Data;
-using HVACrate.Data.Models;
-using HVACrate.Data.Seeding;
+﻿using HVACrate.Domain.Entities;
+using HVACrate.Persistence;
+using HVACrate.Persistence.Seeding;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 

@@ -1,10 +1,9 @@
-﻿using HVACrate.Data.Models;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
-namespace HVACrate.Data
+namespace HVACrate.Persistence
 {
     public class HVACrateDbContext : IdentityDbContext<HVACUser, IdentityRole<Guid>, Guid>
     {

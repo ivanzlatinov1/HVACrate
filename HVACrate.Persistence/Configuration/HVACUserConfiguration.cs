@@ -1,8 +1,7 @@
-﻿using HVACrate.Data.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace HVACrate.Data.Configuration
+namespace HVACrate.Persistence.Configuration
 {
     public class HVACUserConfiguration : IEntityTypeConfiguration<HVACUser>
     {

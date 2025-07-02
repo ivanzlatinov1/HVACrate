@@ -1,6 +1,4 @@
-﻿using HVACrate.Data.Models.Interfaces;
-
-namespace HVACrate.Data.Models
+﻿namespace HVACrate.Domain.Entities
 {
     public class Project : IDeletableModel
     {
