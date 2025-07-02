@@ -10,6 +10,8 @@ namespace HVACrate.Domain.Entities
 
         public string? ProfilePictureUrl { get; set; }
 
+        public DateTimeOffset RegisteredOn { get; set; } = DateTimeOffset.UtcNow;
+
         public virtual ICollection<Project> Projects { get; set; } = [];
     }
 }

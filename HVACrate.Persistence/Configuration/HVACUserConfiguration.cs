@@ -34,6 +34,11 @@ namespace HVACrate.Persistence.Configuration
                 .Property(u => u.ProfilePictureUrl)
                 .IsRequired(false)
                 .HasMaxLength(ImageUrlMaxLength);
+
+            // Constraints for user's registration date
+            entity
+                .Property(u => u.RegisteredOn)
+                .IsRequired();
         }
     }
 }
