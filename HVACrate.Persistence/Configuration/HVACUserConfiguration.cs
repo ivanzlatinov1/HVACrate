@@ -1,6 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
+using static HVACrate.GCommon.GlobalConstants;
+using static HVACrate.Domain.ValidationConstants.HVACUser;
+
 namespace HVACrate.Persistence.Configuration
 {
     public class HVACUserConfiguration : IEntityTypeConfiguration<HVACUser>
@@ -11,6 +14,26 @@ namespace HVACrate.Persistence.Configuration
             entity
                 .Property(u => u.Id)
                 .ValueGeneratedOnAdd();
+
+            // Constraints for user's first name
+            entity
+                .Property(u => u.FirstName)
+                .IsRequired(false)
+                .IsUnicode()
+                .HasMaxLength(FirstNameMaxLength);
+
+            // Constraints for user's last name
+            entity
+                .Property(u => u.LastName)
+                .IsRequired(false)
+                .IsUnicode()
+                .HasMaxLength(LastNameMaxLength);
+
+            // Constraints for user's profile picture url
+            entity
+                .Property(u => u.ProfilePictureUrl)
+                .IsRequired(false)
+                .HasMaxLength(ImageUrlMaxLength);
         }
     }
 }

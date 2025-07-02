@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace HVACrate.Data.Migrations
+namespace HVACrate.Persistence.Migrations
 {
     /// <inheritdoc />
     public partial class ImplementedSoftDelete : Migration

@@ -68,5 +68,28 @@
             /// </summary>
             public const int TypeMaxLength = 60;
         }
+
+        public static class HVACUser
+        {
+            /// <summary>
+            /// The maximum length of the user's first name.
+            /// </summary>
+            public const int FirstNameMaxLength = 80;
+
+            /// <summary>
+            /// The minimum length of the user's first name.
+            /// </summary>
+            public const int FirstNameMinLength = 2;
+
+            /// <summary>
+            /// The maximum length of the user's last name.
+            /// </summary>
+            public const int LastNameMaxLength = 100;
+
+            /// <summary>
+            /// The minimum length of the user's last name.
+            /// </summary>
+            public const int LastNameMinLength = 2;
+        }
     }
 }
