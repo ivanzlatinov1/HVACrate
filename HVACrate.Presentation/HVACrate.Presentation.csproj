@@ -19,7 +19,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\HVACrate.Application\HVACrate.Application.csproj" />
     <ProjectReference Include="..\HVACrate.Persistence\HVACrate.Persistence.csproj" />
+    <ProjectReference Include="..\HVACrate.Presentation.Models\HVACrate.Presentation.Models.csproj" />
   </ItemGroup>
 
 </Project>

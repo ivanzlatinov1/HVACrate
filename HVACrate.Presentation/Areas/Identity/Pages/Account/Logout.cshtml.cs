@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace HVACrate.Areas.Identity.Pages.Account
+namespace HVACrate.Presentation.Areas.Identity.Pages.Account
 {
     public class LogoutModel(SignInManager<HVACUser> signInManager, ILogger<LogoutModel> logger) : PageModel
     {

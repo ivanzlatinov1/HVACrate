@@ -1,0 +1,8 @@
+﻿@model List<HVACUserViewModel>
+
+<h1>Users Dashboard</h1>
+
+@foreach(var user in Model)
+{
+    <p>@user.Email</p>
+}

@@ -28,6 +28,8 @@ public static class ProgramExtensions
         {
             options.SignIn.RequireConfirmedAccount = false;
 
+            options.User.RequireUniqueEmail = true;
+
             options.Password.RequireDigit = true;
             options.Password.RequireNonAlphanumeric = false;
             options.Password.RequireLowercase = false;

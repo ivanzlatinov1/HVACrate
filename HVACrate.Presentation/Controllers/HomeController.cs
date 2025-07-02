@@ -1,19 +1,12 @@
-using System.Diagnostics;
-using HVACrate.Models;
+using HVACrate.Presentation.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 
-namespace HVACrate.Controllers
+namespace HVACrate.Presentation.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
-        {
-            _logger = logger;
-        }
-
-        public IActionResult Index()
+        public IActionResult Index(CancellationToken cancellationToken = default)
         {
             return View();
         }

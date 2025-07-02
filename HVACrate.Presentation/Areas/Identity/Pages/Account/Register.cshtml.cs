@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
 
-namespace HVACrate.Areas.Identity.Pages.Account
+namespace HVACrate.Presentation.Areas.Identity.Pages.Account
 {
     public class RegisterModel(
         UserManager<HVACUser> userManager,

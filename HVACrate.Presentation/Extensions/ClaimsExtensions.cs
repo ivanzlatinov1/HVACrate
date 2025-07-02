@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
 
-namespace HVACrate.Extensions
+namespace HVACrate.Presentation.Extensions
 {
     public static class ClaimsExtensions
     {
