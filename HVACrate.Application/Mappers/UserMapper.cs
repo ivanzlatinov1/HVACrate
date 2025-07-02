@@ -1,4 +1,4 @@
-﻿using HVACrate.Application.Models;
+﻿using HVACrate.Application.Models.HVACUsers;
 using HVACrate.Domain.Entities;
 
 namespace HVACrate.Application.Mappers

@@ -1,4 +1,4 @@
-﻿namespace HVACrate.Application.Models
+﻿namespace HVACrate.Application.Models.Projects
 {
     public class ProjectModel
     {

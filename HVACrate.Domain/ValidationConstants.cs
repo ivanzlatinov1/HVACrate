@@ -2,6 +2,11 @@
 {
     public static class ValidationConstants
     {
+        public static class ErrorMessages
+        {
+            public const string StringLength = "The {0} must be at least {2} and at max {1} characters long.";
+        }
+
         public static class Project
         {
             /// <summary>
@@ -90,6 +95,16 @@
             /// The minimum length of the user's last name.
             /// </summary>
             public const int LastNameMinLength = 2;
+
+            /// <summary>
+            /// The maximum length of the user's username.
+            /// </summary>
+            public const int UserNameMaxLength = 30;
+
+            /// <summary>
+            /// The minimum length of the user's username.
+            /// </summary>
+            public const int UserNameMinLength = 3;
         }
     }
 }

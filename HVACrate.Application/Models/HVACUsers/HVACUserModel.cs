@@ -1,4 +1,6 @@
-﻿namespace HVACrate.Application.Models
+﻿using HVACrate.Application.Models.Projects;
+
+namespace HVACrate.Application.Models.HVACUsers
 {
     public class HVACUserModel
     {
