@@ -1,8 +1,12 @@
 ﻿using HVACrate.Application.Interfaces;
 using HVACrate.Application.Models.HVACUsers;
+using HVACrate.Domain.ValueObjects;
+using HVACrate.Presentation.Models.FormModels;
 using HVACrate.Presentation.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+
+using static HVACrate.GCommon.GlobalConstants;
 
 namespace HVACrate.Presentation.Controllers
 {
@@ -11,21 +15,30 @@ namespace HVACrate.Presentation.Controllers
     {
         private readonly IUserService _userService = userService;
 
-        public async Task<IActionResult> Index(HVACUserQueryModel query, CancellationToken cancellationToken = default)
+        [HttpGet]
+        public async Task<IActionResult> Index(HVACUserQueryFormModel query, CancellationToken cancellationToken = default)
         {
-            ICollection<HVACUserModel> users = await this._userService.GetAllAsync(query, cancellationToken);
+            Pagination pagination = new(Page: query.Page, Limit: query.Limit);
 
-            Dictionary<Guid, string> roles = await this._userService.GetRolesAsync([.. users.Select(x => x.Id)], cancellationToken);
+            Result<HVACUserModel> userModels = await this._userService.GetAllAsync(new()
+            {
+                SearchParam = query.SearchParam,
+                Sorting = new(Type: query.SortingType, Direction: query.SortingDirection),
+                Pagination = pagination
+            }, cancellationToken);
 
-            HVACUserViewModel[] hVACUsers = [.. users.Select(x => new HVACUserViewModel
+            Dictionary<Guid, string> roles = await this._userService.GetRolesAsync([.. userModels.Items.Select(x => x.Id)], cancellationToken);
+
+            HVACUserViewModel[] users = [.. userModels.Items.Select(x => new HVACUserViewModel
             {
                 Id = x.Id.ToString(),
-                UserName = x.UserName,
+                Username = x.Username,
                 Email = x.Email,
+                RegisteredOn = x.RegisteredOn.ToString(DateFormat),
                 Role = roles[x.Id]
             })];
 
-            return View(hVACUsers);
+            return View((users, userModels.Count, pagination));
         }
     }
 }

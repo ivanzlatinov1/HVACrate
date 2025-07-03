@@ -8,6 +8,7 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 // App concerns
 builder.Services.AddIdentity();
+builder.Services.AddRepositories();
 builder.Services.AddServices();
 builder.Services.AddControllersWithViews();
 

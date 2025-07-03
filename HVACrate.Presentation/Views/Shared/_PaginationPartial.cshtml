@@ -1,0 +1,23 @@
+﻿@model (int Count, Pagination Pagination)
+@{
+    int page = Model.Pagination.Page;
+    int limit = Model.Pagination.Limit;
+    int total = Model.Count;
+    int pagesCount = (int)Math.Ceiling((double)total / limit);
+}
+
+<div class="card-footer bg-light border-top rounded-bottom py-3">
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center mb-0">
+            @for (int i = 1; i <= pagesCount; i++)
+            {
+                <li class="page-item @(page == i ? "active" : "")">
+                    <a class="page-link" asp-route-page="@i" asp-route-limit="@limit"
+                       style="@(page == i ? "background-color: #212529; color: #fff; border-color: #212529;" : "")">
+                        @i
+                    </a>
+                </li>
+            }
+        </ul>
+    </nav>
+</div>

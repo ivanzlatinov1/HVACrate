@@ -1,5 +1,9 @@
-﻿using HVACrate.Domain.Entities;
+﻿using HVACrate.Application.Interfaces;
+using HVACrate.Application.Services;
+using HVACrate.Domain.Entities;
+using HVACrate.Domain.Repositories.Users;
 using HVACrate.Persistence;
+using HVACrate.Persistence.Repositories.Users;
 using HVACrate.Persistence.Seeding;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -40,9 +44,14 @@ public static class ProgramExtensions
             .AddDefaultTokenProviders();
     }
 
+    public static void AddRepositories(this IServiceCollection services)
+    {
+        services.AddScoped<IUserRepository, HVACUserRepository>();
+    }
+
     public static void AddServices(this IServiceCollection services)
     {
-        // TODO: Implement services and attach them to the container
+        services.AddScoped<IUserService, UserService>();
     }
 
     public static async Task SeedIdentityDataAsync(this IServiceProvider serviceProvider)
