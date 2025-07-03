@@ -1,8 +1,29 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "HVACrate";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container mt-5 text-center">
+    <h1 class="display-4">Welcome to <strong>@ViewData["Title"]</strong></h1>
+    <p class="lead mt-3">
+        Quickly calculate heating and cooling loads for rooms, buildings, or entire HVAC systems.
+    </p>
+
+    <hr class="my-4" />
+
+    <div class="row mt-5 justify-content-center">
+        <div class="col-md-4">
+            <h3>🔥 Heat Loss Calculator</h3>
+            <p>Estimate how much energy your building loses in colder months.</p>
+            <a class="btn btn-primary" asp-area="Identity" asp-page="/Account/Login">Calculate Heat Loss</a>
+        </div>
+        <div class="col-md-4">
+            <h3>❄️ Cooling Load Estimator</h3>
+            <p>Find out how much cooling your space needs during summer.</p>
+            <a class="btn btn-info" asp-area="Identity" asp-page="/Account/Login">Estimate Cooling Load</a>
+        </div>
+    </div>
+
+    <div class="mt-5">
+        <p>Learn more about HVACrate principles in our github repository <a href="https://github.com/ivanzlatinov1/HVACrate">HVACrate</a>.</p>
+    </div>
 </div>

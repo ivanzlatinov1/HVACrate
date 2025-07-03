@@ -8,10 +8,13 @@
             </button>
             <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                 <ul class="navbar-nav flex-grow-1">
-                    <li class="nav-item">
-                        <a class="nav-link text-light" style="font-family: 'Roboto', sans-serif; font-size: 1rem; margin-right: 15px; transition: color 0.3s ease;" asp-controller="Home" asp-action="Index">Home</a>
-                    </li>
-                    @if (User.IsInRole("Admin"))
+                    @if(!User.IsAuthenticated())
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link text-light" style="font-family: 'Roboto', sans-serif; font-size: 1rem; margin-right: 15px; transition: color 0.3s ease;" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+                    }
+                    else if (User.IsInRole("Admin"))
                     {
                         <li class="nav-item">
                             <a class="nav-link text-light" style="font-family: 'Roboto', sans-serif; font-size: 1rem; margin-right: 15px; transition: color 0.3s ease;" asp-controller="Users" asp-action="Index">Users</a>
