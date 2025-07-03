@@ -1,4 +1,4 @@
-﻿using HVACrate.Domain.Enums;
+﻿using HVACrate.Domain.ValueObjects;
 
 namespace HVACrate.Application.Models.HVACUsers
 {
@@ -6,8 +6,8 @@ namespace HVACrate.Application.Models.HVACUsers
     {
         public string? SearchParam { get; set; }
 
-        public HVACUserSortingType? SortingType { get; set; }
+        public HVACUserSorting Sorting { get; set; } = new();
 
-        public SortingDirection? SortingDirection { get; set; }
+        public Pagination Pagination { get; set; } = new();
     }
 }

@@ -8,6 +8,8 @@ namespace HVACrate.Domain.Entities
 
         public string? LastName { get; set; }
 
+        public string Username => this.UserName ?? string.Empty;
+
         public string? ProfilePictureUrl { get; set; }
 
         public DateTimeOffset RegisteredOn { get; set; } = DateTimeOffset.UtcNow;
