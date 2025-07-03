@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\HVACrate.Domain\HVACrate.Domain.csproj" />
+    <ProjectReference Include="..\HVACrate.GCommon\HVACrate.GCommon.csproj" />
   </ItemGroup>
 
 </Project>

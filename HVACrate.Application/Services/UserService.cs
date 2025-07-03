@@ -20,7 +20,7 @@ namespace HVACrate.Application.Services
         public async Task<Dictionary<Guid, string>> GetRolesAsync(Guid[] ids, CancellationToken cancellationToken = default)
             => await this._userRepository.GetRolesByIdsAsync(ids, cancellationToken);
 
-        public async Task<HVACUserModel?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+        public async Task<HVACUserModel> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
         {
             HVACUser user = await this._userRepository.GetByIdAsync(id, cancellationToken) 
                 ?? throw new Exception("User not found");
@@ -36,5 +36,9 @@ namespace HVACrate.Application.Services
             _userRepository.Remove(user);
             await _userRepository.SaveChangesAsync(cancellationToken);
         }
+
+        public async Task<string> GetRoleAsync(Guid id, CancellationToken cancellationToken = default)
+            => await this._userRepository.GetUserRoleAsync(id, cancellationToken) 
+            ?? throw new Exception("User not found");
     }
 }

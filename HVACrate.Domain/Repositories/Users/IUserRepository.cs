@@ -9,6 +9,7 @@ namespace HVACrate.Domain.Repositories.Users
         Task<Result<HVACUser>> GetAllAsync(HVACUserQuery query, CancellationToken cancellationToken = default);
         Task<HVACUser?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
         void Remove(HVACUser user);
-        Task SaveChangesAsync(CancellationToken cancellationToken);
+        Task SaveChangesAsync(CancellationToken cancellationToken = default);
+        Task<string?> GetUserRoleAsync(Guid id, CancellationToken cancellationToken = default);
     }
 }

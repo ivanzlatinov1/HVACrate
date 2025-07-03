@@ -1,0 +1,31 @@
+﻿@model HVACUserViewModel
+
+@{
+    ViewData["Title"] = "User Details";
+}
+
+
+<div class="card" style="max-width: 600px; margin: auto;">
+    <h2 class="text-center">User Details</h2>
+    <div class="card-header bg-black text-white">
+        <h3>@Model.Username</h3>
+    </div>
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-4">User ID</dt>
+            <dd class="col-sm-8">@Model.Id</dd>
+
+            <dt class="col-sm-4">Email</dt>
+            <dd class="col-sm-8">@Model.Email</dd>
+
+            <dt class="col-sm-4">Registered On</dt>
+            <dd class="col-sm-8">@Model.RegisteredOn</dd>
+
+            <dt class="col-sm-4">Role</dt>
+            <dd class="col-sm-8">@Model.Role</dd>
+        </dl>
+    </div>
+    <div class="card-footer text-center">
+        <a href="@Url.Action("Index", "Users")" class="btn btn-secondary">Back to List</a>
+    </div>
+</div>

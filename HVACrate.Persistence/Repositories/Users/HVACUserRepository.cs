@@ -38,12 +38,20 @@ namespace HVACrate.Persistence.Repositories.Users
             .GroupBy(x => x.UserId)
             .ToDictionaryAsync(k => k.Key, v => v.Single().RoleName, cancellationToken);
 
+        public async Task<string?> GetUserRoleAsync(Guid id, CancellationToken cancellationToken = default)
+            => (await _context.UserRoles
+                .Join(_context.Roles,
+                    userRoles => userRoles.RoleId,
+                    role => role.Id,
+                    (userRoles, role) => new { RoleName = role.Name!, userRoles.UserId })
+                .FirstOrDefaultAsync(x => x.UserId == id, cancellationToken))?.RoleName;
+
         public void Remove(HVACUser user)
         {
             this._context.Users.Remove(user);
         }
 
-        public async Task SaveChangesAsync(CancellationToken cancellationToken)
+        public async Task SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             await this._context.SaveChangesAsync(cancellationToken);
         }

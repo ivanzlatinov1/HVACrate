@@ -31,7 +31,7 @@ namespace HVACrate.Presentation.Controllers
 
             HVACUserViewModel[] users = [.. userModels.Items.Select(x => new HVACUserViewModel
             {
-                Id = x.Id.ToString(),
+                Id = x.Id,
                 Username = x.Username,
                 Email = x.Email,
                 RegisteredOn = x.RegisteredOn.ToString(DateFormat),
@@ -39,6 +39,31 @@ namespace HVACrate.Presentation.Controllers
             })];
 
             return View((users, userModels.Count, pagination));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Details(Guid id)
+        {
+            HVACUserModel user = await this._userService.GetByIdAsync(id);
+
+            HVACUserViewModel userViewModel = new()
+            {
+                Id = user.Id,
+                Username = user.Username,
+                Email = user.Email,
+                RegisteredOn = user.RegisteredOn.ToString(DateFormat),
+                Role = await this._userService.GetRoleAsync(id)
+            };
+
+            return View(userViewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            await this._userService.RemoveAsync(id);
+
+            return RedirectToAction(nameof(Index));
         }
     }
 }
