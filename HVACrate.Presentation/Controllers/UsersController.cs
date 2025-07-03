@@ -33,8 +33,6 @@ namespace HVACrate.Presentation.Controllers
             {
                 Id = x.Id,
                 Username = x.Username,
-                Email = x.Email,
-                RegisteredOn = x.RegisteredOn.ToString(DateFormat),
                 Role = roles[x.Id]
             })];
 
@@ -46,13 +44,17 @@ namespace HVACrate.Presentation.Controllers
         {
             HVACUserModel user = await this._userService.GetByIdAsync(id);
 
-            HVACUserViewModel userViewModel = new()
+            HVACUserDetailsViewModel userViewModel = new()
             {
                 Id = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
                 Username = user.Username,
                 Email = user.Email,
                 RegisteredOn = user.RegisteredOn.ToString(DateFormat),
-                Role = await this._userService.GetRoleAsync(id)
+                Role = await this._userService.GetRoleAsync(id),
+                ProfilePictureUrl = user.ProfilePictureUrl ?? DefaultProfilePictureUrl,
+                ProjectsCount = user.Projects.Count,
             };
 
             return View(userViewModel);

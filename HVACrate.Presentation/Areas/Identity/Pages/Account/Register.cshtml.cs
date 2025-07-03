@@ -78,6 +78,8 @@ namespace HVACrate.Presentation.Areas.Identity.Pages.Account
             {
                 HVACUser user = new()
                 {
+                    FirstName = Input.FirstName,
+                    LastName = Input.LastName,
                     UserName = Input.Username,
                     Email = Input.Email,
                     ProfilePictureUrl = Input.ProfilePicture == null

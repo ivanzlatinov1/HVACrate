@@ -5,7 +5,7 @@
         private const string InvalidSize = "File size must be greater than 0.";
 
         private static string GetRelativePath(string name)
-            => $"{Path.Combine("images", "profile-pictures", name)}";
+            => $"/{Path.Combine("images", "profile-pictures", name)}";
 
         private static string GetPath(this IWebHostEnvironment env, string fileName)
         {
