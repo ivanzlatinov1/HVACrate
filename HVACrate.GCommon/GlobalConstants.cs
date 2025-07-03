@@ -13,6 +13,16 @@
         public const int ImageUrlMaxLength = 2048;
 
         /// <summary>
+        /// The default url for users without profile picture.
+        /// </summary>
+        public const string DefaultProfilePictureUrl = "/images/profile-pictures/default.jpg";
+
+        /// <summary>
+        /// The claim key for profile picture.
+        /// </summary>
+        public const string ProfilePictureClaimType = "HVACProfilePicture";
+
+        /// <summary>
         /// The maximum precision for decimal values of the models.
         /// </summary>
         public const int TotalPrecision = 18;

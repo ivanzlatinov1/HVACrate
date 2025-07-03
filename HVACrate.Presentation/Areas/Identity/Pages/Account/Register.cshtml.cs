@@ -1,10 +1,12 @@
 ﻿using HVACrate.Domain.Entities;
+using HVACrate.Presentation.Extensions;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
 
+using static HVACrate.GCommon.GlobalConstants;
 using static HVACrate.Domain.ValidationConstants.ErrorMessages;
 using static HVACrate.Domain.ValidationConstants.HVACUser;
 
@@ -12,10 +14,12 @@ namespace HVACrate.Presentation.Areas.Identity.Pages.Account
 {
     public class RegisterModel(
         UserManager<HVACUser> userManager,
-        SignInManager<HVACUser> signInManager) : PageModel
+        SignInManager<HVACUser> signInManager,
+        IWebHostEnvironment env) : PageModel
     {
         private readonly SignInManager<HVACUser> _signInManager = signInManager;
         private readonly UserManager<HVACUser> _userManager = userManager;
+        private readonly IWebHostEnvironment _env = env;
 
         [BindProperty]
         public InputModel Input { get; set; } = null!;
@@ -34,9 +38,10 @@ namespace HVACrate.Presentation.Areas.Identity.Pages.Account
             [Display(Name = "Last Name")]
             public string? LastName { get; set; }
 
+            [Required]
             [StringLength(UserNameMaxLength, MinimumLength = UserNameMinLength)]
             [Display(Name = "Username")]
-            public string? UserName { get; set; }
+            public string Username { get; set; } = null!;
 
             [Required]
             [EmailAddress]
@@ -53,13 +58,16 @@ namespace HVACrate.Presentation.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; } = null!;
+
+            [Display(Name = "Profile Picture")]
+            public IFormFile? ProfilePicture { get; set; }
         }
 
 
         public async Task OnGetAsync(string returnUrl = null!)
         {
             ReturnUrl = returnUrl;
-            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            ExternalLogins = [.. (await _signInManager.GetExternalAuthenticationSchemesAsync())];
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null!)
@@ -68,10 +76,14 @@ namespace HVACrate.Presentation.Areas.Identity.Pages.Account
             ExternalLogins = [.. (await _signInManager.GetExternalAuthenticationSchemesAsync())];
             if (ModelState.IsValid)
             {
-                var user = CreateUser();
-
-                user.UserName = Input.UserName;
-                user.Email = Input.Email;
+                HVACUser user = new()
+                {
+                    UserName = Input.Username,
+                    Email = Input.Email,
+                    ProfilePictureUrl = Input.ProfilePicture == null
+                        ? null
+                        : await _env.UploadImageAsync(Input.ProfilePicture, Input.Username)
+                };
 
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
@@ -81,6 +93,8 @@ namespace HVACrate.Presentation.Areas.Identity.Pages.Account
                     {
                         await _userManager.AddToRoleAsync(user, "User");
                     }
+
+                    await this._userManager.AddClaimAsync(user, new(ProfilePictureClaimType, user.ProfilePictureUrl ?? DefaultProfilePictureUrl));
 
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     return LocalRedirect(returnUrl);
@@ -93,20 +107,6 @@ namespace HVACrate.Presentation.Areas.Identity.Pages.Account
 
             // If we got this far, something failed, redisplay form
             return Page();
-        }
-
-        private HVACUser CreateUser()
-        {
-            try
-            {
-                return Activator.CreateInstance<HVACUser>();
-            }
-            catch
-            {
-                throw new InvalidOperationException($"Can't create an instance of '{nameof(HVACUser)}'. " +
-                    $"Ensure that '{nameof(HVACUser)}' is not an abstract class and has a parameterless constructor, or alternatively " +
-                    $"override the register page in /Areas/Identity/Pages/Account/Register.cshtml");
-            }
         }
     }
 }

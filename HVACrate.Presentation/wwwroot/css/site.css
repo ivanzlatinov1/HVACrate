@@ -23,3 +23,26 @@ main {
     justify-content: center;
     height: 80dvh;
 }
+
+.profile-picture-box {
+    width: 200px;
+    height: 200px;
+    border: 2px dashed #6c757d;
+    border-radius: 10px;
+    cursor: pointer;
+    position: relative;
+}
+
+.profile-picture-box label {
+    cursor: pointer;
+    height: 100%;
+    width: 100%;
+}
+
+.object-fit-cover {
+    object-fit: cover;
+}
+
+.profile-picture-box:hover {
+    background-color: #f8f9fa;
+}

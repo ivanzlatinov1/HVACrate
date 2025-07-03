@@ -1,37 +1,40 @@
-﻿#nullable disable
-
-using HVACrate.Domain.Entities;
+﻿using HVACrate.Domain.Entities;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
 
+using static HVACrate.GCommon.GlobalConstants;
+using static HVACrate.Domain.ValidationConstants.HVACUser;
+
 namespace HVACrate.Presentation.Areas.Identity.Pages.Account
 {
-    public class LoginModel(SignInManager<HVACUser> signInManager) : PageModel
+    public class LoginModel(SignInManager<HVACUser> signInManager, UserManager<HVACUser> userManager) : PageModel
     {
         private readonly SignInManager<HVACUser> _signInManager = signInManager;
+        private readonly UserManager<HVACUser> _userManager = userManager;
 
         [BindProperty]
-        public InputModel Input { get; set; }
+        public InputModel Input { get; set; } = null!;
 
-        public IList<AuthenticationScheme> ExternalLogins { get; set; }
+        public IList<AuthenticationScheme> ExternalLogins { get; set; } = null!;
 
-        public string ReturnUrl { get; set; }
+        public string ReturnUrl { get; set; } = null!;
 
         [TempData]
-        public string ErrorMessage { get; set; }
+        public string ErrorMessage { get; set; } = null!;
 
         public class InputModel
         {
             [Required]
-            [EmailAddress]
-            public string Email { get; set; }
+            [StringLength(UserNameMaxLength, MinimumLength = UserNameMinLength)]
+            [Display(Name = "Username")]
+            public string Username { get; set; } = null!;
 
             [Required]
             [DataType(DataType.Password)]
-            public string Password { get; set; }
+            public string Password { get; set; } = null!;
 
             [Display(Name = "Remember me?")]
             public bool RememberMe { get; set; }
@@ -62,9 +65,10 @@ namespace HVACrate.Presentation.Areas.Identity.Pages.Account
 
             if (ModelState.IsValid)
             {
-                // This doesn't count login failures towards account lockout
-                // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+                HVACUser? user = await _userManager.FindByNameAsync(Input.Username);
+                await this._userManager.AddClaimAsync(user, new(ProfilePictureClaimType, user.ProfilePictureUrl ?? DefaultProfilePictureUrl));
+
+                var result = await _signInManager.PasswordSignInAsync(Input.Username, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
                     return LocalRedirect(returnUrl);

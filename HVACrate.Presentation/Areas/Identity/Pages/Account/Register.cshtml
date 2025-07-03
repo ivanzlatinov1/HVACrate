@@ -7,46 +7,85 @@
 <h1 class="text-center">@ViewData["Title"]</h1>
 
 <div class="row d-flex justify-content-center">
-    <div class="col-md-4">
-        <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
-            <h2 class="text-center">Create a new account</h2>
+    <div class="col-md-8">
+        <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" enctype="multipart/form-data" method="post">
             <hr />
             <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
-            <div class="form-floating mb-3">
-                <input asp-for="Input.FirstName" class="form-control" autocomplete="off" aria-required="true" placeholder="John" />
-                <label asp-for="Input.FirstName"></label>
-                <span asp-validation-for="Input.FirstName" class="text-danger"></span>
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="form-floating mb-3">
+                        <input asp-for="Input.FirstName" class="form-control" autocomplete="off" aria-required="true" placeholder="John" />
+                        <label asp-for="Input.FirstName"></label>
+                        <span asp-validation-for="Input.FirstName" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="Input.LastName" class="form-control" autocomplete="off" aria-required="true" placeholder="Doe" />
+                        <label asp-for="Input.LastName"></label>
+                        <span asp-validation-for="Input.LastName" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="Input.Username" class="form-control" autocomplete="username" aria-required="true" placeholder="johndoe" />
+                        <label asp-for="Input.Username"></label>
+                        <span asp-validation-for="Input.Username" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                        <label asp-for="Input.Email"></label>
+                        <span asp-validation-for="Input.Email" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
+                        <label asp-for="Input.Password"></label>
+                        <span asp-validation-for="Input.Password" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
+                        <label asp-for="Input.ConfirmPassword"></label>
+                        <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-4 d-flex flex-column gap-2 align-items-center justify-content-center">
+                    <label asp-for="Input.ProfilePicture"></label>
+                    <div class="profile-picture-box text-center">
+                        <label asp-for="Input.ProfilePicture" class="w-100 h-100 d-flex align-items-center justify-content-center flex-column overflow-hidden">
+                            <img id="profilePreview" src="#" alt="Profile Picture" class="img-fluid h-100 w-100 object-fit-cover d-none" />
+                            <div id="uploadPlaceholder" class="text-muted">
+                                <i class="bi bi-person-circle fs-1"></i>
+                                <span>Click to upload</span>
+                            </div>
+                        </label>
+                        <input asp-for="Input.ProfilePicture" type="file" class="d-none" accept="image/*" onchange="previewProfilePicture(event)" />
+                        <span asp-validation-for="Input.ProfilePicture" class="text-danger"></span>
+                    </div>
+                </div>
             </div>
-            <div class="form-floating mb-3">
-                <input asp-for="Input.LastName" class="form-control" autocomplete="off" aria-required="true" placeholder="Doe" />
-                <label asp-for="Input.LastName"></label>
-                <span asp-validation-for="Input.LastName" class="text-danger"></span>
+
+            <div class="mt-4">
+                <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
             </div>
-            <div class="form-floating mb-3">
-                <input asp-for="Input.UserName" class="form-control" autocomplete="username" aria-required="true" placeholder="johndoe" />
-                <label asp-for="Input.UserName"></label>
-                <span asp-validation-for="Input.UserName" class="text-danger"></span>
-            </div>
-            <div class="form-floating mb-3">
-                <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
-                <label asp-for="Input.Email"></label>
-                <span asp-validation-for="Input.Email" class="text-danger"></span>
-            </div>
-            <div class="form-floating mb-3">
-                <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
-                <label asp-for="Input.Password"></label>
-                <span asp-validation-for="Input.Password" class="text-danger"></span>
-            </div>
-            <div class="form-floating mb-3">
-                <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
-                <label asp-for="Input.ConfirmPassword"></label>
-                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
-            </div>
-            <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
         </form>
     </div>
 </div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script>
+        function previewProfilePicture(event) {
+            const input = event.target;
+            const preview = document.getElementById("profilePreview");
+            const placeholder = document.getElementById("uploadPlaceholder");
+
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    preview.src = e.target.result;
+                    preview.classList.remove("d-none");
+                    placeholder.classList.add("d-none");
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
 }
