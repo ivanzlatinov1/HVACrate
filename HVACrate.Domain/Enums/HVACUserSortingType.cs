@@ -3,6 +3,6 @@
     public enum HVACUserSortingType
     {
         RegisteredOn,
-        UserName
+        Username
     }
 }

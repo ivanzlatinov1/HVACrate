@@ -1,0 +1,51 @@
+﻿using HVACrate.Domain.Repositories.Users;
+using HVACrate.Domain.ValueObjects;
+using Microsoft.EntityFrameworkCore;
+
+namespace HVACrate.Persistence.Repositories.Users
+{
+    public class HVACUserRepository(HVACrateDbContext context) : IUserRepository
+    {
+        private readonly HVACrateDbContext _context = context;
+
+        public async Task<Result<HVACUser>> GetAllAsync(HVACUserQuery query, CancellationToken cancellationToken = default)
+        {
+            IQueryable<HVACUser> baseQuery = _context.Users
+                .WithSearch(query.SearchParam)
+                .WithSorting(query.Sorting);
+
+            int count = await baseQuery
+                .CountAsync(cancellationToken);
+
+            HVACUser[] users = await baseQuery
+                .WithPagination(query.Pagination)
+                .ToArrayAsync(cancellationToken: cancellationToken);
+
+            return new Result<HVACUser>(count, users);
+        }
+
+        public async Task<HVACUser?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+            => await _context.Users
+            .SingleOrDefaultAsync(u => u.Id == id, cancellationToken);
+
+        public async Task<Dictionary<Guid, string>> GetRolesByIdsAsync(Guid[] ids, CancellationToken cancellationToken = default)
+            => await _context.UserRoles
+            .Where(x => ids.Contains(x.UserId))
+            .Join(_context.Roles,
+                userRoles => userRoles.RoleId,
+                role => role.Id,
+                (userRoles, role) => new { RoleName = role.Name!, userRoles.UserId })
+            .GroupBy(x => x.UserId)
+            .ToDictionaryAsync(k => k.Key, v => v.Single().RoleName, cancellationToken);
+
+        public void Remove(HVACUser user)
+        {
+            this._context.Users.Remove(user);
+        }
+
+        public async Task SaveChangesAsync(CancellationToken cancellationToken)
+        {
+            await this._context.SaveChangesAsync(cancellationToken);
+        }
+    }
+}
