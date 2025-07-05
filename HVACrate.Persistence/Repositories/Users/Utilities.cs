@@ -3,7 +3,7 @@ using HVACrate.Domain.ValueObjects;
 
 namespace HVACrate.Persistence.Repositories.Users
 {
-    public static class Utilities
+    internal static class Utilities
     {
         public static IQueryable<HVACUser> WithSorting(this IQueryable<HVACUser> query, HVACUserSorting? sorting = null)
             => sorting switch
