@@ -29,17 +29,23 @@ namespace HVACrate.Persistence.Configuration
                 .HasMaxLength(NameMaxLength)
                 .HasComment("Name of the project");
 
-            // Define constraints for the Description column
+            // Define constraints for the RegionTemperature column
             entity
                 .Property(p => p.RegionTemperature)
                 .HasPrecision(TotalPrecision, TotalScale)
                 .HasComment("Average external temperature of the region");
 
-            // Define constraints for the RegionTemperature column
+            // Define constraints for the CreatedAt column
             entity
                 .Property(p => p.CreatedAt)
-                .HasDefaultValueSql("CURRENT_DATE")
+                .HasDefaultValue(DateTimeOffset.UtcNow)
                 .HasComment("The date when the project was created");
+
+            // Define constraints for the LastModified column
+            entity
+                .Property(p => p.LastModified)
+                .HasDefaultValue(DateTimeOffset.UtcNow)
+                .HasComment("The date when the project was modified for the last time");
 
             // Define default value for IsDeleted property for soft deletion
             entity
@@ -50,7 +56,14 @@ namespace HVACrate.Persistence.Configuration
             entity
                 .HasQueryFilter(p => !p.IsDeleted);
 
-            // Define relationship constraints for the Project entity
+            // Define relationship constraints with HVACUser entity
+            entity
+                .HasOne(p => p.HVACUser)
+                .WithMany(u => u.Projects)
+                .HasForeignKey(p => p.HVACUserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Define relationship constraints with Building entity
             entity
                 .HasMany(p => p.Buildings)
                 .WithOne(b => b.Project)

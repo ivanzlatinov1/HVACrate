@@ -3,6 +3,7 @@ using System;
 using HVACrate.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace HVACrate.Persistence.Migrations
 {
     [DbContext(typeof(HVACrateDbContext))]
-    partial class HVACrateDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250705070506_AddedLastModifiedColumnOnProjects")]
+    partial class AddedLastModifiedColumnOnProjects
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -301,10 +304,10 @@ namespace HVACrate.Persistence.Migrations
                     b.Property<DateTimeOffset>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
-                        .HasDefaultValue(new DateTimeOffset(new DateTime(2025, 7, 5, 9, 6, 37, 57, DateTimeKind.Unspecified).AddTicks(4341), new TimeSpan(0, 0, 0, 0, 0)))
+                        .HasDefaultValue(new DateTimeOffset(new DateTime(2025, 7, 5, 7, 5, 5, 972, DateTimeKind.Unspecified).AddTicks(9114), new TimeSpan(0, 0, 0, 0, 0)))
                         .HasComment("The date when the project was created");
 
-                    b.Property<Guid>("HVACUserId")
+                    b.Property<Guid?>("HVACUserId")
                         .HasColumnType("uuid");
 
                     b.Property<bool>("IsDeleted")
@@ -315,7 +318,7 @@ namespace HVACrate.Persistence.Migrations
                     b.Property<DateTimeOffset>("LastModified")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
-                        .HasDefaultValue(new DateTimeOffset(new DateTime(2025, 7, 5, 9, 6, 37, 57, DateTimeKind.Unspecified).AddTicks(4547), new TimeSpan(0, 0, 0, 0, 0)))
+                        .HasDefaultValue(new DateTimeOffset(new DateTime(2025, 7, 5, 7, 5, 5, 972, DateTimeKind.Unspecified).AddTicks(9349), new TimeSpan(0, 0, 0, 0, 0)))
                         .HasComment("The date when the project was modified for the last time");
 
                     b.Property<string>("Name")
@@ -550,13 +553,9 @@ namespace HVACrate.Persistence.Migrations
 
             modelBuilder.Entity("HVACrate.Domain.Entities.Project", b =>
                 {
-                    b.HasOne("HVACrate.Domain.Entities.HVACUser", "HVACUser")
+                    b.HasOne("HVACrate.Domain.Entities.HVACUser", null)
                         .WithMany("Projects")
-                        .HasForeignKey("HVACUserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("HVACUser");
+                        .HasForeignKey("HVACUserId");
                 });
 
             modelBuilder.Entity("HVACrate.Domain.Entities.Room", b =>
