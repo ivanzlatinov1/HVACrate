@@ -28,9 +28,12 @@
                         <td>@user.Role</td>
                         <td class="text-center">
                             <a asp-controller="Users" asp-action="Details" asp-route-id="@user.Id" class="btn btn-sm btn-outline-primary me-2">Details</a>
-                            <form asp-controller="Users" asp-action="Delete" asp-route-id="@user.Id" method="post" class="d-inline">
-                                <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
-                            </form>
+                            @if(user.Role != "Admin")
+                            {
+                                <form asp-controller="Users" asp-action="Delete" asp-route-id="@user.Id" method="post" class="d-inline">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                                </form>
+                            }
                         </td>
                     </tr>
                 }
