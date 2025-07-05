@@ -12,6 +12,6 @@ namespace HVACrate.Presentation.Models.FormModels
 
         public int Page { get; set; } = 1;
 
-        public int Limit { get; set; } = 5;
+        public int Limit { get; set; } = 6;
     }
 }

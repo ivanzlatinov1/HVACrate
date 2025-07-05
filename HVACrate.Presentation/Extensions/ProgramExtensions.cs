@@ -1,8 +1,10 @@
 ﻿using HVACrate.Application.Interfaces;
 using HVACrate.Application.Services;
 using HVACrate.Domain.Entities;
+using HVACrate.Domain.Repositories.Projects;
 using HVACrate.Domain.Repositories.Users;
 using HVACrate.Persistence;
+using HVACrate.Persistence.Repositories.Projects;
 using HVACrate.Persistence.Repositories.Users;
 using HVACrate.Persistence.Seeding;
 using Microsoft.AspNetCore.Identity;
@@ -47,11 +49,13 @@ public static class ProgramExtensions
     public static void AddRepositories(this IServiceCollection services)
     {
         services.AddScoped<IUserRepository, HVACUserRepository>();
+        services.AddScoped<IProjectRepository, ProjectRepository>();
     }
 
     public static void AddServices(this IServiceCollection services)
     {
         services.AddScoped<IUserService, UserService>();
+        services.AddScoped<IProjectService, ProjectService>();
     }
 
     public static async Task SeedIdentityDataAsync(this IServiceProvider serviceProvider)

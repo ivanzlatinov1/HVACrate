@@ -2,7 +2,7 @@
 using HVACrate.Application.Models.HVACUsers;
 using HVACrate.Domain.ValueObjects;
 using HVACrate.Presentation.Models.FormModels;
-using HVACrate.Presentation.Models.ViewModels;
+using HVACrate.Presentation.Models.ViewModels.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
