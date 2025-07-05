@@ -31,5 +31,13 @@
         /// The maximum scale for decimal values of the models.
         /// </summary>
         public const int TotalScale = 2;
+
+        /// <summary>
+        /// The properties which are used for querying for the models
+        /// </summary>
+        public static class QueryProperties
+        {
+            public const string ProjectQueryProperty = "Name";
+        }
     }
 }
