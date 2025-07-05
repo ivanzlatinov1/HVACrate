@@ -11,7 +11,7 @@ namespace HVACrate.Persistence.Repositories.Projects
         {
             IQueryable<Project> baseQuery = context.Projects
                 .Where (p => p.HVACUserId == creatorId)
-                .WithSearch(query.SearchParam, x => x.Name)
+                .WithSearch(query.SearchParam, x => EF.Property<string>(x, query.QueryParam))
                 .AsNoTracking();
 
             int totalCount = await baseQuery

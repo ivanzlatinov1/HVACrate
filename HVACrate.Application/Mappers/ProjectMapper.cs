@@ -1,8 +1,5 @@
 ﻿using HVACrate.Application.Models.Projects;
 using HVACrate.Domain.Entities;
-using HVACrate.Domain.Repositories;
-
-using static HVACrate.GCommon.GlobalConstants.QueryProperties;
 
 namespace HVACrate.Application.Mappers
 {
@@ -35,13 +32,5 @@ namespace HVACrate.Application.Mappers
                 HVACUser = model.HVACUser,
                 Buildings = firstTime ? model.Buildings.Select(b => b.ToEntity()).ToList() : null!,
             };
-
-        public static BaseQuery ToQuery(this ProjectQueryModel queryModel)
-           => new()
-           {
-               SearchParam = queryModel.SearchParam,
-               QueryProperty = ProjectQueryProperty,
-               Pagination = queryModel.Pagination,
-           };
     }
 }

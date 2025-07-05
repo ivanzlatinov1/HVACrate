@@ -6,7 +6,7 @@ namespace HVACrate.Domain.Repositories
     {
         public string? SearchParam { get; set; }
 
-        public string QueryProperty { get; set; } = string.Empty;
+        public string QueryParam { get; set; } = string.Empty;
 
         public Pagination Pagination { get; set; } = new();
     }

@@ -1,4 +1,5 @@
-﻿using HVACrate.Domain.Repositories.Users;
+﻿using HVACrate.Domain.Repositories;
+using HVACrate.Domain.Repositories.Users;
 using HVACrate.Domain.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,11 +9,10 @@ namespace HVACrate.Persistence.Repositories.Users
     {
         private readonly HVACrateDbContext _context = context;
 
-        public async Task<Result<HVACUser>> GetAllAsync(HVACUserQuery query, CancellationToken cancellationToken = default)
+        public async Task<Result<HVACUser>> GetAllAsync(BaseQuery query, CancellationToken cancellationToken = default)
         {
             IQueryable<HVACUser> baseQuery = _context.Users
-                .WithSearch(query.SearchParam)
-                .WithSorting(query.Sorting);
+                .WithSearch(query.SearchParam, x => EF.Property<string>(x, query.QueryParam));
 
             int count = await baseQuery
                 .CountAsync(cancellationToken);

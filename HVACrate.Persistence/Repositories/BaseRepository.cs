@@ -13,7 +13,7 @@ namespace HVACrate.Persistence.Repositories
         {
             IQueryable<TEntity> baseQuery = _context
                 .Set<TEntity>()
-                .WithSearch(query.SearchParam, x => EF.Property<string>(x, query.QueryProperty))
+                .WithSearch(query.SearchParam, x => EF.Property<string>(x, query.QueryParam))
                 .AsNoTracking();
 
             int totalCount = await baseQuery
@@ -30,7 +30,7 @@ namespace HVACrate.Persistence.Repositories
         {
             IQueryable<TEntity> baseQuery = _context
                 .Set<TEntity>()
-                .WithSearch(query.SearchParam, x => EF.Property<string>(x, query.QueryProperty));
+                .WithSearch(query.SearchParam, x => EF.Property<string>(x, query.QueryParam));
 
             int count = await baseQuery
                 .CountAsync(cancellationToken);

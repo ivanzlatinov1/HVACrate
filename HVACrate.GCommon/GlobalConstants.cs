@@ -37,7 +37,8 @@
         /// </summary>
         public static class QueryProperties
         {
-            public const string ProjectQueryProperty = "Name";
+            public const string UserQueryParam = "UserName";
+            public const string ProjectQueryParam = "Name";
         }
     }
 }

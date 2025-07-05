@@ -6,7 +6,7 @@ namespace HVACrate.Persistence.Repositories
     internal static class Utilities
     {
         /// <summary>
-        /// Applies dynamic ordering to the query based on a property name and sort direction.
+        /// Applies dynamic ordering to the query based on a property name.
         /// </summary>
         /// <typeparam name="T">Entity type</typeparam>
         /// <param name="query">Queryable data source</param>

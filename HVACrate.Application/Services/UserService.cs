@@ -1,5 +1,6 @@
 ﻿using HVACrate.Application.Interfaces;
 using HVACrate.Application.Mappers;
+using HVACrate.Application.Models;
 using HVACrate.Application.Models.HVACUsers;
 using HVACrate.Domain.Entities;
 using HVACrate.Domain.Repositories.Users;
@@ -11,7 +12,7 @@ namespace HVACrate.Application.Services
     {
         private readonly IUserRepository _userRepository = userRepository;
 
-        public async Task<Result<HVACUserModel>> GetAllAsync(HVACUserQueryModel query, CancellationToken cancellationToken = default)
+        public async Task<Result<HVACUserModel>> GetAllAsync(BaseQueryModel query, CancellationToken cancellationToken = default)
         {
             Result<HVACUser> users = await this._userRepository.GetAllAsync(query.ToQuery(), cancellationToken);
             return new Result<HVACUserModel>(users.Count, [.. users.Items.Select(x => x.ToModel())]);

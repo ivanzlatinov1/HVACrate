@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 using static HVACrate.GCommon.GlobalConstants;
+using static HVACrate.GCommon.GlobalConstants.QueryProperties;
 
 namespace HVACrate.Presentation.Controllers
 {
@@ -16,14 +17,14 @@ namespace HVACrate.Presentation.Controllers
         private readonly IUserService _userService = userService;
 
         [HttpGet]
-        public async Task<IActionResult> Index(HVACUserQueryFormModel query, CancellationToken cancellationToken = default)
+        public async Task<IActionResult> Index(BaseQueryFormModel query, CancellationToken cancellationToken = default)
         {
             Pagination pagination = new(Page: query.Page, Limit: query.Limit);
 
             Result<HVACUserModel> userModels = await this._userService.GetAllAsync(new()
             {
                 SearchParam = query.SearchParam,
-                Sorting = new(Type: query.SortingType, Direction: query.SortingDirection),
+                QueryParam = UserQueryParam,
                 Pagination = pagination
             }, cancellationToken);
 

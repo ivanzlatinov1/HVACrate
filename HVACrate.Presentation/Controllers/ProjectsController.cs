@@ -7,6 +7,8 @@ using HVACrate.Presentation.Models.ViewModels.Projects;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
+using static HVACrate.GCommon.GlobalConstants.QueryProperties;
+
 namespace HVACrate.Presentation.Controllers
 {
     [Authorize(Roles = "User")]
@@ -22,6 +24,7 @@ namespace HVACrate.Presentation.Controllers
             Result<ProjectModel> projectModels = await this._projectService.GetAllAsReadOnlyAsync(new()
             {
                 SearchParam = query.SearchParam,
+                QueryParam = ProjectQueryParam,
                 Pagination = pagination
             }, this.User.GetId(), cancellationToken);
 

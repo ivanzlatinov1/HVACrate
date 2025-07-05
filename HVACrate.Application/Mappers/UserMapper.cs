@@ -1,6 +1,5 @@
 ﻿using HVACrate.Application.Models.HVACUsers;
 using HVACrate.Domain.Entities;
-using HVACrate.Domain.Repositories.Users;
 
 namespace HVACrate.Application.Mappers
 {
@@ -31,13 +30,5 @@ namespace HVACrate.Application.Mappers
                 RegisteredOn = model.RegisteredOn,
                 Projects = firstTime ? model.Projects.Select(p => p.ToEntity()).ToList() : null!
             };
-
-        public static HVACUserQuery ToQuery(this HVACUserQueryModel queryModel)
-           => new()
-           {
-               SearchParam = queryModel.SearchParam,
-               Sorting = queryModel.Sorting,
-               Pagination = queryModel.Pagination,
-           };
     }
 }

@@ -1,5 +1,6 @@
 ﻿using HVACrate.Application.Interfaces;
 using HVACrate.Application.Mappers;
+using HVACrate.Application.Models;
 using HVACrate.Application.Models.Projects;
 using HVACrate.Domain.Entities;
 using HVACrate.Domain.Repositories.Projects;
@@ -12,7 +13,7 @@ namespace HVACrate.Application.Services
         private readonly IProjectRepository _projectRepository = projectRepository;
 
 
-        public async Task<Result<ProjectModel>> GetAllAsReadOnlyAsync(ProjectQueryModel query, Guid? creatorId, CancellationToken cancellationToken = default)
+        public async Task<Result<ProjectModel>> GetAllAsReadOnlyAsync(BaseQueryModel query, Guid? creatorId, CancellationToken cancellationToken = default)
         {
             Result<Project> projects = await this._projectRepository.GetAllAsReadOnlyAsync(query.ToQuery(), creatorId, cancellationToken);
 
