@@ -8,10 +8,10 @@
             </button>
             <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                 <ul class="navbar-nav flex-grow-1">
-                    @if(!User.IsAuthenticated())
+                    @if(User.IsInRole("User"))
                     {
                         <li class="nav-item">
-                            <a class="nav-link text-light" style="font-family: 'Roboto', sans-serif; font-size: 1rem; margin-right: 15px; transition: color 0.3s ease;" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link text-light" style="font-family: 'Roboto', sans-serif; font-size: 1rem; margin-right: 15px; transition: color 0.3s ease;" asp-controller="Projects" asp-action="Index">Projects</a>
                         </li>
                     }
                     else if (User.IsInRole("Admin"))
