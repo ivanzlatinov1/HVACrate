@@ -15,7 +15,7 @@ namespace HVACrate.Application.Mappers
                 Email = entity.Email,
                 ProfilePictureUrl = entity.ProfilePictureUrl,
                 RegisteredOn = entity.RegisteredOn,
-                Projects = firstTime ? entity.Projects.Select(p => p.ToModel()).ToList() : null!
+                Projects = firstTime ? entity.Projects.Select(p => p.ToModel(false)).ToList() : null!
             };
 
         public static HVACUser ToEntity(this HVACUserModel model, bool firstTime = true)
@@ -28,7 +28,7 @@ namespace HVACrate.Application.Mappers
                 Email = model.Email,
                 ProfilePictureUrl = model.ProfilePictureUrl,
                 RegisteredOn = model.RegisteredOn,
-                Projects = firstTime ? model.Projects.Select(p => p.ToEntity()).ToList() : null!
+                Projects = firstTime ? model.Projects.Select(p => p.ToEntity(false)).ToList() : null!
             };
     }
 }

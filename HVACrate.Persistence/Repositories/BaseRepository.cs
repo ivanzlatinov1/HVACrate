@@ -9,7 +9,7 @@ namespace HVACrate.Persistence.Repositories
     {
         private readonly HVACrateDbContext _context = context;
 
-        public virtual async Task<Result<TEntity>> GetAllAsReadOnlyAsync(BaseQuery query, Guid? creatorId = null, CancellationToken cancellationToken = default)
+        public virtual async Task<Result<TEntity>> GetAllAsReadOnlyAsync(BaseQuery query, Guid? filterId = null, CancellationToken cancellationToken = default)
         {
             IQueryable<TEntity> baseQuery = _context
                 .Set<TEntity>()

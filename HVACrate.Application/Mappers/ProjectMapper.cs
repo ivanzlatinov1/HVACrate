@@ -16,7 +16,7 @@ namespace HVACrate.Application.Mappers
                 IsDeleted = entity.IsDeleted,
                 HVACUserId = entity.HVACUserId,
                 HVACUser = entity.HVACUser,
-                Buildings = firstTime ? entity.Buildings.Select(b => b.ToModel()).ToList() : null!,
+                Buildings = firstTime ? entity.Buildings.Select(b => b.ToModel(false)).ToList() : null!,
             };
 
         public static Project ToEntity(this ProjectModel model, bool firstTime = true)
@@ -30,7 +30,7 @@ namespace HVACrate.Application.Mappers
                 IsDeleted = model.IsDeleted,
                 HVACUserId = model.HVACUserId,
                 HVACUser = model.HVACUser,
-                Buildings = firstTime ? model.Buildings.Select(b => b.ToEntity()).ToList() : null!,
+                Buildings = firstTime ? model.Buildings.Select(b => b.ToEntity(false)).ToList() : null!,
             };
     }
 }
