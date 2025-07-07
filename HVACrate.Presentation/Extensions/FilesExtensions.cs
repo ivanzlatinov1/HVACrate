@@ -39,9 +39,9 @@
             return GetRelativePath(fileName);
         }
 
-        public static void DeleteFile(this IWebHostEnvironment env, string name, string extension)
+        public static void DeleteFile(this IWebHostEnvironment env, string name)
         {
-            string path = env.GetPath(name + extension);
+            string path = env.GetPath(name);
             if (File.Exists(path)) File.Delete(path);
         }
     }
