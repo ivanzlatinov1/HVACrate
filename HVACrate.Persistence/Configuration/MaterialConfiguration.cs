@@ -50,7 +50,7 @@ namespace HVACrate.Persistence.Configuration
                 .HasMany(m => m.BuildingEnvelopes)
                 .WithOne(be => be.Material)
                 .HasForeignKey(be => be.MaterialId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
             // Seed initial data for the Material entity
             entity

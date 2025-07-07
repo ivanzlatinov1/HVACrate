@@ -61,14 +61,14 @@ namespace HVACrate.Persistence.Configuration
                 .HasOne(p => p.HVACUser)
                 .WithMany(u => u.Projects)
                 .HasForeignKey(p => p.HVACUserId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
             // Define relationship constraints with Building entity
             entity
                 .HasMany(p => p.Buildings)
                 .WithOne(b => b.Project)
                 .HasForeignKey(b => b.ProjectId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

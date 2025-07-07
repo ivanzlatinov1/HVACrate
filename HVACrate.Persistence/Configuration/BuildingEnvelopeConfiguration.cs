@@ -89,7 +89,7 @@ namespace HVACrate.Persistence.Configuration
                 .HasOne(be => be.Room)
                 .WithMany(r => r.BuildingEnvelopes)
                 .HasForeignKey(be => be.RoomId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
             // Define constraints for the MaterialId column and its relationship with the Material entity
             entity
@@ -101,7 +101,7 @@ namespace HVACrate.Persistence.Configuration
                 .HasOne(be => be.Material)
                 .WithMany(m => m.BuildingEnvelopes)
                 .HasForeignKey(be => be.MaterialId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
             // Configuring discriminator columns
             entity
