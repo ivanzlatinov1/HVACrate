@@ -9,9 +9,6 @@ namespace HVACrate.Persistence.Configuration.BuildingEnvelopes
     {
         public void Configure(EntityTypeBuilder<Opening> entity)
         {
-            entity
-                .ToTable("Openings");
-
             // Define constraints for the Direction column
             entity
                 .Property(o => o.Direction)

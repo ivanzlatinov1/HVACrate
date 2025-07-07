@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using HVACrate.Domain.Entities.BuildingEnvelopes;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 using static HVACrate.Domain.ValidationConstants.BuildingEnvelope;
@@ -101,6 +102,15 @@ namespace HVACrate.Persistence.Configuration
                 .WithMany(m => m.BuildingEnvelopes)
                 .HasForeignKey(be => be.MaterialId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            // Configuring discriminator columns
+            entity
+                .HasDiscriminator<string>("BuildingEnvelopeType")
+                .HasValue<Floor>("Floor")
+                .HasValue<InternalFence>("InternalFence")
+                .HasValue<OuterWall>("OuterWall")
+                .HasValue<Opening>("WindowsAndDoors")
+                .HasValue<Roof>("Roof");
         }
     }
 }

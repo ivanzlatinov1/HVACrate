@@ -10,9 +10,6 @@ namespace HVACrate.Persistence.Configuration.BuildingEnvelopes
     {
         public void Configure(EntityTypeBuilder<Floor> entity)
         {
-            entity
-                .ToTable("Floors");
-
             // Define constraints for the ThermalConductivityResistance column
             entity
                 .Property(f => f.ThermalConductivityResistance)
