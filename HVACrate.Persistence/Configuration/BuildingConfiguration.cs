@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-using static HVACrate.GCommon.GlobalConstants;
 using static HVACrate.Domain.ValidationConstants.Building;
+using static HVACrate.GCommon.GlobalConstants;
 
 namespace HVACrate.Persistence.Configuration
 {
@@ -43,6 +43,18 @@ namespace HVACrate.Persistence.Configuration
                 .IsRequired()
                 .HasPrecision(TotalPrecision, TotalScale)
                 .HasComment("Total height of the building");
+
+            // Define constraints for the Floors column
+            entity
+                .Property(b => b.Floors)
+                .IsRequired()
+                .HasComment("The number of floors in the building");
+
+            // Define constraints for the Orientation column
+            entity
+                .Property(b => b.Orientation)
+                .IsRequired()
+                .HasComment("Is the building landscape or portrait");
 
             // Define constraints for WindSpeed column
             entity

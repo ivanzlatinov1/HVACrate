@@ -66,6 +66,14 @@
             public const int NumberMinLength = 1;
         }
 
+        public static class BuildingEnvelope
+        {
+            /// <summary>
+            /// The default value of the adjusted temperature
+            /// </summary>
+            public const double AdjustedTemperatureDefaultValue = 1.0;
+        }
+
         public static class Material
         {
             /// <summary>

@@ -25,14 +25,33 @@ namespace HVACrate.Persistence.Configuration
                 .Property(be => be.Type)
                 .IsRequired()
                 .HasConversion<string>()
-                .HasComment("Type of the building envelope, e.g., Wall, Roof, Floor");
+                .HasComment("Type of the building envelope, e.g., OuterWall, Roof, Floor");
 
-            // Define constraints for the Direction column
+            // Define constraints for the Height column
             entity
-                .Property(be => be.Direction)
+                .Property(be => be.Height)
                 .IsRequired()
-                .HasConversion<string>()
-                .HasComment("The direction of the building envelope, e.g., North, East");
+                .HasPrecision(TotalPrecision, TotalScale)
+                .HasComment("The height of the building envelope");
+
+            // Define constraints for the Width column
+            entity
+                .Property(be => be.Width)
+                .IsRequired()
+                .HasPrecision(TotalPrecision, TotalScale)
+                .HasComment("The width of the building envelope");
+
+            // Define constraints for the Count column
+            entity.Property(be => be.Count)
+                .IsRequired()
+                .HasComment("The count of the building envelopes");
+
+            // Define constraints for the Density column
+            entity
+                .Property(be => be.Density)
+                .IsRequired()
+                .HasPrecision(TotalPrecision, TotalScale)
+                .HasComment("The density of the building envelope");
 
             // Define constraints for the ZOrientationCoefficient column
             entity

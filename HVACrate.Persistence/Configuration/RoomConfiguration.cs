@@ -37,6 +37,12 @@ namespace HVACrate.Persistence.Configuration
                 .HasMaxLength(NumberMaxLength)
                 .HasComment("Number of the room, e.g., A101, B102");
 
+            // Define constraints for the Floor column
+            entity
+                .Property(r => r.Floor)
+                .IsRequired()
+                .HasComment("The room's floor");
+
             // Define constraints for the Temperature column
             entity
                 .Property(r => r.Temperature)

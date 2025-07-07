@@ -1,0 +1,47 @@
+﻿using HVACrate.Domain.Entities.BuildingEnvelopes;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
+using static HVACrate.Domain.ValidationConstants.BuildingEnvelope;
+using static HVACrate.GCommon.GlobalConstants;
+
+namespace HVACrate.Persistence.Configuration.BuildingEnvelopes
+{
+    public class OpeningConfiguration : BuildingEnvelopeConfiguration, IEntityTypeConfiguration<Opening>
+    {
+        public void Configure(EntityTypeBuilder<Opening> entity)
+        {
+            entity
+                .ToTable("Openings");
+
+            // Define constraints for the Direction column
+            entity
+                .Property(o => o.Direction)
+                .IsRequired()
+                .HasConversion<string>()
+                .HasComment("The direction of the building envelope, e.g., North, East");
+
+            // Define constraints for the AdjustedTemperature column
+            entity
+                .Property(o => o.AdjustedTemperature)
+                .IsRequired()
+                .HasPrecision(TotalPrecision, TotalScale)
+                .HasDefaultValue(AdjustedTemperatureDefaultValue)
+                .HasComment("Effective exterior temperature used in thermal transmission calculations (°C)");
+
+            // Define constraints for the JointLength column
+            entity
+                .Property(o => o.JointLength)
+                .IsRequired()
+                .HasPrecision(TotalPrecision, TotalScale)
+                .HasComment("Length of joints surrounding the opening, used in heat loss calculation (m)");
+
+            // Define constraints for the VentilationCoefficient column
+            entity
+                .Property(o => o.VentilationCoefficient)
+                .IsRequired()
+                .HasPrecision(TotalPrecision, TotalScale)
+                .HasComment("Air exchange coefficient for ventilation through the opening");
+        }
+    }
+}
