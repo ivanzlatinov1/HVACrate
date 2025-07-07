@@ -12,13 +12,17 @@
 
         public double WindSpeed { get; set; }
 
-        public bool IsDeleted { get; set; }
+        public int Floors { get; set; }
+
+        public string Orientation { get; set; } = null!;
+
+        public string? ImageUrl { get; set; }
 
         public Guid ProjectId { get; set; }
 
         public virtual Project Project { get; set; } = null!;
 
-        public string? ImageUrl { get; set; }
+        public bool IsDeleted { get; set; }
 
         public virtual ICollection<Room> Rooms { get; set; } = [];
     }

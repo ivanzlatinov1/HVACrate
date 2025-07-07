@@ -10,6 +10,8 @@
 
         public double Temperature { get; set; }
 
+        public int Floor { get; set; }
+
         public double HeatLossTransmission { get; set; }
 
         public double HeatLossInfiltration { get; set; }
