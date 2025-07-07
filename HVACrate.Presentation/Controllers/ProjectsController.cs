@@ -77,7 +77,7 @@ namespace HVACrate.Presentation.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Edit(Guid? id, CancellationToken cancellationToken)
+        public async Task<IActionResult> Edit(Guid? id, CancellationToken cancellationToken = default)
         {
             if (id == null) return NotFound();
 
@@ -95,7 +95,7 @@ namespace HVACrate.Presentation.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, ProjectFormModel form, CancellationToken cancellationToken)
+        public async Task<IActionResult> Edit(Guid id, ProjectFormModel form, CancellationToken cancellationToken = default)
         {
             if (ModelState.IsValid)
             {
@@ -117,7 +117,7 @@ namespace HVACrate.Presentation.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Delete(Guid? id, CancellationToken cancellationToken)
+        public async Task<IActionResult> Delete(Guid? id, CancellationToken cancellationToken = default)
         {
             if (id == null)
             {
@@ -138,7 +138,7 @@ namespace HVACrate.Presentation.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(ProjectViewModel project, CancellationToken cancellationToken)
+        public async Task<IActionResult> Delete(ProjectViewModel project, CancellationToken cancellationToken = default)
         {
             try
             {
@@ -153,16 +153,6 @@ namespace HVACrate.Presentation.Controllers
                 // Implement 404 page
                 return this.RedirectToAction(nameof(Index));
             }
-        }
-
-        [HttpGet]
-        public IActionResult Buildings(Guid? projectId)
-        {
-            return this.RedirectToAction(
-                    actionName: nameof(Index),
-                    controllerName: "Buildings",
-                    routeValues: new { projectId }
-                    );
         }
     }
 }

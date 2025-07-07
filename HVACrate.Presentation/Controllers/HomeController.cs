@@ -9,11 +9,11 @@ namespace HVACrate.Presentation.Controllers
     {
         public IActionResult Index()
         {
-            if(User.IsAuthenticated() == false)
+            if (User.IsAuthenticated() == false)
             {
                 return View();
             }
-            else if(User.IsInRole("Admin"))
+            else if (User.IsInRole("Admin"))
             {
                 return RedirectToAction(nameof(Index), "Users");
             }

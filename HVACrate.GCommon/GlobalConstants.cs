@@ -39,6 +39,7 @@
         {
             public const string UserQueryParam = "UserName";
             public const string ProjectQueryParam = "Name";
+            public const string BuildingQueryParam = "Name";
         }
     }
 }

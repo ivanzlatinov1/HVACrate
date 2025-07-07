@@ -1,10 +1,16 @@
 ﻿using HVACrate.Application.Interfaces;
 using HVACrate.Application.Services;
 using HVACrate.Domain.Entities;
+using HVACrate.Domain.Repositories.BuildingEnvelopes;
+using HVACrate.Domain.Repositories.Buildings;
 using HVACrate.Domain.Repositories.Projects;
+using HVACrate.Domain.Repositories.Rooms;
 using HVACrate.Domain.Repositories.Users;
 using HVACrate.Persistence;
+using HVACrate.Persistence.Repositories.BuildingEnvelopes;
+using HVACrate.Persistence.Repositories.Buildings;
 using HVACrate.Persistence.Repositories.Projects;
+using HVACrate.Persistence.Repositories.Rooms;
 using HVACrate.Persistence.Repositories.Users;
 using HVACrate.Persistence.Seeding;
 using Microsoft.AspNetCore.Identity;
@@ -50,12 +56,16 @@ public static class ProgramExtensions
     {
         services.AddScoped<IUserRepository, HVACUserRepository>();
         services.AddScoped<IProjectRepository, ProjectRepository>();
+        services.AddScoped<IBuildingRepository, BuildingRepository>();
+        services.AddScoped<IRoomRepository, RoomRepository>();
+        services.AddScoped<IBuildingEnvelopeRepository, BuildingEnvelopeRepository>();
     }
 
     public static void AddServices(this IServiceCollection services)
     {
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IProjectService, ProjectService>();
+        services.AddScoped<IBuildingService, BuildingService>();
     }
 
     public static async Task SeedIdentityDataAsync(this IServiceProvider serviceProvider)

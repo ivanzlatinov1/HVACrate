@@ -66,6 +66,13 @@ namespace HVACrate.Presentation.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 HVACUser? user = await _userManager.FindByNameAsync(Input.Username);
+
+                if (user == null)
+                {
+                    ModelState.AddModelError(string.Empty, "A user with these credentials does not exist.");
+                    return Page();
+                }
+
                 await this._userManager.AddClaimAsync(user, new(ProfilePictureClaimType, user.ProfilePictureUrl ?? DefaultProfilePictureUrl));
 
                 var result = await _signInManager.PasswordSignInAsync(Input.Username, Input.Password, Input.RememberMe, lockoutOnFailure: false);
