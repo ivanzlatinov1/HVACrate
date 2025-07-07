@@ -10,7 +10,7 @@ namespace HVACrate.Application.Interfaces
         Task<ProjectModel> GetByIdAsReadOnlyAsync(Guid id, CancellationToken cancellationToken = default);
         Task<ProjectModel> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
         Task CreateAsync(ProjectModel model, CancellationToken cancellationToken = default);
-        Task UpdateAsync(Guid id, CancellationToken cancelToken = default);
+        Task UpdateAsync(ProjectModel model, CancellationToken cancelToken = default);
         Task<DateTimeOffset> GetLastlyModifiedDateAsync(Guid id, CancellationToken cancellationToken = default);
         Task SoftDeleteAsync(Guid id, CancellationToken cancellationToken = default);
     }

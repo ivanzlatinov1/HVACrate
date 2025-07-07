@@ -1,9 +1,7 @@
 ﻿namespace HVACrate.Domain.Entities
 {
-    public class Material : IDeletableModel
+    public class Material : BaseEntity, IDeletableModel
     {
-        public Guid Id { get; set; }
-
         public string Type { get; set; } = null!;
 
         public double ThermalConductivity { get; set; }

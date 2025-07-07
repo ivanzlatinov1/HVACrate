@@ -1,8 +1,7 @@
 ﻿namespace HVACrate.Domain.Entities
 {
-    public class Room : IDeletableModel
+    public class Room : BaseEntity, IDeletableModel
     {
-        public Guid Id { get; set; }
 
         public string Type { get; set; } = null!;
 

@@ -44,9 +44,9 @@ namespace HVACrate.Application.Services
             await this._projectRepository.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task UpdateAsync(Guid id, CancellationToken cancellationToken = default)
+        public async Task UpdateAsync(ProjectModel model, CancellationToken cancellationToken = default)
         {
-            await this._projectRepository.UpdateAsync(id, cancellationToken);
+            this._projectRepository.Update(model.ToEntity());
             await this._projectRepository.SaveChangesAsync(cancellationToken);
         }
 

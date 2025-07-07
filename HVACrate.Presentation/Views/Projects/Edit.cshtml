@@ -1,0 +1,59 @@
+﻿@model ProjectFormModel
+@{
+    ViewData["Title"] = "Edit Project";
+}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-dark text-white">
+                    <h4 class="mb-0">
+                        <i class="fas fa-edit me-2"></i>Edit Project
+                    </h4>
+                </div>
+                <div class="card-body bg-light">
+                    <form asp-action="Edit" method="post">
+                        <input asp-for="Id" type="hidden" />
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="mb-3">
+                                    <label asp-for="Name" class="form-label fw-bold"></label>
+                                    <input asp-for="Name" class="form-control" placeholder="Enter project name" />
+                                    <span asp-validation-for="Name" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="mb-3">
+                                    <label asp-for="RegionTemperature" class="form-label fw-bold"></label>
+                                    <div class="input-group">
+                                        <input asp-for="RegionTemperature" type="number" step="0.1" class="form-control" placeholder="Enter temperature" />
+                                        <span class="input-group-text bg-dark text-white">°C</span>
+                                    </div>
+                                    <span asp-validation-for="RegionTemperature" class="text-danger"></span>
+                                    <div class="form-text">Enter the average temperature for the project region</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-4">
+                            <div class="col-md-12">
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                    <a asp-action="Index" class="btn btn-outline-dark me-md-2">
+                                        <i class="fas fa-arrow-left me-1"></i>Cancel
+                                    </a>
+                                    <button type="submit" class="btn btn-dark">
+                                        <i class="fas fa-save me-1"></i>Update Project
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <partial name="Partials/_ValidationScriptsPartial" />
+}

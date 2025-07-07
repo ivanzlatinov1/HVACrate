@@ -4,6 +4,8 @@ namespace HVACrate.Presentation.Models.FormModels
 {
     public class ProjectFormModel
     {
+        public Guid Id { get; set; }
+
         [DisplayName("Project Name")]
         public string Name { get; set; } = string.Empty;
 

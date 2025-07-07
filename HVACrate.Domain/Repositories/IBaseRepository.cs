@@ -9,7 +9,7 @@ namespace HVACrate.Domain.Repositories
         Task<TEntity> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
         Task<TEntity> GetByIdAsReadOnlyAsync(Guid id, CancellationToken cancellationToken = default);
         Task CreateAsync(TEntity entity, CancellationToken cancellationToken = default);
-        Task UpdateAsync(Guid id, CancellationToken cancellationToken);
+        void Update(TEntity entity);
         void SoftDelete(IDeletableModel entity);
         Task SaveChangesAsync(CancellationToken cancellationToken = default);
     }

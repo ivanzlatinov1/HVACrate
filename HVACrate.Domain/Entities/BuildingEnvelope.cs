@@ -1,9 +1,7 @@
 ﻿namespace HVACrate.Domain.Entities
 {
-    public abstract class BuildingEnvelope : IDeletableModel
+    public abstract class BuildingEnvelope : BaseEntity, IDeletableModel
     {
-        public Guid Id { get; set; }
-
         public virtual BuildingEnvelopeType Type { get; protected set; }
 
         public double Height { get; set; }

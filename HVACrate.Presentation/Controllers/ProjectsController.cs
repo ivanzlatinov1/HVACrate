@@ -67,7 +67,7 @@ namespace HVACrate.Presentation.Controllers
 
                 await _projectService.CreateAsync(model, cancellationToken);
 
-                return RedirectToAction(nameof(Index));
+                return this.RedirectToAction(nameof(Index));
             }
             catch (Exception ex)
             {
@@ -85,6 +85,7 @@ namespace HVACrate.Presentation.Controllers
 
             ProjectFormModel form = new()
             {
+                Id = project.Id,
                 Name = project.Name,
                 RegionTemperature = project.RegionTemperature,
             };
@@ -100,13 +101,17 @@ namespace HVACrate.Presentation.Controllers
             {
                 try
                 {
-                    await this._projectService.UpdateAsync(id, cancellationToken);
+                    ProjectModel model = await this._projectService.GetByIdAsync(id, cancellationToken);
+                    model.Name = form.Name;
+                    model.RegionTemperature = form.RegionTemperature;
+
+                    await this._projectService.UpdateAsync(model, cancellationToken);
                 }
                 catch (Exception)
                 {
                     // Implement 404 page
                 }
-                return RedirectToAction(nameof(Index));
+                return this.RedirectToAction(nameof(Index));
             }
             return View(form);
         }
@@ -141,13 +146,23 @@ namespace HVACrate.Presentation.Controllers
                 {
                     await this._projectService.SoftDeleteAsync(project.Id, cancellationToken);
                 }
-                return RedirectToAction(nameof(Index));
+                return this.RedirectToAction(nameof(Index));
             }
             catch (Exception)
             {
                 // Implement 404 page
-                return RedirectToAction(nameof(Index));
+                return this.RedirectToAction(nameof(Index));
             }
+        }
+
+        [HttpGet]
+        public IActionResult Buildings(Guid? projectId)
+        {
+            return this.RedirectToAction(
+                    actionName: nameof(Index),
+                    controllerName: "Buildings",
+                    routeValues: new { projectId }
+                    );
         }
     }
 }

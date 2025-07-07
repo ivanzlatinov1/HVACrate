@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HVACrate.Persistence.Repositories
 {
-    public abstract class BaseRepository<TEntity>(HVACrateDbContext context) : IBaseRepository<TEntity> where TEntity : class
+    public abstract class BaseRepository<TEntity>(HVACrateDbContext context) : IBaseRepository<TEntity> where TEntity : BaseEntity
     {
         private readonly HVACrateDbContext _context = context;
 
@@ -58,10 +58,17 @@ namespace HVACrate.Persistence.Repositories
             await this._context.Set<TEntity>().AddAsync(entity, cancellationToken);
         }
 
-        public async Task UpdateAsync(Guid id, CancellationToken cancellationToken)
+        public void Update(TEntity entity)
         {
-            TEntity entity = await this.GetByIdAsync(id, cancellationToken);
-            this._context.Set<TEntity>().Update(entity);
+            var tracked = this._context.Set<TEntity>().Local.FirstOrDefault(e => e.Id == entity.Id);
+            if (tracked != null)
+            {
+                this._context.Entry(tracked).CurrentValues.SetValues(entity);
+            }
+            else
+            {
+                this._context.Set<TEntity>().Update(entity);
+            }
         }
 
         public virtual async Task SaveChangesAsync(CancellationToken cancellationToken = default)

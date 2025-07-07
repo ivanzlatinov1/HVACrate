@@ -5,12 +5,12 @@ namespace HVACrate.Persistence.Repositories.BuildingEnvelopes
     public class BuildingEnvelopeRepository(HVACrateDbContext context)
         : BaseRepository<BuildingEnvelope>(context), IBuildingEnvelopeRepository
     {
-        public double CalculateHeatInfiltration(BuildingEnvelope buildingEnvelope, CancellationToken cancellation)
+        public double CalculateHeatInfiltration(BuildingEnvelope buildingEnvelope)
         {
             throw new NotImplementedException();
         }
 
-        public double CalculateHeatTransmission(BuildingEnvelope buildingEnvelope, CancellationToken cancellation)
+        public double CalculateHeatTransmission(BuildingEnvelope buildingEnvelope)
         {
             double area = buildingEnvelope.Width * buildingEnvelope.Height;
             double thermalResistance = 1 / buildingEnvelope.HeatTransferCoefficient;
