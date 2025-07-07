@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
+using static HVACrate.Domain.ValidationConstants.BuildingEnvelope;
 using static HVACrate.GCommon.GlobalConstants;
 
 namespace HVACrate.Persistence.Configuration
@@ -46,12 +47,27 @@ namespace HVACrate.Persistence.Configuration
                 .IsRequired()
                 .HasComment("The count of the building envelopes");
 
+            // Define constraints for the AdjustedTemperature column
+            entity
+                .Property(o => o.AdjustedTemperature)
+                .IsRequired()
+                .HasPrecision(TotalPrecision, TotalScale)
+                .HasDefaultValue(AdjustedTemperatureDefaultValue)
+                .HasComment("Effective exterior temperature used in thermal transmission calculations (°C)");
+
             // Define constraints for the Density column
             entity
                 .Property(be => be.Density)
                 .IsRequired()
                 .HasPrecision(TotalPrecision, TotalScale)
                 .HasComment("The density of the building envelope");
+
+            // Define constraints for the HeatTransferCoefficient column
+            entity
+                .Property(be => be.HeatTransferCoefficient)
+                .IsRequired()
+                .HasPrecision(TotalPrecision, TotalScale)
+                .HasComment("Overall heat transfer coefficient (U-value) in W/m²·K");
 
             // Define constraints for the ZOrientationCoefficient column
             entity

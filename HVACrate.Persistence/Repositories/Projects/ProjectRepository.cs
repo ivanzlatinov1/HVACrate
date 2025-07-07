@@ -5,7 +5,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HVACrate.Persistence.Repositories.Projects
 {
-    public class ProjectRepository(HVACrateDbContext context) : BaseRepository<Project>(context), IProjectRepository
+    public class ProjectRepository(HVACrateDbContext context) 
+        : BaseRepository<Project>(context), IProjectRepository
     {
         public override async Task<Result<Project>> GetAllAsReadOnlyAsync(BaseQuery query, Guid? creatorId = null, CancellationToken cancellationToken = default)
         {

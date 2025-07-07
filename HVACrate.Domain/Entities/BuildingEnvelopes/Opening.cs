@@ -6,8 +6,6 @@
 
         public Direction Direction { get; set; }
 
-        public double AdjustedTemperature { get; set; }
-
         public double JointLength { get; set; }
 
         public double VentilationCoefficient { get; set; }

@@ -1,8 +1,6 @@
 ﻿using HVACrate.Domain.Entities.BuildingEnvelopes;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
-using static HVACrate.Domain.ValidationConstants.BuildingEnvelope;
 using static HVACrate.GCommon.GlobalConstants;
 
 namespace HVACrate.Persistence.Configuration.BuildingEnvelopes
@@ -20,14 +18,6 @@ namespace HVACrate.Persistence.Configuration.BuildingEnvelopes
                 .IsRequired()
                 .HasConversion<string>()
                 .HasComment("The direction of the building envelope, e.g., North, East");
-
-            // Define constraints for the AdjustedTemperature column
-            entity
-                .Property(o => o.AdjustedTemperature)
-                .IsRequired()
-                .HasPrecision(TotalPrecision, TotalScale)
-                .HasDefaultValue(AdjustedTemperatureDefaultValue)
-                .HasComment("Effective exterior temperature used in thermal transmission calculations (°C)");
 
             // Define constraints for the JointLength column
             entity

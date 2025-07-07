@@ -12,10 +12,6 @@
 
         public int Floor { get; set; }
 
-        public double HeatLossTransmission { get; set; }
-
-        public double HeatLossInfiltration { get; set; }
-
         public bool IsDeleted { get; set; }
 
         public Guid BuildingId { get; set; }

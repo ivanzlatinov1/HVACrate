@@ -3,6 +3,7 @@ using System;
 using HVACrate.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace HVACrate.Persistence.Migrations
 {
     [DbContext(typeof(HVACrateDbContext))]
-    partial class HVACrateDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250707130016_AddedHeatTransferCoefficientColumn")]
+    partial class AddedHeatTransferCoefficientColumn
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -93,13 +96,6 @@ namespace HVACrate.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
                         .HasComment("Building envelope's unique identifier");
-
-                    b.Property<double>("AdjustedTemperature")
-                        .ValueGeneratedOnAdd()
-                        .HasPrecision(18, 2)
-                        .HasColumnType("double precision")
-                        .HasDefaultValue(0.0)
-                        .HasComment("Effective exterior temperature used in thermal transmission calculations (°C)");
 
                     b.Property<int>("Count")
                         .HasColumnType("integer")
@@ -338,7 +334,7 @@ namespace HVACrate.Persistence.Migrations
                     b.Property<DateTimeOffset>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
-                        .HasDefaultValue(new DateTimeOffset(new DateTime(2025, 7, 7, 13, 14, 2, 65, DateTimeKind.Unspecified).AddTicks(7382), new TimeSpan(0, 0, 0, 0, 0)))
+                        .HasDefaultValue(new DateTimeOffset(new DateTime(2025, 7, 7, 13, 0, 16, 309, DateTimeKind.Unspecified).AddTicks(4209), new TimeSpan(0, 0, 0, 0, 0)))
                         .HasComment("The date when the project was created");
 
                     b.Property<Guid>("HVACUserId")
@@ -352,7 +348,7 @@ namespace HVACrate.Persistence.Migrations
                     b.Property<DateTimeOffset>("LastModified")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
-                        .HasDefaultValue(new DateTimeOffset(new DateTime(2025, 7, 7, 13, 14, 2, 65, DateTimeKind.Unspecified).AddTicks(7566), new TimeSpan(0, 0, 0, 0, 0)))
+                        .HasDefaultValue(new DateTimeOffset(new DateTime(2025, 7, 7, 13, 0, 16, 309, DateTimeKind.Unspecified).AddTicks(4437), new TimeSpan(0, 0, 0, 0, 0)))
                         .HasComment("The date when the project was modified for the last time");
 
                     b.Property<string>("Name")
@@ -582,6 +578,13 @@ namespace HVACrate.Persistence.Migrations
                 {
                     b.HasBaseType("HVACrate.Domain.Entities.BuildingEnvelope");
 
+                    b.Property<double>("AdjustedTemperature")
+                        .ValueGeneratedOnAdd()
+                        .HasPrecision(18, 2)
+                        .HasColumnType("double precision")
+                        .HasDefaultValue(1.0)
+                        .HasComment("Effective exterior temperature used in thermal transmission calculations (°C)");
+
                     b.Property<string>("Direction")
                         .IsRequired()
                         .HasColumnType("text")
@@ -604,6 +607,13 @@ namespace HVACrate.Persistence.Migrations
                 {
                     b.HasBaseType("HVACrate.Domain.Entities.BuildingEnvelope");
 
+                    b.Property<double>("AdjustedTemperature")
+                        .ValueGeneratedOnAdd()
+                        .HasPrecision(18, 2)
+                        .HasColumnType("double precision")
+                        .HasDefaultValue(1.0)
+                        .HasComment("Effective exterior temperature used in thermal transmission calculations (°C)");
+
                     b.Property<string>("Direction")
                         .IsRequired()
                         .HasColumnType("text")
@@ -621,6 +631,13 @@ namespace HVACrate.Persistence.Migrations
             modelBuilder.Entity("HVACrate.Domain.Entities.BuildingEnvelopes.Roof", b =>
                 {
                     b.HasBaseType("HVACrate.Domain.Entities.BuildingEnvelope");
+
+                    b.Property<double>("AdjustedTemperature")
+                        .ValueGeneratedOnAdd()
+                        .HasPrecision(18, 2)
+                        .HasColumnType("double precision")
+                        .HasDefaultValue(1.0)
+                        .HasComment("Effective exterior temperature used in thermal transmission calculations (°C)");
 
                     b.ToTable("Roofs", (string)null);
                 });

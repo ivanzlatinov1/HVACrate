@@ -71,7 +71,7 @@
             /// <summary>
             /// The default value of the adjusted temperature
             /// </summary>
-            public const double AdjustedTemperatureDefaultValue = 1.0;
+            public const double AdjustedTemperatureDefaultValue = 0.0;
         }
 
         public static class Material

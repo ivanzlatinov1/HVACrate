@@ -50,20 +50,6 @@ namespace HVACrate.Persistence.Configuration
                 .HasPrecision(TotalPrecision, TotalScale)
                 .HasComment("Internal room temperature");
 
-            // Define constraints for the HeatLossTransmission column
-            entity
-                .Property(r => r.HeatLossTransmission)
-                .IsRequired()
-                .HasPrecision(TotalPrecision, TotalScale)
-                .HasComment("Calculated heat loss from transmission");
-
-            // Define constraints for the HeatLossInfiltration column
-            entity
-                .Property(r => r.HeatLossInfiltration)
-                .IsRequired()
-                .HasPrecision(TotalPrecision, TotalScale)
-                .HasComment("Calculated heat loss from infiltration");
-
             // Define default value for IsDeleted property for soft deletion
             entity
                 .Property(r => r.IsDeleted)

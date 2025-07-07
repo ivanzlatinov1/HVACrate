@@ -14,6 +14,10 @@
 
         public int Count { get; set; }
 
+        public double AdjustedTemperature { get; set; }
+
+        public double HeatTransferCoefficient { get; set; }
+
         public double ZOrientationCoefficient { get; set; }
 
         public bool IsDeleted { get; set; }
