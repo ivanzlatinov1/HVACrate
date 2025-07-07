@@ -42,22 +42,25 @@ namespace HVACrate.Persistence.Repositories
             return new Result<TEntity>(count, entities);
         }
 
-        public async Task<TEntity?> GetByIdAsReadOnlyAsync(Guid id, CancellationToken cancellationToken = default)
+        public async Task<TEntity> GetByIdAsReadOnlyAsync(Guid id, CancellationToken cancellationToken = default)
             => await _context.Set<TEntity>()
                     .AsNoTracking()
-                    .SingleOrDefaultAsync(e => EF.Property<Guid>(e, "Id") == id, cancellationToken);
+                    .SingleAsync(e => EF.Property<Guid>(e, "Id") == id, cancellationToken)
+                    ?? throw new KeyNotFoundException($"Entity with id {id} cannot be found");
 
-        public async Task<TEntity?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+        public async Task<TEntity> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
             => await _context.Set<TEntity>()
-                .SingleOrDefaultAsync(e => EF.Property<Guid>(e, "Id") == id, cancellationToken);
+                .SingleAsync(e => EF.Property<Guid>(e, "Id") == id, cancellationToken)
+                ?? throw new KeyNotFoundException($"Entity with id {id} cannot be found");
 
         public async Task CreateAsync(TEntity entity, CancellationToken cancellationToken = default)
         {
             await this._context.Set<TEntity>().AddAsync(entity, cancellationToken);
         }
 
-        public void Update(TEntity entity)
+        public async Task UpdateAsync(Guid id, CancellationToken cancellationToken)
         {
+            TEntity entity = await this.GetByIdAsync(id, cancellationToken);
             this._context.Set<TEntity>().Update(entity);
         }
 

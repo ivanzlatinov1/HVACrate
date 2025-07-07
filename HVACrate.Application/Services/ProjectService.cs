@@ -12,7 +12,6 @@ namespace HVACrate.Application.Services
     {
         private readonly IProjectRepository _projectRepository = projectRepository;
 
-
         public async Task<Result<ProjectModel>> GetAllAsReadOnlyAsync(BaseQueryModel query, Guid? creatorId, CancellationToken cancellationToken = default)
         {
             Result<Project> projects = await this._projectRepository.GetAllAsReadOnlyAsync(query.ToQuery(), creatorId, cancellationToken);
@@ -45,9 +44,9 @@ namespace HVACrate.Application.Services
             await this._projectRepository.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task UpdateAsync(ProjectModel model, CancellationToken cancellationToken = default)
+        public async Task UpdateAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            this._projectRepository.Update(model.ToEntity());
+            await this._projectRepository.UpdateAsync(id, cancellationToken);
             await this._projectRepository.SaveChangesAsync(cancellationToken);
         }
 

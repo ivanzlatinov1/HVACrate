@@ -45,7 +45,8 @@ namespace HVACrate.Presentation.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(CreateProjectForm form, CancellationToken cancellationToken = default)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(ProjectFormModel form, CancellationToken cancellationToken = default)
         {
             try
             {
@@ -72,6 +73,80 @@ namespace HVACrate.Presentation.Controllers
             {
                 ModelState.AddModelError(string.Empty, ex.Message);
                 return View(form);
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(Guid? id, CancellationToken cancellationToken)
+        {
+            if (id == null) return NotFound();
+
+            ProjectModel project = await this._projectService.GetByIdAsync(id.Value, cancellationToken);
+
+            ProjectFormModel form = new()
+            {
+                Name = project.Name,
+                RegionTemperature = project.RegionTemperature,
+            };
+
+            return View(form);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(Guid id, ProjectFormModel form, CancellationToken cancellationToken)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    await this._projectService.UpdateAsync(id, cancellationToken);
+                }
+                catch (Exception)
+                {
+                    // Implement 404 page
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            return View(form);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Delete(Guid? id, CancellationToken cancellationToken)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            ProjectModel? project = await this._projectService.GetByIdAsync(id.Value, cancellationToken);
+
+            ProjectViewModel projectViewModel = new()
+            {
+                Id = project.Id,
+                Name = project.Name,
+                LastModified = project.LastModified
+            };
+
+            return View(projectViewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(ProjectViewModel project, CancellationToken cancellationToken)
+        {
+            try
+            {
+                if (project != null)
+                {
+                    await this._projectService.SoftDeleteAsync(project.Id, cancellationToken);
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception)
+            {
+                // Implement 404 page
+                return RedirectToAction(nameof(Index));
             }
         }
     }

@@ -2,7 +2,7 @@
 
 namespace HVACrate.Presentation.Models.FormModels
 {
-    public class CreateProjectForm
+    public class ProjectFormModel
     {
         [DisplayName("Project Name")]
         public string Name { get; set; } = string.Empty;
