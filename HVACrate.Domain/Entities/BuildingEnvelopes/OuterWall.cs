@@ -8,6 +8,5 @@ namespace HVACrate.Domain.Entities.BuildingEnvelopes
         public Direction Direction { get; set; }
 
         public bool ShouldReduceHeatingArea { get; set; }
-
     }
 }

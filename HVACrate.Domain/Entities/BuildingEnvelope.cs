@@ -16,8 +16,6 @@
 
         public double HeatTransferCoefficient { get; set; }
 
-        public double ZOrientationCoefficient { get; set; }
-
         public bool IsDeleted { get; set; }
 
         public Guid RoomId { get; set; }

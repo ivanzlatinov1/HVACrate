@@ -69,13 +69,6 @@ namespace HVACrate.Persistence.Configuration
                 .HasPrecision(TotalPrecision, TotalScale)
                 .HasComment("Overall heat transfer coefficient (U-value) in W/m²·K");
 
-            // Define constraints for the ZOrientationCoefficient column
-            entity
-                .Property(be => be.ZOrientationCoefficient)
-                .IsRequired()
-                .HasPrecision(TotalPrecision, TotalScale)
-                .HasComment("Orientation coefficient (Zo)");
-
             // Define default value for IsDeleted property for soft deletion
             entity
                 .Property(be => be.IsDeleted)
