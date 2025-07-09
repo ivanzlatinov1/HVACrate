@@ -1,8 +1,9 @@
 ﻿@using HVACrate.Domain.ValueObjects
-@using HVACrate.Presentation.Models.ViewModels.Projects
-@model (ProjectViewModel[] Projects, int Count, Pagination Pagination)
+@using HVACrate.Presentation.Models.ViewModels.Buildings
+@model (Guid ProjectId, BuildingViewModel[] Buildings, int Count, Pagination Pagination)
 @{
-    ViewData["Title"] = "Your Projects";
+    ViewData["Title"] = "Buildings";
+    TempData["ProjectId"] = Model.ProjectId;
 }
 
 <div class="container mt-5">
@@ -10,24 +11,23 @@
         <div class="col-12">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h1 class="text-dark">@ViewData["Title"]</h1>
-                <a asp-action="Create" class="btn btn-dark">
-                    <i class="fas fa-plus me-2"></i>New Project
+                <a asp-action="Create" asp-route-projectId="@Model.ProjectId" class="btn btn-dark">
+                    <i class="fas fa-plus me-2"></i>New Building
                 </a>
             </div>
 
             <partial name="Partials/_SearchPartial" />
 
-            @if (Model.Projects.Any())
+            @if (Model.Buildings.Any())
             {
                 <div class="row">
-                    @foreach (var project in Model.Projects)
+                    @foreach (var building in Model.Buildings)
                     {
-                        TempData["ProjectId"] = project.Id;
                         <div class="col-lg-4 col-md-6 mb-4">
                             <div class="card shadow-sm h-100 border-0">
                                 <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
                                     <h5 class="card-title mb-0">
-                                        <i class="fas fa-project-diagram me-2"></i>@project.Name
+                                        <i class="fas fa-building me-2"></i>@building.Name
                                     </h5>
                                     <div class="dropdown">
                                         <button class="btn btn-sm btn-outline-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -35,13 +35,13 @@
                                         </button>
                                         <ul class="dropdown-menu">
                                             <li>
-                                                <a class="dropdown-item" asp-controller="Projects" asp-action="Edit" asp-route-id="@project.Id">
+                                                <a class="dropdown-item" asp-controller="Buildings" asp-action="Edit" asp-route-id="@building.Id">
                                                     <i class="fas fa-edit me-2"></i>Edit
                                                 </a>
                                             </li>
                                             <li><hr class="dropdown-divider"></li>
                                             <li>
-                                                <a class="dropdown-item text-danger" asp-controller="Projects" asp-action="Delete" asp-route-id="@project.Id">
+                                                <a class="dropdown-item text-danger" asp-controller="Buildings" asp-action="Delete" asp-route-id="@building.Id">
                                                     <i class="fas fa-trash me-2"></i>Delete
                                                 </a>
                                             </li>
@@ -49,15 +49,22 @@
                                     </div>
                                 </div>
                                 <div class="card-body bg-light d-flex flex-column">
+                                    <div class="mb-3 position-relative" style="background-color: #ccc;">
+                                        <img src="@building.ImageUrl" alt="@building.Name" class="img-fluid rounded" style="height: 150px; width: 100%; object-fit: contain;">
+                                        <img src="~/images/buildings/default_building.png" alt="@building.Name small" class="rounded-circle position-absolute" style="bottom: -15px; right: 15px; width: 50px; height: 50px; object-fit: cover; border: 2px solid white;">
+                                    </div>
                                     <div class="mb-3">
                                         <small class="text-muted">
-                                            <i class="fas fa-clock me-1"></i>Last Modified
+                                            <i class="fas fa-map-marker-alt me-1"></i>Location
                                         </small>
-                                        <p class="text-dark mb-0">@project.LastModified.ToString(DateFormat)</p>
+                                        <p class="text-dark mb-0">@building.Location</p>
                                     </div>
-                                    <div class="mt-auto">
-                                        <a asp-controller="Buildings" asp-action="Index" class="btn btn-outline-dark btn-sm">
-                                            <i class="fas fa-arrow-right me-1"></i>Open Project
+                                    <div class="mt-auto d-flex justify-content-between">
+                                        <a asp-controller="Rooms" asp-action="Index" asp-route-id="@building.Id" class="btn btn-outline-dark btn-sm">
+                                            <i class="fas fa-arrow-right me-1"></i>Open Building
+                                        </a>
+                                        <a asp-action="Details" asp-route-id="@building.Id" class="btn btn-outline-dark btn-sm">
+                                            <i class="fas fa-arrow-right me-1"></i>Details
                                         </a>
                                     </div>
                                 </div>
@@ -70,12 +77,12 @@
             {
                 <div class="text-center py-5">
                     <div class="mb-4">
-                        <i class="fas fa-folder-open fa-4x text-muted"></i>
+                        <i class="fas fa-building fa-4x text-muted"></i>
                     </div>
-                    <h3 class="text-muted mb-3">No Projects Found</h3>
-                    <p class="text-muted mb-4">You haven't created any projects yet. Get started by creating your first project!</p>
-                    <a asp-action="Create" class="btn btn-dark">
-                        <i class="fas fa-plus me-2"></i>Create Your First Project
+                    <h3 class="text-muted mb-3">No Buildings Found</h3>
+                    <p class="text-muted mb-4">You haven't created any buildings yet. Get started by creating your first building!</p>
+                    <a asp-action="Create" asp-route-projectId="@Model.ProjectId" class="btn btn-dark">
+                        <i class="fas fa-plus me-2"></i>Create Your First Building
                     </a>
                 </div>
             }
@@ -83,7 +90,7 @@
             <div class="d-flex justify-content-between align-items-center mt-4">
                 <div>
                     <h5 class="text-muted mb-0">
-                        Total Projects: <span class="badge bg-dark">@Model.Count</span>
+                        Total Buildings: <span class="badge bg-dark">@Model.Count</span>
                     </h5>
                 </div>
                 <partial name="Partials/_PaginationPartial"

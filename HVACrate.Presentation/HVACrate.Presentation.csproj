@@ -24,4 +24,8 @@
     <ProjectReference Include="..\HVACrate.Presentation.Models\HVACrate.Presentation.Models.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\images\buildings\" />
+  </ItemGroup>
+
 </Project>
