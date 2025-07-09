@@ -18,6 +18,11 @@
         public const string DefaultProfilePictureUrl = "/images/profile-pictures/default.jpg";
 
         /// <summary>
+        /// The default image url for buildings without uploaded picture.
+        /// </summary>
+        public const string DefaultBuildingImageUrl = "/images/buildings/default_building.jpg";
+
+        /// <summary>
         /// The claim key for profile picture.
         /// </summary>
         public const string ProfilePictureClaimType = "HVACProfilePicture";

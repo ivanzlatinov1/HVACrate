@@ -1,20 +1,22 @@
 ﻿using HVACrate.Application.Interfaces;
 using HVACrate.Application.Models.Buildings;
 using HVACrate.Domain.ValueObjects;
+using HVACrate.Presentation.Extensions;
 using HVACrate.Presentation.Models.FormModels;
 using HVACrate.Presentation.Models.ViewModels.Buildings;
-using HVACrate.Presentation.Models.ViewModels.Projects;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-using static HVACrate.GCommon.GlobalConstants.QueryProperties;
+using static HVACrate.GCommon.GlobalConstants;
 
 namespace HVACrate.Presentation.Controllers
 {
     [Authorize(Roles = "User")]
-    public class BuildingsController(IBuildingService buildingService) : Controller
+    public class BuildingsController(IBuildingService buildingService,
+        IWebHostEnvironment webHostEnvironment) : Controller
     {
         private readonly IBuildingService _buildingService = buildingService;
+        private readonly IWebHostEnvironment _webHostEnvironment = webHostEnvironment;
 
         [HttpGet]
         public async Task<IActionResult> Index(BaseQueryFormModel query, CancellationToken cancellationToken = default)
@@ -27,7 +29,7 @@ namespace HVACrate.Presentation.Controllers
             Result<BuildingModel> buildingModels = await this._buildingService.GetAllAsReadOnlyAsync(new()
             {
                 SearchParam = query.SearchParam,
-                QueryParam = BuildingQueryParam,
+                QueryParam = QueryProperties.BuildingQueryParam,
                 Pagination = pagination
             }, projectId, cancellationToken);
 
@@ -36,7 +38,7 @@ namespace HVACrate.Presentation.Controllers
                 Id = x.Id,
                 Name = x.Name,
                 Location = x.Location,
-                ImageUrl = x.ImageUrl
+                ImageUrl = x.ImageUrl ?? DefaultBuildingImageUrl
             })];
 
             return View((projectId, buildings, buildingModels.Count, pagination));
@@ -52,7 +54,7 @@ namespace HVACrate.Presentation.Controllers
                 Id = building.Id,
                 Name = building.Name,
                 Location = building.Location,
-                ImageUrl = building.ImageUrl,
+                ImageUrl = building.ImageUrl ?? DefaultBuildingImageUrl,
                 TotalHeight = building.TotalHeight,
                 Floors = building.Floors,
                 Orientation = building.Orientation,
@@ -82,6 +84,11 @@ namespace HVACrate.Presentation.Controllers
             {
                 if (!ModelState.IsValid)
                     return View(form);
+
+                if (form.Image != null && form.Image.Length > 0)
+                {
+                    form.ImageUrl = await this._webHostEnvironment.UploadImageAsync(form.Image, form.Name);
+                }
 
                 BuildingModel model = new()
                 {
@@ -114,13 +121,13 @@ namespace HVACrate.Presentation.Controllers
 
             BuildingModel building = await this._buildingService.GetByIdAsync(id.Value, cancellationToken);
 
-            BuildingFormModel form = new()
+            EditBuildingFormModel form = new()
             {
                 Id = building.Id,
                 Name = building.Name,
                 WindSpeed = building.WindSpeed,
                 Floors = building.Floors,
-                ImageUrl = building.ImageUrl,
+                ImageUrl = building.ImageUrl ?? DefaultBuildingImageUrl,
                 Location = building.Location,
                 Orientation = building.Orientation,
                 TotalHeight = building.TotalHeight,
@@ -132,21 +139,25 @@ namespace HVACrate.Presentation.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, BuildingFormModel form, CancellationToken cancellationToken = default)
+        public async Task<IActionResult> Edit(EditBuildingFormModel form, CancellationToken cancellationToken = default)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    BuildingModel model = await this._buildingService.GetByIdAsync(id, cancellationToken);
+                    BuildingModel model = await this._buildingService.GetByIdAsync(form.Id, cancellationToken);
                     model.Name = form.Name;
                     model.WindSpeed = form.WindSpeed;
                     model.Floors = form.Floors;
-                    model.ImageUrl = form.ImageUrl;
                     model.Location = form.Location;
                     model.Orientation = form.Orientation;
                     model.TotalHeight = form.TotalHeight;
                     model.ProjectId = form.ProjectId;
+
+                    if (form.NewImage != null && form.NewImage.Length > 0)
+                    {
+                        model.ImageUrl = await this._webHostEnvironment.UploadImageAsync(form.NewImage, form.Name);
+                    }
 
                     await this._buildingService.UpdateAsync(model, cancellationToken);
                 }
@@ -173,8 +184,9 @@ namespace HVACrate.Presentation.Controllers
             {
                 Id = building.Id,
                 Name = building.Name,
-                ImageUrl = building.ImageUrl,
+                ImageUrl = building.ImageUrl ?? DefaultBuildingImageUrl,
                 Location = building.Location,
+                ProjectName = building.Project.Name,
             };
 
             return View(buildingViewModel);

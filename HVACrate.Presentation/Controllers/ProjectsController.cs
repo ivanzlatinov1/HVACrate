@@ -95,13 +95,13 @@ namespace HVACrate.Presentation.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, ProjectFormModel form, CancellationToken cancellationToken = default)
+        public async Task<IActionResult> Edit(ProjectFormModel form, CancellationToken cancellationToken = default)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    ProjectModel model = await this._projectService.GetByIdAsync(id, cancellationToken);
+                    ProjectModel model = await this._projectService.GetByIdAsync(form.Id, cancellationToken);
                     model.Name = form.Name;
                     model.RegionTemperature = form.RegionTemperature;
 

@@ -8,6 +8,8 @@
 
         public string Location { get; set; } = null!;
 
+        public string? ProjectName { get; set; }
+
         public string? ImageUrl { get; set; }
     }
 }
