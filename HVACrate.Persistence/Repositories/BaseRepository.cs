@@ -5,9 +5,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HVACrate.Persistence.Repositories
 {
-    public abstract class BaseRepository<TEntity>(HVACrateDbContext context) : IBaseRepository<TEntity> where TEntity : BaseEntity
+    public abstract class BaseRepository<TEntity>(HVACrateDbContext dbContext) : IBaseRepository<TEntity> where TEntity : BaseEntity
     {
-        private readonly HVACrateDbContext _context = context;
+        private readonly HVACrateDbContext _context = dbContext;
 
         public virtual async Task<Result<TEntity>> GetAllAsReadOnlyAsync(BaseQuery query, Guid? filterId = null, CancellationToken cancellationToken = default)
         {
@@ -26,7 +26,7 @@ namespace HVACrate.Persistence.Repositories
             return new Result<TEntity>(totalCount, entities);
         }
 
-        public async Task<Result<TEntity>> GetAllAsync(BaseQuery query, CancellationToken cancellationToken = default)
+        public virtual async Task<Result<TEntity>> GetAllAsync(BaseQuery query, CancellationToken cancellationToken = default)
         {
             IQueryable<TEntity> baseQuery = _context
                 .Set<TEntity>()
@@ -71,14 +71,65 @@ namespace HVACrate.Persistence.Repositories
             }
         }
 
-        public virtual async Task SaveChangesAsync(CancellationToken cancellationToken = default)
+        public async Task SaveChangesAsync(CancellationToken cancellationToken = default)
         {
+            this.SetLastModifiedTimestamps();
             await this._context.SaveChangesAsync(cancellationToken);
         }
 
         public void SoftDelete(IDeletableModel entity)
         {
             entity.IsDeleted = true;
+        }
+
+        // Helper method to track when an entity is updated and to update its project's LastModified property
+        private void SetLastModifiedTimestamps()
+        {
+            HashSet<Project> modifiedProjects = [];
+
+            var modifiedEntries = _context.ChangeTracker
+                .Entries<BaseEntity>()
+                .Where(e => e.State == EntityState.Modified || e.State == EntityState.Added)
+                .ToList();
+
+            foreach (var entry in modifiedEntries)
+            {
+                Project? project = GetRelatedProject(entry.Entity);
+                if (project == null) continue;
+
+                var projectEntry = _context.ChangeTracker
+                    .Entries<Project>()
+                    .FirstOrDefault(e => e.Entity == project);
+
+                if (projectEntry == null)
+                {
+                    _context.Attach(project);
+                    projectEntry = _context.Entry(project);
+                    projectEntry.State = EntityState.Modified;
+                }
+                else if (projectEntry.State == EntityState.Unchanged)
+                {
+                    projectEntry.State = EntityState.Modified;
+                }
+
+                modifiedProjects.Add(project);
+            }
+
+            foreach (var project in modifiedProjects)
+            {
+                project.LastModified = DateTimeOffset.UtcNow;
+            }
+        }
+
+        private static Project? GetRelatedProject(BaseEntity entity)
+        {
+            return entity switch
+            {
+                Building building => building.Project,
+                Room room => room.Building?.Project,
+                BuildingEnvelope envelope => envelope.Room?.Building?.Project,
+                _ => null
+            };
         }
 
     }
