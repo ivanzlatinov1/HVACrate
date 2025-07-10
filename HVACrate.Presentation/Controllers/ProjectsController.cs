@@ -7,7 +7,7 @@ using HVACrate.Presentation.Models.ViewModels.Projects;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-using static HVACrate.GCommon.GlobalConstants.QueryProperties;
+using static HVACrate.GCommon.GlobalConstants;
 
 namespace HVACrate.Presentation.Controllers
 {
@@ -24,7 +24,7 @@ namespace HVACrate.Presentation.Controllers
             Result<ProjectModel> projectModels = await this._projectService.GetAllAsReadOnlyAsync(new()
             {
                 SearchParam = query.SearchParam,
-                QueryParam = ProjectQueryParam,
+                QueryParam = QueryProperties.ProjectQueryParam,
                 Pagination = pagination
             }, this.User.GetId(), cancellationToken);
 
@@ -32,7 +32,7 @@ namespace HVACrate.Presentation.Controllers
             {
                 Id = x.Id,
                 Name = x.Name,
-                LastModified = x.LastModified
+                LastModified = x.LastModified.ToLocalTime().ToString(DescriptiveDateFormat)
             })];
 
             return View((projects, projectModels.Count, pagination));
@@ -130,7 +130,7 @@ namespace HVACrate.Presentation.Controllers
             {
                 Id = project.Id,
                 Name = project.Name,
-                LastModified = project.LastModified
+                LastModified = project.LastModified.ToLocalTime().ToString(DescriptiveDateFormat)
             };
 
             return View(projectViewModel);

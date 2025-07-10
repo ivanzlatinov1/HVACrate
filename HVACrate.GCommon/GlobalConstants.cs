@@ -8,6 +8,11 @@
         public const string DateFormat = "yyyy-MM-dd";
 
         /// <summary>
+        /// The date format that includes hours and minutes.
+        /// </summary>
+        public const string DescriptiveDateFormat = "yyyy-MM-dd HH:mm";
+
+        /// <summary>
         /// The maximum length of the building's image URL.
         /// </summary>
         public const int ImageUrlMaxLength = 2048;

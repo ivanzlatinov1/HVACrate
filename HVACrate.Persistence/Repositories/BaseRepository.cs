@@ -125,12 +125,12 @@ namespace HVACrate.Persistence.Repositories
         {
             return entity switch
             {
+                Project project => project,
                 Building building => building.Project,
                 Room room => room.Building?.Project,
                 BuildingEnvelope envelope => envelope.Room?.Building?.Project,
                 _ => null
             };
         }
-
     }
 }

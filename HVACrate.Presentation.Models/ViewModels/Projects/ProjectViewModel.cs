@@ -6,6 +6,6 @@
 
         public string Name { get; set; } = string.Empty;
 
-        public DateTimeOffset LastModified { get; set; }
+        public string LastModified { get; set; } = string.Empty;
     }
 }
