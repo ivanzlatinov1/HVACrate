@@ -14,16 +14,23 @@ namespace HVACrate.Application.Services
 
         public async Task<Result<HVACUserModel>> GetAllAsync(BaseQueryModel query, CancellationToken cancellationToken = default)
         {
-            Result<HVACUser> users = await this._userRepository.GetAllAsync(query.ToQuery(), cancellationToken);
+            Result<HVACUser> users = await this._userRepository
+                .GetAllAsync(query.ToQuery(), cancellationToken)
+                .ConfigureAwait(false);
+
             return new Result<HVACUserModel>(users.Count, [.. users.Items.Select(x => x.ToModel())]);
         }
 
         public async Task<Dictionary<Guid, string>> GetRolesAsync(Guid[] ids, CancellationToken cancellationToken = default)
-            => await this._userRepository.GetRolesByIdsAsync(ids, cancellationToken);
+            => await this._userRepository
+                .GetRolesByIdsAsync(ids, cancellationToken)
+                .ConfigureAwait(false);
 
         public async Task<HVACUserModel> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            HVACUser user = await this._userRepository.GetByIdAsync(id, cancellationToken) 
+            HVACUser user = await this._userRepository
+                .GetByIdAsync(id, cancellationToken)
+                .ConfigureAwait(false)
                 ?? throw new Exception("User not found");
 
             return user.ToModel();
@@ -31,15 +38,19 @@ namespace HVACrate.Application.Services
 
         public async Task RemoveAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            HVACUser user = await this._userRepository.GetByIdAsync(id, cancellationToken) 
+            HVACUser user = await this._userRepository
+                .GetByIdAsync(id, cancellationToken)
+                .ConfigureAwait(false)
                 ?? throw new Exception("User not found");
 
             _userRepository.Remove(user);
-            await _userRepository.SaveChangesAsync(cancellationToken);
+            await _userRepository.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
         }
 
         public async Task<string> GetRoleAsync(Guid id, CancellationToken cancellationToken = default)
-            => await this._userRepository.GetUserRoleAsync(id, cancellationToken) 
-            ?? throw new Exception("User not found");
+            => await this._userRepository
+                .GetUserRoleAsync(id, cancellationToken)
+                .ConfigureAwait(false)
+                ?? throw new Exception("User not found");
     }
 }

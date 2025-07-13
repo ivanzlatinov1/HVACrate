@@ -27,7 +27,7 @@ namespace HVACrate.Application.Services
                 .CreateAsync(model.ToEntity(false), cancellationToken)
                 .ConfigureAwait(false);
 
-            await this._buildingRepository.SaveChangesAsync(cancellationToken);
+            await this._buildingRepository.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
         }
 
         public async Task<Result<BuildingModel>> GetAllAsReadOnlyAsync(BaseQueryModel query, Guid? projectId, CancellationToken cancellationToken = default)
@@ -64,13 +64,13 @@ namespace HVACrate.Application.Services
                 ?? throw new Exception("Building not found");
 
             this._buildingRepository.SoftDelete(building);
-            await this._buildingRepository.SaveChangesAsync(cancellationToken);
+            await this._buildingRepository.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
         }
 
         public async Task UpdateAsync(BuildingModel model, CancellationToken cancellationToken = default)
         {
             this._buildingRepository.Update(model.ToEntity());
-            await this._buildingRepository.SaveChangesAsync(cancellationToken);
+            await this._buildingRepository.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
         }
     }
 }
