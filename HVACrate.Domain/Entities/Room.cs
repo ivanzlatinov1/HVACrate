@@ -5,7 +5,7 @@
 
         public string Type { get; set; } = null!;
 
-        public string? Number { get; set; }
+        public string Number { get; set; } = null!;
 
         public double Temperature { get; set; }
 

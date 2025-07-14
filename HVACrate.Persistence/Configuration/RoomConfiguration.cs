@@ -32,7 +32,7 @@ namespace HVACrate.Persistence.Configuration
             // Define constraints for the Number column
             entity
                 .Property(r => r.Number)
-                .IsRequired(false)
+                .IsRequired()
                 .IsUnicode()
                 .HasMaxLength(NumberMaxLength)
                 .HasComment("Number of the room, e.g., A101, B102");
