@@ -73,7 +73,7 @@ namespace HVACrate.Persistence.Repositories
 
         public async Task SaveChangesAsync(CancellationToken cancellationToken = default)
         {
-            this.SetLastModifiedTimestamps();
+            await this.SetLastModifiedTimestamps();
             await this._context.SaveChangesAsync(cancellationToken);
         }
 
@@ -83,7 +83,7 @@ namespace HVACrate.Persistence.Repositories
         }
 
         // Helper method to track when an entity is updated and to update its project's LastModified property
-        private void SetLastModifiedTimestamps()
+        private async Task SetLastModifiedTimestamps()
         {
             HashSet<Project> modifiedProjects = [];
 
@@ -94,7 +94,7 @@ namespace HVACrate.Persistence.Repositories
 
             foreach (var entry in modifiedEntries)
             {
-                Project? project = GetRelatedProject(entry.Entity);
+                Project? project = await GetRelatedProjectAsync(entry.Entity);
                 if (project == null) continue;
 
                 var projectEntry = _context.ChangeTracker
@@ -121,16 +121,25 @@ namespace HVACrate.Persistence.Repositories
             }
         }
 
-        private static Project? GetRelatedProject(BaseEntity entity)
+        private async Task<Project?> GetRelatedProjectAsync(BaseEntity entity) => entity switch
         {
-            return entity switch
-            {
-                Project project => project,
-                Building building => building.Project,
-                Room room => room.Building?.Project,
-                BuildingEnvelope envelope => envelope.Room?.Building?.Project,
-                _ => null
-            };
-        }
+            Project project => project,
+
+            Building building => await QueryProjectAsync(building.ProjectId),
+
+            Room room => await QueryProjectAsync(id: (await QueryBuildingAsync(room.BuildingId))?.ProjectId),
+
+            BuildingEnvelope envelope => await QueryProjectAsync(
+                id: (await QueryBuildingAsync(
+                    id: (await QueryRoomAsync(envelope.RoomId))?.BuildingId
+                    ))?.ProjectId
+                ),
+
+            _ => null
+        };
+
+        private async Task<Project?> QueryProjectAsync(Guid? id) => await this._context.Projects.FindAsync(id);
+        private async Task<Building?> QueryBuildingAsync(Guid? id) => await this._context.Buildings.FindAsync(id);
+        private async Task<Room?> QueryRoomAsync(Guid? id) => await this._context.Rooms.FindAsync(id);
     }
 }
