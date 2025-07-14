@@ -66,6 +66,7 @@ public static class ProgramExtensions
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IProjectService, ProjectService>();
         services.AddScoped<IBuildingService, BuildingService>();
+        services.AddScoped<IRoomService, RoomService>();
     }
 
     public static async Task SeedIdentityDataAsync(this IServiceProvider serviceProvider)

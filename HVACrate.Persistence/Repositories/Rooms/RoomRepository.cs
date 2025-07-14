@@ -7,16 +7,22 @@ using Microsoft.EntityFrameworkCore;
 namespace HVACrate.Persistence.Repositories.Rooms
 {
     public class RoomRepository(HVACrateDbContext context, IBuildingEnvelopeRepository
-        buildingEnvelopeRepository): BaseRepository<Room>(context), IRoomRepository
+        buildingEnvelopeRepository) : BaseRepository<Room>(context), IRoomRepository
     {
         private readonly IBuildingEnvelopeRepository _buildingEnvelopeRepository = buildingEnvelopeRepository;
 
         public override async Task<Result<Room>> GetAllAsReadOnlyAsync(BaseQuery query, Guid? filterId = null, CancellationToken cancellationToken = default)
         {
             IQueryable<Room> baseQuery = context.Rooms
-                .Where (p => p.BuildingId == filterId)
-                .WithSearch(query.SearchParam, x => EF.Property<string>(x, query.QueryParam))
+                .Where(r => r.BuildingId == filterId)
                 .AsNoTracking();
+
+            if (query.SearchParam != null)
+            {
+                baseQuery = baseQuery
+                    .Where(r => r.Floor == int.Parse(query.SearchParam))
+                    .AsNoTracking();
+            }
 
             int totalCount = await baseQuery
                 .CountAsync(cancellationToken);
@@ -33,7 +39,7 @@ namespace HVACrate.Persistence.Repositories.Rooms
             Room room = await this.GetByIdAsReadOnlyAsync(id, cancellationToken);
 
             double heatInfiltration = 0;
-            foreach(var buildingEnvelope in room.BuildingEnvelopes)
+            foreach (var buildingEnvelope in room.BuildingEnvelopes)
             {
                 heatInfiltration += this._buildingEnvelopeRepository
                     .CalculateHeatInfiltration(buildingEnvelope);
@@ -47,7 +53,7 @@ namespace HVACrate.Persistence.Repositories.Rooms
             Room room = await this.GetByIdAsReadOnlyAsync(id, cancellationToken);
 
             double heatTransmission = 0;
-            foreach(var buildingEnvelope in room.BuildingEnvelopes)
+            foreach (var buildingEnvelope in room.BuildingEnvelopes)
             {
                 heatTransmission += this._buildingEnvelopeRepository
                     .CalculateHeatTransmission(buildingEnvelope);
