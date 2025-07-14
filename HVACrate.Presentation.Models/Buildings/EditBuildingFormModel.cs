@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System.ComponentModel;
 
-namespace HVACrate.Presentation.Models.FormModels
+namespace HVACrate.Presentation.Models.Buildings
 {
     public class EditBuildingFormModel
     {

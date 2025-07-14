@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace HVACrate.Presentation.Models.FormModels
+namespace HVACrate.Presentation.Models.Rooms
 {
     public class RoomFormModel
     {

@@ -1,4 +1,4 @@
-﻿namespace HVACrate.Presentation.Models.FormModels
+﻿namespace HVACrate.Presentation.Models.Common
 {
     public class BaseQueryFormModel
     {

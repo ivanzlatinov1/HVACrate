@@ -1,4 +1,4 @@
-namespace HVACrate.Presentation.Models.ViewModels
+namespace HVACrate.Presentation.Models.Common
 {
     public class ErrorViewModel
     {
