@@ -1,6 +1,4 @@
-﻿@using HVACrate.Presentation.Models.ViewModels.Rooms
-@model (Guid BuildingId, int TotalFloors, RoomViewModel[] Rooms, int Count, Pagination Pagination)
-
+﻿@model (Guid BuildingId, int TotalFloors, RoomViewModel[] Rooms, int Count, Pagination Pagination)
 @{
     ViewData["Title"] = "Rooms";
     TempData["BuildingId"] = Model.BuildingId;

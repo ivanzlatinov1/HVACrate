@@ -1,5 +1,5 @@
 using HVACrate.Presentation.Extensions;
-using HVACrate.Presentation.Models.ViewModels;
+using HVACrate.Presentation.Models.Common;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 

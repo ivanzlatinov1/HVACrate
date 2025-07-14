@@ -2,8 +2,8 @@
 using HVACrate.Application.Models.Projects;
 using HVACrate.Domain.ValueObjects;
 using HVACrate.Presentation.Extensions;
-using HVACrate.Presentation.Models.FormModels;
-using HVACrate.Presentation.Models.ViewModels.Projects;
+using HVACrate.Presentation.Models.Common;
+using HVACrate.Presentation.Models.Projects;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -109,7 +109,7 @@ namespace HVACrate.Presentation.Controllers
                 }
                 catch (Exception)
                 {
-                    // Implement 404 page
+                    return RedirectToAction("Error", "Home");
                 }
                 return this.RedirectToAction(nameof(Index));
             }
@@ -150,8 +150,7 @@ namespace HVACrate.Presentation.Controllers
             }
             catch (Exception)
             {
-                // Implement 404 page
-                return this.RedirectToAction(nameof(Index));
+                return RedirectToAction("Error", "Home");
             }
         }
     }

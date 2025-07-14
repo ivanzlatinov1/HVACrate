@@ -4,9 +4,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
-
-using static HVACrate.GCommon.GlobalConstants;
 using static HVACrate.Domain.ValidationConstants.HVACUser;
+using static HVACrate.GCommon.GlobalConstants;
 
 namespace HVACrate.Presentation.Areas.Identity.Pages.Account
 {

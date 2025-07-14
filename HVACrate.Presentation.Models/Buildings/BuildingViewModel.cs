@@ -1,4 +1,4 @@
-﻿namespace HVACrate.Presentation.Models.ViewModels.Buildings
+﻿namespace HVACrate.Presentation.Models.Buildings
 {
     public class BuildingViewModel
     {

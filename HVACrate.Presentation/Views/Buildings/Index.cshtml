@@ -1,6 +1,4 @@
-﻿@using HVACrate.Domain.ValueObjects
-@using HVACrate.Presentation.Models.ViewModels.Buildings
-@model (Guid ProjectId, BuildingViewModel[] Buildings, int Count, Pagination Pagination)
+﻿@model (Guid ProjectId, BuildingViewModel[] Buildings, int Count, Pagination Pagination)
 @{
     ViewData["Title"] = "Buildings";
     TempData["ProjectId"] = Model.ProjectId;

@@ -2,8 +2,8 @@
 using HVACrate.Application.Models.HVACUsers;
 using HVACrate.Domain.ValueObjects;
 using HVACrate.Presentation.Extensions;
-using HVACrate.Presentation.Models.FormModels;
-using HVACrate.Presentation.Models.ViewModels.Users;
+using HVACrate.Presentation.Models.Common;
+using HVACrate.Presentation.Models.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -70,7 +70,7 @@ namespace HVACrate.Presentation.Controllers
             HVACUserModel user = await this._userService.GetByIdAsync(id, cancellationToken);
 
             await this._userService.RemoveAsync(id, cancellationToken);
-            if(user.ProfilePictureUrl is not null)
+            if (user.ProfilePictureUrl is not null)
             {
                 _webHostEnvironment.DeleteFile(user.ProfilePictureUrl);
             }

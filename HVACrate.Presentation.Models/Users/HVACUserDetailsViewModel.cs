@@ -1,4 +1,4 @@
-﻿namespace HVACrate.Presentation.Models.ViewModels.Users
+﻿namespace HVACrate.Presentation.Models.Users
 {
     public class HVACUserDetailsViewModel
     {

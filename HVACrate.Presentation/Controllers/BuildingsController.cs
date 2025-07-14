@@ -2,8 +2,8 @@
 using HVACrate.Application.Models.Buildings;
 using HVACrate.Domain.ValueObjects;
 using HVACrate.Presentation.Extensions;
-using HVACrate.Presentation.Models.FormModels;
-using HVACrate.Presentation.Models.ViewModels.Buildings;
+using HVACrate.Presentation.Models.Buildings;
+using HVACrate.Presentation.Models.Common;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -45,7 +45,7 @@ namespace HVACrate.Presentation.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Details(Guid id, CancellationToken cancellationToken)
+        public async Task<IActionResult> Details(Guid id, CancellationToken cancellationToken = default)
         {
             BuildingModel building = await this._buildingService.GetByIdAsync(id, cancellationToken);
 
@@ -163,7 +163,7 @@ namespace HVACrate.Presentation.Controllers
                 }
                 catch (Exception)
                 {
-                    // Implement 404 page
+                    return RedirectToAction("Error", "Home");
                 }
                 return this.RedirectToAction(nameof(Index));
             }
@@ -206,8 +206,7 @@ namespace HVACrate.Presentation.Controllers
             }
             catch (Exception)
             {
-                // Implement 404 page
-                return this.RedirectToAction(nameof(Index));
+                return RedirectToAction("Error", "Home");
             }
         }
     }
