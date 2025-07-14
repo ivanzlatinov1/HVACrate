@@ -6,7 +6,7 @@
 
 <div class="container mt-5">
     <div class="row justify-content-center">
-        <div class="col-lg-8">
+        <div class="col-lg-12">
             <div class="card shadow-sm border-0">
                 <div class="card-header bg-dark text-white">
                     <h3 class="card-title mb-0">
@@ -16,101 +16,91 @@
                 <div class="card-body bg-light">
                     <form asp-action="Create" asp-route-projectId="@Model.ProjectId" method="post" enctype="multipart/form-data">
                         <div class="row">
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label asp-for="Name" class="form-label">
-                                        <i class="fas fa-building me-1"></i>Building Name
-                                    </label>
-                                    <input asp-for="Name" class="form-control" placeholder="Enter building name" />
-                                    <span asp-validation-for="Name" class="text-danger"></span>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label asp-for="Location" class="form-label">
-                                        <i class="fas fa-map-marker-alt me-1"></i>Location
-                                    </label>
-                                    <input asp-for="Location" class="form-control" placeholder="Enter building location" />
-                                    <span asp-validation-for="Location" class="text-danger"></span>
-                                </div>
-                            </div>
-                        </div>
+                            <div class="col-lg-9">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label asp-for="Name" class="form-label">
+                                                <i class="fas fa-building me-1"></i>Building Name
+                                            </label>
+                                            <input asp-for="Name" class="form-control" placeholder="Enter building name" />
+                                            <span asp-validation-for="Name" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label asp-for="Location" class="form-label">
+                                                <i class="fas fa-map-marker-alt me-1"></i>Location
+                                            </label>
+                                            <input asp-for="Location" class="form-control" placeholder="Enter building location" />
+                                            <span asp-validation-for="Location" class="text-danger"></span>
+                                        </div>
+                                    </div>
 
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label asp-for="Floors" class="form-label">
-                                        <i class="fas fa-layer-group me-1"></i>Number of Floors
-                                    </label>
-                                    <input asp-for="Floors" type="number" class="form-control" placeholder="Enter number of floors" min="1" />
-                                    <span asp-validation-for="Floors" class="text-danger"></span>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label asp-for="TotalHeight" class="form-label">
-                                        <i class="fas fa-arrows-alt-v me-1"></i>Total Height (m)
-                                    </label>
-                                    <input asp-for="TotalHeight" type="number" step="0.01" class="form-control" placeholder="Enter total height" />
-                                    <span asp-validation-for="TotalHeight" class="text-danger"></span>
-                                </div>
-                            </div>
-                        </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label asp-for="Floors" class="form-label">
+                                                <i class="fas fa-layer-group me-1"></i>Number of Floors
+                                            </label>
+                                            <input asp-for="Floors" type="number" class="form-control" placeholder="Enter number of floors" min="1" />
+                                            <span asp-validation-for="Floors" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label asp-for="TotalHeight" class="form-label">
+                                                <i class="fas fa-arrows-alt-v me-1"></i>Total Height (m)
+                                            </label>
+                                            <input asp-for="TotalHeight" type="number" step="0.01" class="form-control" placeholder="Enter total height" />
+                                            <span asp-validation-for="TotalHeight" class="text-danger"></span>
+                                        </div>
+                                    </div>
 
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label asp-for="WindSpeed" class="form-label">
-                                        <i class="fas fa-wind me-1"></i>Wind Speed (m/s)
-                                    </label>
-                                    <input asp-for="WindSpeed" type="number" step="0.01" class="form-control" placeholder="Enter wind speed" />
-                                    <span asp-validation-for="WindSpeed" class="text-danger"></span>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label asp-for="Orientation" class="form-label">
-                                        <i class="fas fa-compass me-1"></i>Orientation
-                                    </label>
-                                    <select asp-for="Orientation" class="form-control">
-                                        <option value="">Select Orientation</option>
-                                        <option value="Portrait">Portrait</option>
-                                        <option value="Landscape">Landscape</option>
-                                    </select>
-                                    <span asp-validation-for="Orientation" class="text-danger"></span>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label asp-for="WindSpeed" class="form-label">
+                                                <i class="fas fa-wind me-1"></i>Wind Speed (m/s)
+                                            </label>
+                                            <input asp-for="WindSpeed" type="number" step="0.01" class="form-control" placeholder="Enter wind speed" />
+                                            <span asp-validation-for="WindSpeed" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label asp-for="Orientation" class="form-label">
+                                                <i class="fas fa-compass me-1"></i>Orientation
+                                            </label>
+                                            <select asp-for="Orientation" class="form-control">
+                                                <option value="">Select Orientation</option>
+                                                <option value="Portrait">Portrait</option>
+                                                <option value="Landscape">Landscape</option>
+                                            </select>
+                                            <span asp-validation-for="Orientation" class="text-danger"></span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
-                        </div>
+                            <div class="col-lg-3 d-flex flex-column align-items-center">
+                                <label asp-for="Image" class="form-label text-center mb-2">
+                                    <i class="fas fa-upload me-1"></i>Upload Building Image
+                                </label>
 
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label asp-for="Image" class="form-label">
-                                        <i class="fas fa-upload me-1"></i>Upload Image (Optional)
+                                <div class="profile-picture-box text-center w-100 mb-3">
+                                    <label asp-for="Image" class="d-flex align-items-center justify-content-center flex-column overflow-hidden border rounded w-100" style="height: 200px; cursor: pointer;">
+                                        <img id="profilePreview" src="#" alt="Profile Picture" class="img-fluid w-100 h-100 object-fit-cover d-none" />
+                                        <div id="uploadPlaceholder" class="text-muted">
+                                            <i class="bi bi-image fs-1"></i>
+                                            <div>Click to upload</div>
+                                        </div>
                                     </label>
-                                    <input asp-for="Image" type="file" class="form-control" accept="image/*" />
+                                    <input asp-for="Image" type="file" class="d-none" accept="image/*" onchange="previewProfilePicture(event)" />
                                     <span asp-validation-for="Image" class="text-danger"></span>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="col-md-4 d-flex flex-column gap-2 align-items-center justify-content-center">
-                            <label asp-for="Image">Upload an image file to represent this building</label>
-                            <div class="profile-picture-box text-center">
-                                <label asp-for="Image" class="w-100 h-100 d-flex align-items-center justify-content-center flex-column overflow-hidden">
-                                    <img id="profilePreview" src="#" alt="Profile Picture" class="img-fluid h-100 w-100 object-fit-cover d-none" />
-                                    <div id="uploadPlaceholder" class="text-muted">
-                                        <i class="bi bi-person-circle fs-1"></i>
-                                        <span>Click to upload</span>
-                                    </div>
-                                </label>
-                                <input asp-for="Image" type="file" class="d-none" accept="image/*" onchange="previewProfilePicture(event)" />
-                                <span asp-validation-for="Image" class="text-danger"></span>
-                            </div>
-                        </div>
-
-                        <div class="d-flex justify-content-between">
+                        <div class="d-flex justify-content-between mt-4">
                             <a asp-controller="Buildings" asp-action="Index" asp-route-projectId="@Model.ProjectId" class="btn btn-outline-secondary">
                                 <i class="fas fa-arrow-left me-2"></i>Back to Buildings
                             </a>
@@ -125,6 +115,30 @@
     </div>
 </div>
 
+
 @section Scripts {
     <partial name="Partials/_ValidationScriptsPartial" />
+
+    <script>
+        function previewProfilePicture(event) {
+            const input = event.target;
+            const file = input.files[0];
+            const preview = document.getElementById("profilePreview");
+            const placeholder = document.getElementById("uploadPlaceholder");
+
+            if (file && file.type.startsWith("image/")) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    preview.src = e.target.result;
+                    preview.classList.remove("d-none");
+                    placeholder.classList.add("d-none");
+                };
+                reader.readAsDataURL(file);
+            } else {
+                preview.src = "#";
+                preview.classList.add("d-none");
+                placeholder.classList.remove("d-none");
+            }
+        }
+    </script>
 }
