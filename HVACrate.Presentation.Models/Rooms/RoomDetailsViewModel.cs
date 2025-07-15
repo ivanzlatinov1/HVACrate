@@ -11,6 +11,8 @@
 
         public int Floor { get; set; }
 
+        public Guid BuildingId { get; set; }
+
         public string BuildingName { get; set; } = null!;
 
         public bool IsEnclosed { get; set; }

@@ -18,10 +18,9 @@ namespace HVACrate.Presentation.Controllers
         private readonly IBuildingService _buildingService = buildingService;
 
         [HttpGet]
-        public async Task<IActionResult> Index(BaseQueryFormModel query, CancellationToken cancellationToken = default)
+        public async Task<IActionResult> Index(Guid id, BaseQueryFormModel query, CancellationToken cancellationToken = default)
         {
-            Guid buildingId = Guid.Parse(Convert.ToString(TempData["BuildingId"]) ?? string.Empty);
-            if (buildingId == Guid.Empty) return NotFound();
+            if (id == Guid.Empty) return NotFound();
 
             Pagination pagination = new(Page: query.Page, Limit: query.Limit);
 
@@ -30,9 +29,9 @@ namespace HVACrate.Presentation.Controllers
                 SearchParam = query.SearchParam,
                 QueryParam = RoomQueryParam,
                 Pagination = pagination
-            }, buildingId, cancellationToken);
+            }, id, cancellationToken);
 
-            BuildingModel building = await this._buildingService.GetByIdAsReadOnlyAsync(buildingId, cancellationToken);
+            BuildingModel building = await this._buildingService.GetByIdAsReadOnlyAsync(id, cancellationToken);
             int totalFloors = building.Floors;
 
             RoomViewModel[] rooms = [.. roomModels.Items.Select(x => new RoomViewModel
@@ -41,12 +40,12 @@ namespace HVACrate.Presentation.Controllers
                 Type = x.Type,
                 Number = x.Number,
                 Floor = x.Floor,
-                BuildingId = buildingId,
+                BuildingId = id,
             })];
 
             ViewBag.SelectedFloor = query.SearchParam;
 
-            return View((buildingId, totalFloors, rooms, roomModels.Count, pagination));
+            return View((id, totalFloors, rooms, roomModels.Count, pagination));
         }
         [HttpGet]
         public IActionResult Create(Guid buildingId, int totalFloors)
@@ -79,8 +78,7 @@ namespace HVACrate.Presentation.Controllers
 
                 await _roomService.CreateAsync(model, cancellationToken);
 
-                TempData["BuildingId"] = form.BuildingId;
-                return this.RedirectToAction(nameof(Index));
+                return this.RedirectToAction(nameof(Index), new { id = form.BuildingId });
             }
             catch (Exception ex)
             {
@@ -101,8 +99,9 @@ namespace HVACrate.Presentation.Controllers
                 Number = room.Number,
                 Floor = room.Floor,
                 Temperature = room.Temperature,
+                BuildingId = room.BuildingId,
                 BuildingName = room.Building.Name,
-                IsEnclosed = room.BuildingEnvelopes.Any(),
+                IsEnclosed = room.BuildingEnvelopes.Count != 0,
             };
 
             return View(details);
@@ -148,7 +147,7 @@ namespace HVACrate.Presentation.Controllers
                 {
                     return RedirectToAction("Error", "Home");
                 }
-                return this.RedirectToAction(nameof(Index));
+                return this.RedirectToAction(nameof(Index), new { id = form.BuildingId });
             }
             return View(form);
         }
@@ -181,11 +180,8 @@ namespace HVACrate.Presentation.Controllers
         {
             try
             {
-                if (room != null)
-                {
-                    await this._roomService.SoftDeleteAsync(room.Id, cancellationToken);
-                }
-                return this.RedirectToAction(nameof(Index));
+                await this._roomService.SoftDeleteAsync(room.Id, cancellationToken);
+                return this.RedirectToAction(nameof(Index), new { id = room.BuildingId });
             }
             catch (Exception)
             {

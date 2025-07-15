@@ -1,4 +1,4 @@
-﻿@model (int Count, Pagination Pagination)
+﻿@model (Guid? Id, int Count, Pagination Pagination)
 @{
     int page = Model.Pagination.Page;
     int limit = Model.Pagination.Limit;
@@ -12,7 +12,7 @@
             @for (int i = 1; i <= pagesCount; i++)
             {
                 <li class="page-item @(page == i ? "active" : "")">
-                    <a class="page-link" asp-route-page="@i" asp-route-limit="@limit"
+                    <a class="page-link" asp-route-id="@Model.Id" asp-route-page="@i" asp-route-limit="@limit"
                        style="@(page == i ? "background-color: #212529; color: #fff; border-color: #212529;" : "")">
                         @i
                     </a>

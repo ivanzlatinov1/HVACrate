@@ -1,7 +1,6 @@
 ﻿@model (Guid BuildingId, int TotalFloors, RoomViewModel[] Rooms, int Count, Pagination Pagination)
 @{
     ViewData["Title"] = "Rooms";
-    TempData["BuildingId"] = Model.BuildingId;
     int? selectedFloor = Convert.ToInt32(ViewBag.SelectedFloor);
 }
 
@@ -41,7 +40,6 @@
         {
             @foreach (var room in Model.Rooms)
             {
-                TempData["RoomId"] = room.Id;
                 <div class="col-lg-4 col-md-6 mb-4">
                     <div class="card h-100 border-dark shadow-sm">
                         <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
@@ -60,7 +58,7 @@
                         </div>
                         <div class="card-footer bg-light">
                             <div class="btn-group w-100">
-                                <a asp-controller="BuildingEnvelopes" asp-action="Index" class="btn btn-warning border-1 border-dark">
+                                <a asp-controller="BuildingEnvelopes" asp-action="Index" asp-route-roomId="@room.Id" class="btn btn-warning border-1 border-dark">
                                     <i class="fas fa-draw-polygon"></i> Enclose
                                 </a>
                                 <a asp-action="Details" asp-route-id="@room.Id" class="btn btn-outline-dark">
@@ -89,7 +87,7 @@
 
     <partial name="Partials/_PaginationPartial"
              view-data="ViewData"
-             model="(Model.Count, Model.Pagination)" />
+             model="((Guid?)Model.BuildingId, Model.Count, Model.Pagination)" />
 
     <div class="row mt-4">
         <div class="col-12 text-center">

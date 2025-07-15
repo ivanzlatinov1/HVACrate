@@ -45,12 +45,12 @@ namespace HVACrate.Persistence.Repositories
         public async Task<TEntity> GetByIdAsReadOnlyAsync(Guid id, CancellationToken cancellationToken = default)
             => await _context.Set<TEntity>()
                     .AsNoTracking()
-                    .SingleAsync(e => EF.Property<Guid>(e, "Id") == id, cancellationToken)
+                    .SingleOrDefaultAsync(e => EF.Property<Guid>(e, "Id") == id, cancellationToken)
                     ?? throw new KeyNotFoundException($"Entity with id {id} cannot be found");
 
         public async Task<TEntity> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
             => await _context.Set<TEntity>()
-                .SingleAsync(e => EF.Property<Guid>(e, "Id") == id, cancellationToken)
+                .SingleOrDefaultAsync(e => EF.Property<Guid>(e, "Id") == id, cancellationToken)
                 ?? throw new KeyNotFoundException($"Entity with id {id} cannot be found");
 
         public async Task CreateAsync(TEntity entity, CancellationToken cancellationToken = default)

@@ -19,10 +19,9 @@ namespace HVACrate.Presentation.Controllers
         private readonly IWebHostEnvironment _webHostEnvironment = webHostEnvironment;
 
         [HttpGet]
-        public async Task<IActionResult> Index(BaseQueryFormModel query, CancellationToken cancellationToken = default)
+        public async Task<IActionResult> Index(Guid id, BaseQueryFormModel query, CancellationToken cancellationToken = default)
         {
-            Guid projectId = Guid.Parse(Convert.ToString(TempData["ProjectId"]) ?? string.Empty);
-            if (projectId == Guid.Empty) return NotFound();
+            if (id == Guid.Empty) return NotFound();
 
             Pagination pagination = new(Page: query.Page, Limit: query.Limit);
 
@@ -31,17 +30,18 @@ namespace HVACrate.Presentation.Controllers
                 SearchParam = query.SearchParam,
                 QueryParam = QueryProperties.BuildingQueryParam,
                 Pagination = pagination
-            }, projectId, cancellationToken);
+            }, id, cancellationToken);
 
             BuildingViewModel[] buildings = [.. buildingModels.Items.Select(x => new BuildingViewModel
             {
                 Id = x.Id,
                 Name = x.Name,
                 Location = x.Location,
+                ProjectId = id,
                 ImageUrl = x.ImageUrl ?? DefaultBuildingImageUrl
             })];
 
-            return View((projectId, buildings, buildingModels.Count, pagination));
+            return View((id, buildings, buildingModels.Count, pagination));
         }
 
         [HttpGet]
@@ -104,8 +104,7 @@ namespace HVACrate.Presentation.Controllers
 
                 await _buildingService.CreateAsync(model, cancellationToken);
 
-                TempData["ProjectId"] = form.ProjectId;
-                return this.RedirectToAction(nameof(Index));
+                return this.RedirectToAction(nameof(Index), new { id = form.ProjectId });
             }
             catch (Exception ex)
             {
@@ -165,7 +164,7 @@ namespace HVACrate.Presentation.Controllers
                 {
                     return RedirectToAction("Error", "Home");
                 }
-                return this.RedirectToAction(nameof(Index));
+                return this.RedirectToAction(nameof(Index), new { id = form.ProjectId });
             }
             return View(form);
         }
@@ -186,6 +185,7 @@ namespace HVACrate.Presentation.Controllers
                 Name = building.Name,
                 ImageUrl = building.ImageUrl ?? DefaultBuildingImageUrl,
                 Location = building.Location,
+                ProjectId = building.ProjectId,
                 ProjectName = building.Project.Name,
             };
 
@@ -198,11 +198,8 @@ namespace HVACrate.Presentation.Controllers
         {
             try
             {
-                if (building != null)
-                {
-                    await this._buildingService.SoftDeleteAsync(building.Id, cancellationToken);
-                }
-                return this.RedirectToAction(nameof(Index));
+                await this._buildingService.SoftDeleteAsync(building.Id, cancellationToken);
+                return this.RedirectToAction(nameof(Index), new { id = building.ProjectId });
             }
             catch (Exception)
             {
