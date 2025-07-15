@@ -1,0 +1,70 @@
+﻿@model RoomDetailsViewModel
+
+@{
+    ViewData["Title"] = "Room Details";
+}
+
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-header bg-black text-white rounded-top-4">
+                    <h4 class="mb-0 text-center">Room Details</h4>
+                </div>
+                <div class="card-body px-5 py-4">
+                    <div class="row mb-4">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-semibold text-secondary">Room Number</label>
+                            <div class="fs-5">@Model.Number</div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-semibold text-secondary">Room Type</label>
+                            <div class="fs-5">@Model.Type</div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-semibold text-secondary">Building</label>
+                            <div class="fs-5">@Model.BuildingName</div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-semibold text-secondary">Floor</label>
+                            <div class="fs-5">@Model.Floor</div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-semibold text-secondary">Temperature</label>
+                            <div class="fs-5">
+                                <span class="badge bg-info text-dark px-3 py-2">
+                                    @Model.Temperature.ToString("F1")°C
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-semibold text-secondary">Room Status</label>
+                            <div class="fs-5">
+                                @if (Model.IsEnclosed)
+                                {
+                                    <span class="badge bg-success px-3 py-2">Enclosed</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-warning text-dark px-3 py-2">Not enclosed</span>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer bg-light border-top-0 rounded-bottom-4 d-flex justify-content-between">
+                    <div class="text-start">
+                        <a asp-controller="Rooms" asp-action="Index" asp-route-id="@Model.BuildingId" class="btn btn-outline-secondary">
+                            ← Back to Rooms
+                        </a>
+                    </div>
+                    <div class="text-end">
+                        <a asp-controller="Rooms" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-outline-danger">
+                            Delete
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

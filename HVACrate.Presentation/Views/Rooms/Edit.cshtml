@@ -1,0 +1,54 @@
+﻿@model RoomFormModel
+
+@{
+    ViewData["Title"] = "Edit Room";
+}
+
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-header bg-black text-white text-center rounded-top-4">
+                    <h4 class="mb-0">Edit Room</h4>
+                </div>
+                <form asp-action="Edit" method="post" class="card-body px-5 py-4">
+                    <input type="hidden" asp-for="Id" />
+                    <input type="hidden" asp-for="BuildingId" />
+
+                    <div class="mb-3">
+                        <label asp-for="Number" class="form-label fw-semibold text-secondary"></label>
+                        <input asp-for="Number" class="form-control" />
+                        <span asp-validation-for="Number" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Type" class="form-label fw-semibold text-secondary"></label>
+                        <input asp-for="Type" class="form-control" />
+                        <span asp-validation-for="Type" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Temperature" class="form-label fw-semibold text-secondary"></label>
+                        <input asp-for="Temperature" class="form-control" type="number" step="0.1" />
+                        <span asp-validation-for="Temperature" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Floor" class="form-label fw-semibold text-secondary"></label>
+                        <input asp-for="Floor" class="form-control" type="number" />
+                        <span asp-validation-for="Floor" class="text-danger"></span>
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+                        <a asp-action="Index" asp-route-id="@Model.BuildingId" class="btn btn-outline-secondary">Cancel</a>
+                        <button type="submit" class="btn btn-dark">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="Partials/_ValidationScriptsPartial" />
+}
