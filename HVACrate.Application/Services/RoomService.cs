@@ -8,9 +8,10 @@ using HVACrate.Domain.ValueObjects;
 
 namespace HVACrate.Application.Services
 {
-    public class RoomService(IRoomRepository roomRepository) : IRoomService
+    public class RoomService(IRoomRepository roomRepository, IBuildingEnvelopeService buildingEnvelopeService) : IRoomService
     {
         private readonly IRoomRepository _roomRepository = roomRepository;
+        private readonly IBuildingEnvelopeService _buildingEnvelopeService = buildingEnvelopeService;
 
         public async Task<Result<RoomModel>> GetAllAsReadOnlyAsync(BaseQueryModel query, Guid? buildingId, CancellationToken cancellationToken = default)
         {
@@ -64,13 +65,31 @@ namespace HVACrate.Application.Services
         }
 
         public async Task<double> CalculateTotalHeatInfiltration(Guid id, CancellationToken cancellationToken)
-            => await this._roomRepository
-                        .CalculateTotalHeatInfiltration(id, cancellationToken)
-                        .ConfigureAwait(false);
+        {
+            Room room = await this._roomRepository.GetByIdAsReadOnlyAsync(id, cancellationToken);
+
+            double heatInfiltration = 0;
+            foreach (var buildingEnvelope in room.BuildingEnvelopes)
+            {
+                heatInfiltration += this._buildingEnvelopeService
+                    .CalculateHeatInfiltration(buildingEnvelope.ToModel(false));
+            }
+
+            return heatInfiltration;
+        }
 
         public async Task<double> CalculateTotalHeatTransmission(Guid id, CancellationToken cancellationToken)
-            => await this._roomRepository
-                        .CalculateTotalHeatTransmission(id, cancellationToken)
-                        .ConfigureAwait(false);
+        {
+            Room room = await this._roomRepository.GetByIdAsReadOnlyAsync(id, cancellationToken);
+
+            double heatTransmission = 0;
+            foreach (var buildingEnvelope in room.BuildingEnvelopes)
+            {
+                heatTransmission += this._buildingEnvelopeService
+                    .CalculateHeatTransmission(buildingEnvelope.ToModel(false));
+            }
+
+            return heatTransmission;
+        }
     }
 }

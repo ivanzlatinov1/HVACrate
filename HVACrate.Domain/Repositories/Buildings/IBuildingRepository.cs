@@ -2,7 +2,7 @@
 
 namespace HVACrate.Domain.Repositories.Buildings
 {
-    public interface IBuildingRepository : IBaseRepository<Building>, ICalculator
+    public interface IBuildingRepository : IBaseRepository<Building>
     {
     }
 }

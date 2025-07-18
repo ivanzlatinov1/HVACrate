@@ -8,18 +8,40 @@ using HVACrate.Domain.ValueObjects;
 
 namespace HVACrate.Application.Services
 {
-    public class BuildingService(IBuildingRepository buildingRepository) : IBuildingService
+    public class BuildingService(IBuildingRepository buildingRepository, IRoomService roomService) : IBuildingService
     {
         private readonly IBuildingRepository _buildingRepository = buildingRepository;
+        private readonly IRoomService _roomService = roomService;
+
         public async Task<double> CalculateTotalHeatInfiltration(Guid id, CancellationToken cancellationToken)
-            => await this._buildingRepository
-                    .CalculateTotalHeatInfiltration(id, cancellationToken)
-                    .ConfigureAwait(false);
+        {
+            Building building = await this._buildingRepository.GetByIdAsync(id, cancellationToken);
+
+            double totalHeatInfiltration = 0;
+
+            foreach(var room in building.Rooms)
+            {
+                totalHeatInfiltration += 
+                    await this._roomService.CalculateTotalHeatInfiltration(room.Id, cancellationToken);
+            }
+
+            return totalHeatInfiltration;
+        }
 
         public async Task<double> CalculateTotalHeatTransmission(Guid id, CancellationToken cancellationToken)
-            => await this._buildingRepository
-                    .CalculateTotalHeatTransmission(id, cancellationToken)
-                    .ConfigureAwait(false);
+        {
+            Building building = await this._buildingRepository.GetByIdAsync(id, cancellationToken);
+
+            double totalHeatTransmission = 0;
+
+            foreach(var room in building.Rooms)
+            {
+                totalHeatTransmission += 
+                    await this._roomService.CalculateTotalHeatTransmission(room.Id, cancellationToken);
+            }
+
+            return totalHeatTransmission;
+        }
 
         public async Task CreateAsync(BuildingModel model, CancellationToken cancellationToken = default)
         {

@@ -1,48 +1,28 @@
-﻿using HVACrate.Domain.Entities.BuildingEnvelopes;
-using HVACrate.Domain.Enums;
+﻿using HVACrate.Domain.Repositories;
 using HVACrate.Domain.Repositories.BuildingEnvelopes;
+using HVACrate.Domain.ValueObjects;
+using Microsoft.EntityFrameworkCore;
 
 namespace HVACrate.Persistence.Repositories.BuildingEnvelopes
 {
     public class BuildingEnvelopeRepository(HVACrateDbContext context)
         : BaseRepository<BuildingEnvelope>(context), IBuildingEnvelopeRepository
     {
-        public double CalculateHeatInfiltration(BuildingEnvelope buildingEnvelope)
+        public override async Task<Result<BuildingEnvelope>> GetAllAsReadOnlyAsync(BaseQuery query, Guid? filterId = null, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
-        }
+            IQueryable<BuildingEnvelope> baseQuery = context.BuildingsEnvelope
+                .Where (p => p.RoomId == filterId)
+                .WithSearch(query.SearchParam, x => EF.Property<string>(x, query.QueryParam))
+                .AsNoTracking();
 
-        public double CalculateHeatTransmission(BuildingEnvelope buildingEnvelope)
-        {
-            double area = buildingEnvelope.Width * buildingEnvelope.Height;
-            double thermalResistance = 1.0 / buildingEnvelope.HeatTransferCoefficient;
-            double roomTemperature = buildingEnvelope.Room.Temperature;
-            double regionTemperature = buildingEnvelope.Room.Building.Project.RegionTemperature;
-            double adjustedTemperature = buildingEnvelope.AdjustedTemperature;
-            double orientationCoefficient = 1.0;
+            int totalCount = await baseQuery
+                .CountAsync(cancellationToken);
 
-            if (buildingEnvelope is OuterWall outerWall)
-            {
-                orientationCoefficient = GetOrientationCoefficient(outerWall.Direction);
-            }
-            else if (buildingEnvelope is Opening opening)
-            {
-                orientationCoefficient = GetOrientationCoefficient(opening.Direction);
-            }
+            BuildingEnvelope[] buildingEnvelopes = await baseQuery
+                .WithPagination(query.Pagination)
+                .ToArrayAsync(cancellationToken);
 
-            return area / thermalResistance *
-                (roomTemperature - regionTemperature - adjustedTemperature) * orientationCoefficient;
-        }
-
-        private static double GetOrientationCoefficient(Direction direction)
-        {
-            return direction switch
-            {
-                Direction.North or Direction.East or Direction.Northeast or Direction.Northwest => 1.10,
-                Direction.South or Direction.Southwest => 1.0,
-                Direction.West or Direction.Southeast => 1.05,
-                _ => 1.0,
-            };
+            return new Result<BuildingEnvelope>(totalCount, buildingEnvelopes);
         }
     }
 }
