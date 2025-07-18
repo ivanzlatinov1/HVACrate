@@ -1,11 +1,69 @@
 ﻿using HVACrate.Application.Interfaces;
+using HVACrate.Application.Mappers;
+using HVACrate.Application.Models;
 using HVACrate.Application.Models.BuildingEnvelopes;
+using HVACrate.Domain.Entities;
 using HVACrate.Domain.Enums;
+using HVACrate.Domain.Repositories.BuildingEnvelopes;
+using HVACrate.Domain.ValueObjects;
 
 namespace HVACrate.Application.Services
 {
-    internal class BuildingEnvelopeService : IBuildingEnvelopeService
+    public class BuildingEnvelopeService(IBuildingEnvelopeRepository buildingEnvelopeRepository) : IBuildingEnvelopeService
     {
+        private readonly IBuildingEnvelopeRepository _buildingEnvelopeRepository = buildingEnvelopeRepository;
+
+        public async Task<Result<BuildingEnvelopeModel>> GetAllAsReadOnlyAsync(BaseQueryModel query, Guid? buildingId, CancellationToken cancellationToken = default)
+        {
+            var buildingEnvelopes = await this._buildingEnvelopeRepository
+                .GetAllAsReadOnlyAsync(query.ToQuery(), buildingId, cancellationToken)
+                .ConfigureAwait(false);
+
+            return new Result<BuildingEnvelopeModel>(buildingEnvelopes.Count, [.. buildingEnvelopes.Items.Select(x => x.ToModel())]);
+        }
+
+        public async Task<BuildingEnvelopeModel> GetByIdAsReadOnlyAsync(Guid id, CancellationToken cancellationToken = default)
+        {
+            BuildingEnvelope buildingEnvelope = await this._buildingEnvelopeRepository
+                .GetByIdAsReadOnlyAsync(id, cancellationToken)
+                .ConfigureAwait(false);
+
+            return buildingEnvelope.ToModel();
+        }
+
+        public async Task<BuildingEnvelopeModel> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+        {
+            BuildingEnvelope buildingEnvelope = await this._buildingEnvelopeRepository
+                .GetByIdAsync(id, cancellationToken)
+                .ConfigureAwait(false);
+
+            return buildingEnvelope.ToModel();
+        }
+
+        public async Task CreateAsync(BuildingEnvelopeModel model, CancellationToken cancellationToken = default)
+        {
+            await this._buildingEnvelopeRepository
+                .CreateAsync(model.ToEntity(false), cancellationToken)
+                .ConfigureAwait(false);
+
+            await this._buildingEnvelopeRepository.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+        }
+
+        public async Task UpdateAsync(BuildingEnvelopeModel model, CancellationToken cancellationToken = default)
+        {
+            this._buildingEnvelopeRepository.Update(model.ToEntity());
+            await this._buildingEnvelopeRepository.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+        }
+
+        public async Task SoftDeleteAsync(Guid id, CancellationToken cancellationToken = default)
+        {
+            BuildingEnvelope room = await this._buildingEnvelopeRepository.GetByIdAsync(id, cancellationToken)
+                ?? throw new Exception("Building Envelope not found");
+
+            this._buildingEnvelopeRepository.SoftDelete(room);
+            await this._buildingEnvelopeRepository.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+        }
+
         public double CalculateHeatInfiltration(BuildingEnvelopeModel buildingEnvelope)
         {
             throw new NotImplementedException();
