@@ -1,20 +1,20 @@
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 main {
@@ -33,11 +33,11 @@ main {
     position: relative;
 }
 
-.profile-picture-box label {
-    cursor: pointer;
-    height: 100%;
-    width: 100%;
-}
+    .profile-picture-box label {
+        cursor: pointer;
+        height: 100%;
+        width: 100%;
+    }
 
 .object-fit-cover {
     object-fit: cover;
@@ -58,4 +58,17 @@ main {
 
 .dropdown-toggle::after {
     display: none;
+}
+
+.bookmark-title {
+    position: relative;
+    background-color: #212529;
+    color: white;
+    padding: 0.75rem 2rem 0.75rem 1.5rem;
+    font-size: 1.5rem;
+    font-weight: bold;
+    width: fit-content;
+    border-top-left-radius: 0.5rem;
+    border-bottom-left-radius: 0.5rem;
+    clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 50%, calc(100% - 20px) 100%, 0 100%);
 }

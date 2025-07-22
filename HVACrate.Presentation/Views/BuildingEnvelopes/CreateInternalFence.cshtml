@@ -1,0 +1,111 @@
+﻿@model InternalFenceFormModel
+@{
+    string displayType = Model.Type;
+}
+
+<div class="container-fluid text-white py-3">
+    <div class="row justify-content-center">
+        <div class="col-lg-10 col-md-11">
+            <div class="card bg-black border-secondary">
+                <div class="card-header bg-secondary text-white py-2">
+                    <h5 class="card-title mb-0 text-center fw-bold">Create Internal Fence</h5>
+                </div>
+                <div class="card-body bg-dark p-3">
+                    <form asp-action="CreateInternalFence" asp-controller="BuildingEnvelopes" method="post">
+                        @if (!ViewData.ModelState.IsValid && ViewData.ModelState[string.Empty] != null)
+                        {
+                            <div class="alert alert-danger">
+                                @foreach (var error in ViewData.ModelState[string.Empty]?.Errors!)
+                                {
+                                    <p class="mb-0">@error.ErrorMessage</p>
+                                }
+                            </div>
+                        }
+
+                        <div class="form-group mb-2">
+                            <label for="Type" class="form-label text-light">Type</label>
+                            <input type="text"
+                                   class="form-control bg-secondary text-white border-secondary form-control-sm"
+                                   id="Type"
+                                   name="Type"
+                                   value="@displayType"
+                                   readonly />
+                            @Html.HiddenFor(m => m.Type)
+                        </div>
+
+                        @Html.HiddenFor(m => m.RoomId)
+
+                        <div class="row mb-2">
+                            <div class="col-md-6">
+                                <div class="form-group mb-2">
+                                    <label asp-for="Width" class="form-label text-light">Width</label>
+                                    <input asp-for="Width" class="form-control bg-secondary text-white border-secondary form-control-sm" />
+                                    <span asp-validation-for="Width" class="text-danger small"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-2">
+                                    <label asp-for="Height" class="form-label text-light">Height</label>
+                                    <input asp-for="Height" class="form-control bg-secondary text-white border-secondary form-control-sm" />
+                                    <span asp-validation-for="Height" class="text-danger small"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-2">
+                            <div class="col-md-6">
+                                <div class="form-group mb-2">
+                                    <label asp-for="AdjustedTemperature" class="form-label text-light">Adjusted Temperature</label>
+                                    <input asp-for="AdjustedTemperature" class="form-control bg-secondary text-white border-secondary form-control-sm" />
+                                    <span asp-validation-for="AdjustedTemperature" class="text-danger small"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-2">
+                                    <label asp-for="Count" class="form-label text-light">Count</label>
+                                    <input asp-for="Count" class="form-control bg-secondary text-white border-secondary form-control-sm" />
+                                    <span asp-validation-for="Count" class="text-danger small"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-2">
+                            <div class="col-md-6">
+                                <div class="form-group mb-2">
+                                    <label asp-for="Density" class="form-label text-light">Density</label>
+                                    <input asp-for="Density" class="form-control bg-secondary text-white border-secondary form-control-sm" />
+                                    <span asp-validation-for="Density" class="text-danger small"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-2">
+                                    <label asp-for="HeatTransferCoefficient" class="form-label text-light">Heat Transfer Coefficient</label>
+                                    <input asp-for="HeatTransferCoefficient" class="form-control bg-secondary text-white border-secondary form-control-sm" />
+                                    <span asp-validation-for="HeatTransferCoefficient" class="text-danger small"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group mb-2">
+                            <label asp-for="MaterialId" class="form-label text-light">Material</label>
+                            <select asp-for="MaterialId"
+                                    asp-items="Model.Materials"
+                                    class="form-select bg-secondary text-white border-secondary form-select-sm">
+                                <option value="">Select Material</option>
+                            </select>
+                            <span asp-validation-for="MaterialId" class="text-danger small"></span>
+                        </div>
+
+                        <div class="d-grid pt-2">
+                            <button type="submit" class="btn btn-light">Create</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("Partials/_ValidationScriptsPartial")
+}
