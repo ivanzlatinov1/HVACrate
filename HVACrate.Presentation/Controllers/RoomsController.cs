@@ -1,5 +1,4 @@
 ﻿using HVACrate.Application.Interfaces;
-using HVACrate.Application.Models.Buildings;
 using HVACrate.Application.Models.Rooms;
 using HVACrate.Domain.ValueObjects;
 using HVACrate.Presentation.Models.Common;
@@ -31,14 +30,20 @@ namespace HVACrate.Presentation.Controllers
                 Pagination = pagination
             }, id, cancellationToken);
 
-            RoomViewModel[] rooms = [.. roomModels.Items.Select(x => new RoomViewModel
+            var rooms = new List<RoomViewModel>();
+
+            foreach (var x in roomModels.Items)
             {
-                Id = x.Id,
-                Type = x.Type,
-                Number = x.Number,
-                Floor = x.Floor,
-                BuildingId = id,
-            })];
+                rooms.Add(new RoomViewModel
+                {
+                    Id = x.Id,
+                    Type = x.Type,
+                    Number = x.Number,
+                    Floor = x.Floor,
+                    BuildingId = id,
+                    IsEnclosed = await this._roomService.IsRoomEnclosed(x.Id, cancellationToken),
+                });
+            }
 
             int totalFloors = await this._buildingService.GetTotalFloors(id, cancellationToken);
 
@@ -100,7 +105,7 @@ namespace HVACrate.Presentation.Controllers
                 Temperature = room.Temperature,
                 BuildingId = room.BuildingId,
                 BuildingName = room.Building.Name,
-                IsEnclosed = room.BuildingEnvelopes.Count != 0,
+                IsEnclosed = await this._roomService.IsRoomEnclosed(id, cancellationToken),
             };
 
             return View(details);

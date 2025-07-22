@@ -1,4 +1,4 @@
-﻿@model (Guid BuildingId, int TotalFloors, RoomViewModel[] Rooms, int Count, Pagination Pagination)
+﻿@model (Guid BuildingId, int TotalFloors, List<RoomViewModel> Rooms, int Count, Pagination Pagination)
 @{
     ViewData["Title"] = "Rooms";
     int? selectedFloor = Convert.ToInt32(ViewBag.SelectedFloor);
@@ -58,9 +58,18 @@
                         </div>
                         <div class="card-footer bg-light">
                             <div class="btn-group w-100">
-                                <a asp-controller="BuildingEnvelopes" asp-action="Index" asp-route-id="@room.Id" class="btn btn-warning border-1 border-dark">
-                                    <i class="fas fa-draw-polygon"></i> Enclose
-                                </a>
+                                @if (room.IsEnclosed)
+                                {
+                                    <a asp-controller="BuildingEnvelopes" asp-action="Index" asp-route-id="@room.Id" class="btn btn-success border-1 border-dark">
+                                        <i class="fas fa-check-circle"></i> Enclosed
+                                    </a>
+                                }
+                                else
+                                {
+                                    <a asp-controller="BuildingEnvelopes" asp-action="Index" asp-route-id="@room.Id" class="btn btn-warning border-1 border-dark">
+                                        <i class="fas fa-draw-polygon"></i> Enclose
+                                    </a>
+                                }
                                 <a asp-action="Details" asp-route-id="@room.Id" class="btn btn-outline-dark">
                                     <i class="fas fa-eye"></i> View
                                 </a>
@@ -69,6 +78,7 @@
                                 </a>
                             </div>
                         </div>
+
                     </div>
                 </div>
             }

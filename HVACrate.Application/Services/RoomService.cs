@@ -3,6 +3,7 @@ using HVACrate.Application.Mappers;
 using HVACrate.Application.Models;
 using HVACrate.Application.Models.Rooms;
 using HVACrate.Domain.Entities;
+using HVACrate.Domain.Entities.BuildingEnvelopes;
 using HVACrate.Domain.Repositories.Rooms;
 using HVACrate.Domain.ValueObjects;
 
@@ -108,6 +109,34 @@ namespace HVACrate.Application.Services
                 .ConfigureAwait(false);
 
             return room.Number;
+        }
+
+        public async Task<bool> IsRoomEnclosed(Guid id, CancellationToken cancellationToken = default)
+        {
+            Room room = await this._roomRepository
+                .GetByIdAsReadOnlyAsync(id, cancellationToken)
+                .ConfigureAwait(false);
+
+            List<OuterWall> outerWalls = [.. room.BuildingEnvelopes.OfType<OuterWall>()];
+            List<InternalFence> internalFences = [.. room.BuildingEnvelopes.OfType<InternalFence>()];
+
+            bool isThereFloor = await this._buildingEnvelopeService
+                .IsThereAFloorInRoomAsync(id, cancellationToken)
+                .ConfigureAwait(false);
+
+            bool isThereRoof = await this._buildingEnvelopeService
+                .IsThereARoofInRoomAsync(id, cancellationToken)
+                .ConfigureAwait(false);
+
+            if (!isThereFloor || !isThereRoof || outerWalls.Count == 0)
+                return false;
+
+            int totalWalls = outerWalls.Count + internalFences.Count;
+
+            if (totalWalls < 4)
+                return false;
+
+            return true;
         }
     }
 }

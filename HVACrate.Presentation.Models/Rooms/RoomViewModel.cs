@@ -10,5 +10,7 @@
         public int Floor { get; set; }
 
         public Guid BuildingId { get; set; }
+
+        public bool IsEnclosed { get; set; }
     }
 }

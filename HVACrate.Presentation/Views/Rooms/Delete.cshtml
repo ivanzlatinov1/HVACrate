@@ -43,6 +43,7 @@
                         <div>
                             <form asp-action="Delete" method="post" class="d-inline">
                                 <input type="hidden" asp-for="Id" />
+                                <input type="hidden" asp-for="BuildingId" />
                                 <button type="submit" class="btn btn-danger">
                                     <i class="fas fa-trash me-2"></i>Delete Room
                                 </button>
