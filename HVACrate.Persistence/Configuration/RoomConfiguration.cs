@@ -49,6 +49,11 @@ namespace HVACrate.Persistence.Configuration
                 .HasPrecision(TotalPrecision, TotalScale)
                 .HasComment("Internal room temperature");
 
+            // Define default value for IsEnclosed property
+            entity
+                .Property(r => r.IsEnclosed)
+                .HasDefaultValue(false);
+
             // Define default value for IsDeleted property for soft deletion
             entity
                 .Property(r => r.IsDeleted)
