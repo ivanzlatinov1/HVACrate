@@ -40,6 +40,15 @@ namespace HVACrate.Application.Services
             return room.ToModel();
         }
 
+        public async Task<Guid> GetBuildingIdAsync(Guid id, CancellationToken cancellationToken = default)
+        {
+            Room room = await this._roomRepository
+                .GetByIdAsReadOnlyAsync(id, cancellationToken)
+                .ConfigureAwait(false);
+
+            return room.BuildingId;
+        }
+
         public async Task<RoomModel> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
         {
             Room room = await this._roomRepository
@@ -90,6 +99,15 @@ namespace HVACrate.Application.Services
             }
 
             return heatTransmission;
+        }
+
+        public async Task<string> GetRoomNumberAsync(Guid id, CancellationToken cancellationToken = default)
+        {
+            Room room = await this._roomRepository
+                .GetByIdAsReadOnlyAsync(id, cancellationToken)
+                .ConfigureAwait(false);
+
+            return room.Number;
         }
     }
 }

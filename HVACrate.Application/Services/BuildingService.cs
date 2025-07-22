@@ -80,6 +80,15 @@ namespace HVACrate.Application.Services
             return building.ToModel();
         }
 
+        public async Task<int> GetTotalFloors(Guid id, CancellationToken cancellationToken = default)
+        {
+            Building building = await this._buildingRepository
+                .GetByIdAsReadOnlyAsync(id, cancellationToken)
+                .ConfigureAwait(false);
+
+            return building.Floors;
+        }
+
         public async Task SoftDeleteAsync(Guid id, CancellationToken cancellationToken = default)
         {
             Building building = await this._buildingRepository.GetByIdAsync(id, cancellationToken)

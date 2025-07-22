@@ -51,7 +51,7 @@ namespace HVACrate.Application.Services
 
         public async Task UpdateAsync(BuildingEnvelopeModel model, CancellationToken cancellationToken = default)
         {
-            this._buildingEnvelopeRepository.Update(model.ToEntity());
+            this._buildingEnvelopeRepository.Update(model.ToEntity(false));
             await this._buildingEnvelopeRepository.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
         }
 

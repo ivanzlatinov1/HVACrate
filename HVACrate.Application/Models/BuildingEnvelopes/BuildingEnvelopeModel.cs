@@ -7,6 +7,7 @@ namespace HVACrate.Application.Models.BuildingEnvelopes
     public abstract class BuildingEnvelopeModel
     {
         public Guid Id { get; set; }
+
         public virtual BuildingEnvelopeType Type { get; protected set; }
 
         public double Height { get; set; }
