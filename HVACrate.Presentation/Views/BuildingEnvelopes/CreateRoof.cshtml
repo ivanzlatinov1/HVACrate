@@ -62,22 +62,26 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group mb-2">
-                                    <label asp-for="Count" class="form-label text-light">Count</label>
-                                    <input asp-for="Count" class="form-control bg-secondary text-white border-secondary form-control-sm" />
-                                    <span asp-validation-for="Count" class="text-danger small"></span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row mb-2">
-                            <div class="col-md-6">
-                                <div class="form-group mb-2">
                                     <label asp-for="Density" class="form-label text-light">Density</label>
                                     <input asp-for="Density" class="form-control bg-secondary text-white border-secondary form-control-sm" />
                                     <span asp-validation-for="Density" class="text-danger small"></span>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                        </div>
+
+                        <div class="row mb-2">
+                            <div class="col-8">
+                                <div class="form-group mb-2">
+                                    <label asp-for="MaterialId" class="form-label text-light">Material</label>
+                                    <select asp-for="MaterialId"
+                                            asp-items="Model.Materials"
+                                            class="form-select bg-secondary text-white border-secondary form-select-sm">
+                                        <option value="">Select Material</option>
+                                    </select>
+                                    <span asp-validation-for="MaterialId" class="text-danger small"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
                                 <div class="form-group mb-2">
                                     <label asp-for="HeatTransferCoefficient" class="form-label text-light">Heat Transfer Coefficient</label>
                                     <input asp-for="HeatTransferCoefficient" class="form-control bg-secondary text-white border-secondary form-control-sm" />
@@ -86,15 +90,7 @@
                             </div>
                         </div>
 
-                        <div class="form-group mb-2">
-                            <label asp-for="MaterialId" class="form-label text-light">Material</label>
-                            <select asp-for="MaterialId"
-                                    asp-items="Model.Materials"
-                                    class="form-select bg-secondary text-white border-secondary form-select-sm">
-                                <option value="">Select Material</option>
-                            </select>
-                            <span asp-validation-for="MaterialId" class="text-danger small"></span>
-                        </div>
+                        
 
                         <div class="d-grid pt-2">
                             <button type="submit" class="btn btn-light">Create</button>

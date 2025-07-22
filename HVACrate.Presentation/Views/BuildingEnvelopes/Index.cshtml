@@ -1,5 +1,6 @@
-﻿@using HVACrate.Domain.Entities.BuildingEnvelopes
-@model (Guid RoomId, Guid BuildingId, string RoomNumber, BuildingEnvelopeViewModel[] BuildingEnvelopes, int TotalCount, Pagination Pagination)
+﻿@using HVACrate.Application.Models.BuildingEnvelopes
+@using HVACrate.Domain.Entities.BuildingEnvelopes
+@model (Guid RoomId, Guid BuildingId, string RoomNumber, BuildingEnvelopeViewModel[] BuildingEnvelopes, long InternalFencesCount, long OpeningsCount, Pagination Pagination)
 
 @{
     ViewData["Title"] = "Building Envelopes";
@@ -41,7 +42,7 @@
                             <tbody>
                                 <tr>
                                     <td>Outer Walls</td>
-                                    <td>@Model.BuildingEnvelopes.Where(x => x.Type == nameof(OuterWall)).Sum(x => x.Count)</td>
+                                    <td>@Model.BuildingEnvelopes.Count(x => x.Type == nameof(OuterWall))</td>
                                     <td class="text-center">
                                         <div class="btn-group" role="group" aria-label="Outer Walls Actions">
                                             <a asp-action="Create" asp-route-roomId="@Model.RoomId" asp-route-type="@nameof(OuterWall)"
@@ -57,7 +58,7 @@
                                 </tr>
                                 <tr>
                                     <td>Windows And Doors</td>
-                                    <td>@Model.BuildingEnvelopes.Where(x => x.Type == nameof(Opening)).Sum(x => x.Count)</td>
+                                    <td>@Model.OpeningsCount</td>
                                     <td class="text-center">
                                         <div class="btn-group" role="group" aria-label="Windows And Doors Actions">
                                             <a asp-action="Create" asp-route-roomId="@Model.RoomId" asp-route-type="@nameof(Opening)"
@@ -73,7 +74,7 @@
                                 </tr>
                                 <tr>
                                     <td>Internal Fences</td>
-                                    <td>@Model.BuildingEnvelopes.Where(x => x.Type == nameof(InternalFence)).Sum(x => x.Count)</td>
+                                    <td>@Model.InternalFencesCount</td>
                                     <td class="text-center">
                                         <div class="btn-group" role="group" aria-label="Internal Fences Actions">
                                             <a asp-action="Create" asp-route-roomId="@Model.RoomId" asp-route-type="@nameof(InternalFence)"
@@ -89,7 +90,7 @@
                                 </tr>
                                 <tr>
                                     <td>Floors</td>
-                                    <td>@Model.BuildingEnvelopes.Where(x => x.Type == nameof(Floor)).Sum(x => x.Count)</td>
+                                    <td>@Model.BuildingEnvelopes.Count(x => x.Type == nameof(Floor))</td>
                                     <td class="text-center">
                                         <div class="btn-group" role="group" aria-label="Floors Actions">
                                             <a asp-action="Create" asp-route-roomId="@Model.RoomId" asp-route-type="@nameof(Floor)"
@@ -105,7 +106,7 @@
                                 </tr>
                                 <tr>
                                     <td>Roofs</td>
-                                    <td>@Model.BuildingEnvelopes.Where(x => x.Type == nameof(Roof)).Sum(x => x.Count)</td>
+                                    <td>@Model.BuildingEnvelopes.Count(x => x.Type == nameof(Roof))</td>
                                     <td class="text-center">
                                         <div class="btn-group" role="group" aria-label="Floors Actions">
                                             <a asp-action="Create" asp-route-roomId="@Model.RoomId" asp-route-type="@nameof(Roof)"

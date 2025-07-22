@@ -25,22 +25,20 @@ namespace HVACrate.Presentation.Controllers
 
             Pagination pagination = new(Page: query.Page, Limit: query.Limit);
 
-            Result<BuildingEnvelopeModel> buildingEnvelopeModels = await this._buildingEnvelopeService.GetAllAsReadOnlyAsync(new()
-            {
-                Pagination = pagination
-            }, id, cancellationToken);
+            var buildingEnvelopeModels = await this._buildingEnvelopeService.GetAllAsReadOnlyAsync(id, cancellationToken);
 
-            BuildingEnvelopeViewModel[] buildingEnvelopes = [..buildingEnvelopeModels.Items.Select(x => new BuildingEnvelopeViewModel
+            BuildingEnvelopeViewModel[] buildingEnvelopes = [..buildingEnvelopeModels.Select(x => new BuildingEnvelopeViewModel
             {
                 Id = x.Id,
                 Type = x.Type.ToString(),
-                Count = x.Count,
             })];
 
+            long internalFencesCount = await this._buildingEnvelopeService.GetInternalFencesCountByRoom(id, cancellationToken);
+            long openingsCount = await this._buildingEnvelopeService.GetOpeningsCountByRoom(id, cancellationToken);
             string roomNumber = await this._roomService.GetRoomNumberAsync(id, cancellationToken);
             Guid buildingId = await this._roomService.GetBuildingIdAsync(id, cancellationToken);
 
-            return View((id, buildingId, roomNumber, buildingEnvelopes, buildingEnvelopeModels.Count, pagination));
+            return View((id, buildingId, roomNumber, buildingEnvelopes, internalFencesCount, openingsCount, pagination));
         }
 
         [HttpGet]
@@ -99,7 +97,6 @@ namespace HVACrate.Presentation.Controllers
                 Area = f.Height * f.Width,
                 AdjustedTemperature = f.AdjustedTemperature,
                 ShouldReduceHeatingArea = f.ShouldReduceHeatingArea,
-                Count = f.Count,
                 Density = f.Density,
                 HeatTransferCoefficient = f.HeatTransferCoefficient,
                 RoomId = f.RoomId,
@@ -178,7 +175,6 @@ namespace HVACrate.Presentation.Controllers
                 AdjustedTemperature = f.AdjustedTemperature,
                 GroundWaterLength = f.GroundWaterLength,
                 GroundWaterTemperature = f.GroundWaterTemperature,
-                Count = f.Count,
                 ThermalConductivityResistance = f.ThermalConductivityResistance,
                 Density = f.Density,
                 HeatTransferCoefficient = f.HeatTransferCoefficient,
@@ -222,7 +218,6 @@ namespace HVACrate.Presentation.Controllers
                 Width = f.Width,
                 Area = f.Height * f.Width,
                 AdjustedTemperature = f.AdjustedTemperature,
-                Count = f.Count,
                 Density = f.Density,
                 HeatTransferCoefficient = f.HeatTransferCoefficient,
                 RoomId = f.RoomId,
@@ -267,7 +262,7 @@ namespace HVACrate.Presentation.Controllers
         private async Task<List<SelectListItem>> InitializeMaterials(CancellationToken cancellationToken)
         {
             var materials = await _materialService.GetAllAsReadOnlyAsync(new(), cancellationToken);
-            return [.. materials.Items.Select(m => new SelectListItem
+            return [.. materials.Select(m => new SelectListItem
             {
                 Value = m.Id.ToString(),
                 Text = m.Type
