@@ -1,4 +1,6 @@
-﻿namespace HVACrate.Presentation.Models.BuildingEnvelopes
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+
+namespace HVACrate.Presentation.Models.BuildingEnvelopes
 {
     public class OpeningFormModel : BuildingEnvelopeFormModel
     {
@@ -9,5 +11,7 @@
         public double JointLength { get; set; }
 
         public double VentilationCoefficient { get; set; }
+
+        public List<SelectListItem> Directions { get; set; } = [];
     }
 }

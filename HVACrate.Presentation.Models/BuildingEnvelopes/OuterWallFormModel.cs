@@ -1,4 +1,6 @@
-﻿namespace HVACrate.Presentation.Models.BuildingEnvelopes
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+
+namespace HVACrate.Presentation.Models.BuildingEnvelopes
 {
     public class OuterWallFormModel : BuildingEnvelopeFormModel
     {
@@ -7,5 +9,7 @@
         public string Direction { get; set; } = null!;
 
         public bool ShouldReduceHeatingArea { get; set; }
+
+        public List<SelectListItem> Directions { get; set; } = [];
     }
 }

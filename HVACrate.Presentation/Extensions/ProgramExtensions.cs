@@ -3,12 +3,14 @@ using HVACrate.Application.Services;
 using HVACrate.Domain.Entities;
 using HVACrate.Domain.Repositories.BuildingEnvelopes;
 using HVACrate.Domain.Repositories.Buildings;
+using HVACrate.Domain.Repositories.Materials;
 using HVACrate.Domain.Repositories.Projects;
 using HVACrate.Domain.Repositories.Rooms;
 using HVACrate.Domain.Repositories.Users;
 using HVACrate.Persistence;
 using HVACrate.Persistence.Repositories.BuildingEnvelopes;
 using HVACrate.Persistence.Repositories.Buildings;
+using HVACrate.Persistence.Repositories.Materials;
 using HVACrate.Persistence.Repositories.Projects;
 using HVACrate.Persistence.Repositories.Rooms;
 using HVACrate.Persistence.Repositories.Users;
@@ -59,6 +61,7 @@ public static class ProgramExtensions
         services.AddScoped<IBuildingRepository, BuildingRepository>();
         services.AddScoped<IRoomRepository, RoomRepository>();
         services.AddScoped<IBuildingEnvelopeRepository, BuildingEnvelopeRepository>();
+        services.AddScoped<IMaterialRepository, MaterialRepository>();
     }
 
     public static void AddServices(this IServiceCollection services)
@@ -68,6 +71,7 @@ public static class ProgramExtensions
         services.AddScoped<IBuildingService, BuildingService>();
         services.AddScoped<IRoomService, RoomService>();
         services.AddScoped<IBuildingEnvelopeService, BuildingEnvelopeService>();
+        services.AddScoped<IMaterialService, MaterialService>();
     }
 
     public static async Task SeedIdentityDataAsync(this IServiceProvider serviceProvider)

@@ -1,4 +1,6 @@
-﻿namespace HVACrate.Presentation.Models.BuildingEnvelopes
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+
+namespace HVACrate.Presentation.Models.BuildingEnvelopes
 {
     public abstract class BuildingEnvelopeFormModel
     {
@@ -23,5 +25,7 @@
         public Guid RoomId { get; set; }
 
         public Guid MaterialId { get; set; }
+
+        public List<SelectListItem> Materials { get; set; } = [];
     }
 }
