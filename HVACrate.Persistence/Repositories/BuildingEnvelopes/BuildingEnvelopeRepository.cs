@@ -12,7 +12,6 @@ namespace HVACrate.Persistence.Repositories.BuildingEnvelopes
         {
             IQueryable<BuildingEnvelope> baseQuery = context.BuildingsEnvelope
                 .Where (p => p.RoomId == filterId)
-                .WithSearch(query.SearchParam, x => EF.Property<string>(x, query.QueryParam))
                 .AsNoTracking();
 
             int totalCount = await baseQuery

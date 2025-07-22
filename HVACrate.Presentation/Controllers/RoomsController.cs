@@ -31,9 +31,6 @@ namespace HVACrate.Presentation.Controllers
                 Pagination = pagination
             }, id, cancellationToken);
 
-            BuildingModel building = await this._buildingService.GetByIdAsReadOnlyAsync(id, cancellationToken);
-            int totalFloors = building.Floors;
-
             RoomViewModel[] rooms = [.. roomModels.Items.Select(x => new RoomViewModel
             {
                 Id = x.Id,
@@ -42,6 +39,8 @@ namespace HVACrate.Presentation.Controllers
                 Floor = x.Floor,
                 BuildingId = id,
             })];
+
+            int totalFloors = await this._buildingService.GetTotalFloors(id, cancellationToken);
 
             ViewBag.SelectedFloor = query.SearchParam;
 
