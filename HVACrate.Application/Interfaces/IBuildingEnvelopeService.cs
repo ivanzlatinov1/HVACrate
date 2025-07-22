@@ -1,5 +1,6 @@
 ﻿using HVACrate.Application.Models;
 using HVACrate.Application.Models.BuildingEnvelopes;
+using HVACrate.Domain.Enums;
 using HVACrate.Domain.ValueObjects;
 
 namespace HVACrate.Application.Interfaces
@@ -12,6 +13,11 @@ namespace HVACrate.Application.Interfaces
         Task CreateAsync(BuildingEnvelopeModel model, CancellationToken cancellationToken = default);
         Task UpdateAsync(BuildingEnvelopeModel model, CancellationToken cancellationToken = default);
         Task SoftDeleteAsync(Guid id, CancellationToken cancellationToken = default);
+        Task<OuterWallModel?> GetWallByDirectionAsync(Guid roomId, Direction direction, CancellationToken cancellationToken = default);
+        Task<bool> IsThereAWallOnDirectionAsync(Guid roomId, Direction direction, CancellationToken cancellationToken = default);
+        Task<bool> IsThereAnOpeningOnDirectionAsync(Guid roomId, Direction direction, CancellationToken cancellationToken = default);
+        Task<bool> IsThereARoofInRoomAsync(Guid roomId, CancellationToken cancellationToken = default);
+        Task<bool> IsThereAFloorInRoomAsync(Guid roomId, CancellationToken cancellationToken = default);
         double CalculateHeatInfiltration(BuildingEnvelopeModel buildingEnvelope);
         double CalculateHeatTransmission(BuildingEnvelopeModel buildingEnvelope);
     }

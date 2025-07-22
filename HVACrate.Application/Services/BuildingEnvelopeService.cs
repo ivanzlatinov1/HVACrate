@@ -3,6 +3,7 @@ using HVACrate.Application.Mappers;
 using HVACrate.Application.Models;
 using HVACrate.Application.Models.BuildingEnvelopes;
 using HVACrate.Domain.Entities;
+using HVACrate.Domain.Entities.BuildingEnvelopes;
 using HVACrate.Domain.Enums;
 using HVACrate.Domain.Repositories.BuildingEnvelopes;
 using HVACrate.Domain.ValueObjects;
@@ -20,6 +21,15 @@ namespace HVACrate.Application.Services
                 .ConfigureAwait(false);
 
             return new Result<BuildingEnvelopeModel>(buildingEnvelopes.Count, [.. buildingEnvelopes.Items.Select(x => x.ToModel())]);
+        }
+
+        public async Task<OuterWallModel?> GetWallByDirectionAsync(Guid roomId, Direction direction, CancellationToken cancellationToken = default)
+        {
+            OuterWall? wall = await this._buildingEnvelopeRepository
+                .GetWallByDirectionAsync(roomId, direction, cancellationToken)
+                .ConfigureAwait(false);
+
+            return wall?.ToModel(false) as OuterWallModel;
         }
 
         public async Task<BuildingEnvelopeModel> GetByIdAsReadOnlyAsync(Guid id, CancellationToken cancellationToken = default)
@@ -71,7 +81,7 @@ namespace HVACrate.Application.Services
 
         public double CalculateHeatTransmission(BuildingEnvelopeModel buildingEnvelope)
         {
-            double area = buildingEnvelope.Width * buildingEnvelope.Height;
+            double area = buildingEnvelope.Area;
             double thermalResistance = 1.0 / buildingEnvelope.HeatTransferCoefficient;
             double roomTemperature = buildingEnvelope.Room.Temperature;
             double regionTemperature = buildingEnvelope.Room.Building.Project.RegionTemperature;
@@ -101,5 +111,17 @@ namespace HVACrate.Application.Services
                 _ => 1.0,
             };
         }
+
+        public async Task<bool> IsThereAWallOnDirectionAsync(Guid roomId, Direction direction, CancellationToken cancellationToken = default)
+            => await this._buildingEnvelopeRepository.IsThereAWallOnDirectionAsync(roomId, direction, cancellationToken).ConfigureAwait(false);
+
+        public async Task<bool> IsThereAnOpeningOnDirectionAsync(Guid roomId, Direction direction, CancellationToken cancellationToken = default)
+            => await this._buildingEnvelopeRepository.IsThereAnOpeningOnDirectionAsync(roomId, direction, cancellationToken).ConfigureAwait(false);
+
+        public async Task<bool> IsThereARoofInRoomAsync(Guid roomId, CancellationToken cancellationToken = default)
+            => await this._buildingEnvelopeRepository.IsThereARoofInRoomAsync(roomId, cancellationToken).ConfigureAwait(false);
+
+        public async Task<bool> IsThereAFloorInRoomAsync(Guid roomId, CancellationToken cancellationToken = default)
+            => await this._buildingEnvelopeRepository.IsThereAFloorInRoomAsync(roomId, cancellationToken).ConfigureAwait(false);
     }
 }
