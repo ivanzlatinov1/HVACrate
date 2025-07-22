@@ -30,7 +30,7 @@ namespace HVACrate.Application.Mappers
                 _ => throw new Exception($"Unsupported type: {entity.GetType().Name}")
             };
 
-            MapSharedToModel(entity, model);
+            MapSharedToModel(entity, model, firstTime);
             return model;
         }
 
@@ -58,16 +58,17 @@ namespace HVACrate.Application.Mappers
                 _ => throw new Exception($"Unsupported type: {model.GetType().Name}")
             };
 
-            MapSharedToEntity(model, entity);
+            MapSharedToEntity(model, entity, firstTime);
             return entity;
         }
 
         // Helper methods for the common properties
-        private static void MapSharedToModel(BuildingEnvelope entity, BuildingEnvelopeModel model)
+        private static void MapSharedToModel(BuildingEnvelope entity, BuildingEnvelopeModel model, bool firstTime)
         {
             model.Id = entity.Id;
             model.Height = entity.Height;
             model.Width = entity.Width;
+            model.Area = entity.Area;
             model.AdjustedTemperature = entity.AdjustedTemperature;
             model.HeatTransferCoefficient = entity.HeatTransferCoefficient;
             model.Density = entity.Density;
@@ -75,15 +76,16 @@ namespace HVACrate.Application.Mappers
             model.IsDeleted = entity.IsDeleted;
             model.RoomId = entity.RoomId;
             model.MaterialId = entity.MaterialId;
-            model.Room = entity.Room.ToModel(false);
-            model.Material = entity.Material.ToModel(false);
+            model.Room = firstTime ? entity.Room.ToModel(false) : null!;
+            model.Material = firstTime ? entity.Material.ToModel(false) : null!;
         }
 
-        private static void MapSharedToEntity(BuildingEnvelopeModel model, BuildingEnvelope entity)
+        private static void MapSharedToEntity(BuildingEnvelopeModel model, BuildingEnvelope entity, bool firstTime)
         {
             entity.Id = model.Id;
             entity.Height = model.Height;
             entity.Width = model.Width;
+            entity.Area = model.Area;
             entity.AdjustedTemperature = model.AdjustedTemperature;
             entity.HeatTransferCoefficient = model.HeatTransferCoefficient;
             entity.Density = model.Density;
@@ -91,8 +93,8 @@ namespace HVACrate.Application.Mappers
             entity.IsDeleted = model.IsDeleted;
             entity.RoomId = model.RoomId;
             entity.MaterialId = model.MaterialId;
-            entity.Room = model.Room.ToEntity(false);
-            entity.Material = model.Material.ToEntity(false);
+            entity.Room = firstTime ? model.Room.ToEntity(false) : null!;
+            entity.Material = firstTime ? model.Material.ToEntity(false) : null!;
         }
     }
 }

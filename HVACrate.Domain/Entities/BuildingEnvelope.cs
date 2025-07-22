@@ -8,6 +8,8 @@
 
         public double Width { get; set; }
 
+        public double Area { get; set; }
+
         public double Density { get; set; }
 
         public int Count { get; set; }

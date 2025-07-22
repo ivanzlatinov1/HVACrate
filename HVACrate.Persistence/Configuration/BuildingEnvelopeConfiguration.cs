@@ -43,6 +43,13 @@ namespace HVACrate.Persistence.Configuration
                 .HasPrecision(TotalPrecision, TotalScale)
                 .HasComment("The width of the building envelope");
 
+            // Define constraints for the Area column
+            entity
+                .Property(be => be.Area)
+                .IsRequired()
+                .HasPrecision(TotalPrecision, TotalScale)
+                .HasComment("The area of the building envelope");
+
             // Define constraints for the Count column
             entity.Property(be => be.Count)
                 .IsRequired()
