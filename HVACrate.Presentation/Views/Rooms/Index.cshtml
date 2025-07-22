@@ -1,4 +1,4 @@
-﻿@model (Guid BuildingId, int TotalFloors, List<RoomViewModel> Rooms, int Count, Pagination Pagination)
+﻿@model (Guid BuildingId, int TotalFloors, RoomViewModel[] Rooms, int Count, Pagination Pagination)
 @{
     ViewData["Title"] = "Rooms";
     int? selectedFloor = Convert.ToInt32(ViewBag.SelectedFloor);

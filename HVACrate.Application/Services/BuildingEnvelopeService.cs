@@ -5,12 +5,15 @@ using HVACrate.Domain.Entities;
 using HVACrate.Domain.Entities.BuildingEnvelopes;
 using HVACrate.Domain.Enums;
 using HVACrate.Domain.Repositories.BuildingEnvelopes;
+using HVACrate.Domain.Repositories.Rooms;
 
 namespace HVACrate.Application.Services
 {
-    public class BuildingEnvelopeService(IBuildingEnvelopeRepository buildingEnvelopeRepository) : IBuildingEnvelopeService
+    public class BuildingEnvelopeService(IBuildingEnvelopeRepository buildingEnvelopeRepository,
+        IRoomRepository roomRepository) : IBuildingEnvelopeService
     {
         private readonly IBuildingEnvelopeRepository _buildingEnvelopeRepository = buildingEnvelopeRepository;
+        private readonly IRoomRepository _roomRepository = roomRepository;
 
         public async Task<List<BuildingEnvelopeModel>> GetAllAsReadOnlyAsync(Guid? roomId, CancellationToken cancellationToken = default)
         {
@@ -27,7 +30,7 @@ namespace HVACrate.Application.Services
                 .GetWallByDirectionAsync(roomId, direction, cancellationToken)
                 .ConfigureAwait(false);
 
-            return wall?.ToModel(false) as OuterWallModel;
+            return wall?.ToModel() as OuterWallModel;
         }
 
         public async Task<BuildingEnvelopeModel> GetByIdAsReadOnlyAsync(Guid id, CancellationToken cancellationToken = default)
@@ -55,21 +58,27 @@ namespace HVACrate.Application.Services
                 .ConfigureAwait(false);
 
             await this._buildingEnvelopeRepository.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+
+            await this.TryMakeRoomEnclosed(model.RoomId, cancellationToken).ConfigureAwait(false);
         }
 
         public async Task UpdateAsync(BuildingEnvelopeModel model, CancellationToken cancellationToken = default)
         {
             this._buildingEnvelopeRepository.Update(model.ToEntity(false));
             await this._buildingEnvelopeRepository.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+
+            await this.TryMakeRoomEnclosed(model.RoomId, cancellationToken).ConfigureAwait(false);
         }
 
         public async Task SoftDeleteAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            BuildingEnvelope room = await this._buildingEnvelopeRepository.GetByIdAsync(id, cancellationToken)
+            BuildingEnvelope buildingEnvelope = await this._buildingEnvelopeRepository.GetByIdAsync(id, cancellationToken)
                 ?? throw new Exception("Building Envelope not found");
 
-            this._buildingEnvelopeRepository.SoftDelete(room);
+            this._buildingEnvelopeRepository.SoftDelete(buildingEnvelope);
             await this._buildingEnvelopeRepository.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+
+            await this.TryMakeRoomEnclosed(buildingEnvelope.RoomId, cancellationToken).ConfigureAwait(false);
         }
 
         public double CalculateHeatInfiltration(BuildingEnvelopeModel buildingEnvelope)
@@ -108,6 +117,44 @@ namespace HVACrate.Application.Services
                 Direction.West or Direction.Southeast => 1.05,
                 _ => 1.0,
             };
+        }
+
+        private async Task TryMakeRoomEnclosed(Guid roomId, CancellationToken cancellationToken = default)
+        {
+            Room room = await this._roomRepository
+                .GetByIdAsync(roomId, cancellationToken)
+                .ConfigureAwait(false);
+
+            List<OuterWall> outerWalls = [.. room.BuildingEnvelopes.OfType<OuterWall>()];
+            List<InternalFence> internalFences = [.. room.BuildingEnvelopes.OfType<InternalFence>()];
+
+            bool isThereFloor = await this._buildingEnvelopeRepository
+                .IsThereAFloorInRoomAsync(roomId, cancellationToken)
+                .ConfigureAwait(false);
+
+            bool isThereRoof = await this._buildingEnvelopeRepository
+                .IsThereARoofInRoomAsync(roomId, cancellationToken)
+                .ConfigureAwait(false);
+
+            bool isEnclosed = true;
+
+            if (!isThereFloor || !isThereRoof || outerWalls.Count == 0)
+                isEnclosed = false;
+
+            int totalWalls = outerWalls.Count + internalFences.Sum(x => x.Count);
+
+            if (totalWalls < 4)
+                isEnclosed = false;
+
+            if (isEnclosed)
+            {
+                room.IsEnclosed = true;
+            }
+            else
+            {
+                room.IsEnclosed = false;
+            }
+            await this._roomRepository.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
         }
 
         public async Task<bool> IsThereAWallOnDirectionAsync(Guid roomId, Direction direction, CancellationToken cancellationToken = default)

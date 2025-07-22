@@ -18,7 +18,7 @@ namespace HVACrate.Application.Services
                 .GetAllAsync(query.ToQuery(), cancellationToken)
                 .ConfigureAwait(false);
 
-            return new Result<HVACUserModel>(users.Count, [.. users.Items.Select(x => x.ToModel())]);
+            return new Result<HVACUserModel>(users.Count, [.. users.Items.Select(x => x.ToModel(false))]);
         }
 
         public async Task<Dictionary<Guid, string>> GetRolesAsync(Guid[] ids, CancellationToken cancellationToken = default)

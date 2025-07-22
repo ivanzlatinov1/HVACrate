@@ -17,7 +17,7 @@ namespace HVACrate.Persistence.Repositories.BuildingEnvelopes
         public async Task<OuterWall?> GetWallByDirectionAsync(Guid roomId, Direction direction, CancellationToken cancellationToken = default)
             => await context.BuildingEnvelopes
                 .OfType<OuterWall>()
-                .Where(x => x.RoomId == roomId && x.Type == BuildingEnvelopeType.OuterWall && x.Direction == direction)
+                .Where(x => x.RoomId == roomId && x.Direction == direction)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(cancellationToken);
 

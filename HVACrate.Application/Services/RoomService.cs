@@ -3,7 +3,6 @@ using HVACrate.Application.Mappers;
 using HVACrate.Application.Models;
 using HVACrate.Application.Models.Rooms;
 using HVACrate.Domain.Entities;
-using HVACrate.Domain.Entities.BuildingEnvelopes;
 using HVACrate.Domain.Repositories.Rooms;
 using HVACrate.Domain.ValueObjects;
 
@@ -20,7 +19,7 @@ namespace HVACrate.Application.Services
                 .GetAllAsReadOnlyAsync(query.ToQuery(), buildingId, cancellationToken)
                 .ConfigureAwait(false);
 
-            return new Result<RoomModel>(rooms.Count, [.. rooms.Items.Select(x => x.ToModel())]);
+            return new Result<RoomModel>(rooms.Count, [.. rooms.Items.Select(x => x.ToModel(false))]);
         }
 
         public async Task CreateAsync(RoomModel model, CancellationToken cancellationToken = default)
@@ -70,7 +69,7 @@ namespace HVACrate.Application.Services
 
         public async Task UpdateAsync(RoomModel model, CancellationToken cancellationToken = default)
         {
-            this._roomRepository.Update(model.ToEntity());
+            this._roomRepository.Update(model.ToEntity(false));
             await this._roomRepository.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
         }
 
@@ -109,34 +108,6 @@ namespace HVACrate.Application.Services
                 .ConfigureAwait(false);
 
             return room.Number;
-        }
-
-        public async Task<bool> IsRoomEnclosed(Guid id, CancellationToken cancellationToken = default)
-        {
-            Room room = await this._roomRepository
-                .GetByIdAsReadOnlyAsync(id, cancellationToken)
-                .ConfigureAwait(false);
-
-            List<OuterWall> outerWalls = [.. room.BuildingEnvelopes.OfType<OuterWall>()];
-            List<InternalFence> internalFences = [.. room.BuildingEnvelopes.OfType<InternalFence>()];
-
-            bool isThereFloor = await this._buildingEnvelopeService
-                .IsThereAFloorInRoomAsync(id, cancellationToken)
-                .ConfigureAwait(false);
-
-            bool isThereRoof = await this._buildingEnvelopeService
-                .IsThereARoofInRoomAsync(id, cancellationToken)
-                .ConfigureAwait(false);
-
-            if (!isThereFloor || !isThereRoof || outerWalls.Count == 0)
-                return false;
-
-            int totalWalls = outerWalls.Count + internalFences.Count;
-
-            if (totalWalls < 4)
-                return false;
-
-            return true;
         }
     }
 }

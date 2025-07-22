@@ -59,7 +59,7 @@ namespace HVACrate.Application.Services
                 .GetAllAsReadOnlyAsync(query.ToQuery(), projectId, cancellationToken)
                 .ConfigureAwait(false);
 
-            return new Result<BuildingModel>(projects.Count, [.. projects.Items.Select(x => x.ToModel())]);
+            return new Result<BuildingModel>(projects.Count, [.. projects.Items.Select(x => x.ToModel(false))]);
         }
 
         public async Task<BuildingModel> GetByIdAsReadOnlyAsync(Guid id, CancellationToken cancellationToken = default)
@@ -100,7 +100,7 @@ namespace HVACrate.Application.Services
 
         public async Task UpdateAsync(BuildingModel model, CancellationToken cancellationToken = default)
         {
-            this._buildingRepository.Update(model.ToEntity());
+            this._buildingRepository.Update(model.ToEntity(false));
             await this._buildingRepository.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
         }
     }

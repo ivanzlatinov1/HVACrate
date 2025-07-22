@@ -125,7 +125,7 @@ namespace HVACrate.Presentation.Controllers
                 await SeedFormDropdownsAsync(form, cancellationToken);
                 return View(nameof(CreateOpening), form);
             }
-            else if (outerWall.Area - (form.Width * form.Height) < 0)
+            else if (outerWall.Area - (form.Width * form.Height * form.Count) < 0)
             {
                 ModelState.AddModelError(string.Empty, $"The window/door is too big to suit the wall!");
 
@@ -133,7 +133,7 @@ namespace HVACrate.Presentation.Controllers
                 return View(nameof(CreateOpening), form);
             }
 
-            outerWall.Area -= form.Width * form.Height;
+            outerWall.Area -= form.Width * form.Height * form.Count;
             await this._buildingEnvelopeService.UpdateAsync(outerWall, cancellationToken);
 
             return await HandleCreateAsync(form, f => new OpeningModel
