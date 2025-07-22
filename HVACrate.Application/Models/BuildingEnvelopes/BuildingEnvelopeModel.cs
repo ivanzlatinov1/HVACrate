@@ -18,8 +18,6 @@ namespace HVACrate.Application.Models.BuildingEnvelopes
 
         public double Density { get; set; }
 
-        public int Count { get; set; }
-
         public double AdjustedTemperature { get; set; }
 
         public double HeatTransferCoefficient { get; set; }

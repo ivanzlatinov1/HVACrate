@@ -23,6 +23,12 @@ namespace HVACrate.Persistence.Configuration.BuildingEnvelopes
                 .HasPrecision(TotalPrecision, TotalScale)
                 .HasComment("Length of joints surrounding the opening, used in heat loss calculation (m)");
 
+            // Define constraints for the Count column
+            entity
+                .Property(be => be.Count)
+                .IsRequired()
+                .HasComment("The count of the openings");
+
             // Define constraints for the VentilationCoefficient column
             entity
                 .Property(o => o.VentilationCoefficient)

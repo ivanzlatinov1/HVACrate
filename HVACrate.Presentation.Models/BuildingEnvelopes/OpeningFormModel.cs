@@ -12,6 +12,8 @@ namespace HVACrate.Presentation.Models.BuildingEnvelopes
 
         public double VentilationCoefficient { get; set; }
 
+        public int Count { get; set; }
+
         public List<SelectListItem> Directions { get; set; } = [];
     }
 }

@@ -9,5 +9,7 @@
         public double JointLength { get; set; }
 
         public double VentilationCoefficient { get; set; }
+
+        public int Count { get; set; }
     }
 }

@@ -20,7 +20,7 @@ namespace HVACrate.Persistence
         public virtual DbSet<Project> Projects { get; set; } = null!;
         public virtual DbSet<Building> Buildings { get; set; } = null!;
         public virtual DbSet<Room> Rooms { get; set; } = null!;
-        public virtual DbSet<BuildingEnvelope> BuildingsEnvelope { get; set; } = null!;
+        public virtual DbSet<BuildingEnvelope> BuildingEnvelopes { get; set; } = null!;
         public virtual DbSet<Material> Materials { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

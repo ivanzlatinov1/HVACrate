@@ -27,6 +27,11 @@ namespace HVACrate.Application.Mappers
                     GroundWaterLength = floor.GroundWaterLength,
                     GroundWaterTemperature = floor.GroundWaterTemperature,
                 },
+                InternalFence internalFence => new InternalFenceModel
+                {
+                    Count = internalFence.Count,
+                },
+                Roof roof => new RoofModel(),
                 _ => throw new Exception($"Unsupported type: {entity.GetType().Name}")
             };
 
@@ -47,6 +52,7 @@ namespace HVACrate.Application.Mappers
                 {
                     JointLength = openingModel.JointLength,
                     VentilationCoefficient = openingModel.VentilationCoefficient,
+                    Count = openingModel.Count,
                     Direction = openingModel.Direction
                 },
                 FloorModel floorModel => new Floor
@@ -55,6 +61,11 @@ namespace HVACrate.Application.Mappers
                     GroundWaterLength = floorModel.GroundWaterLength,
                     GroundWaterTemperature = floorModel.GroundWaterTemperature,
                 },
+                InternalFenceModel internalFenceModel => new InternalFence
+                {
+                    Count = internalFenceModel.Count,
+                },
+                RoofModel roofModel => new Roof(),
                 _ => throw new Exception($"Unsupported type: {model.GetType().Name}")
             };
 
@@ -72,7 +83,6 @@ namespace HVACrate.Application.Mappers
             model.AdjustedTemperature = entity.AdjustedTemperature;
             model.HeatTransferCoefficient = entity.HeatTransferCoefficient;
             model.Density = entity.Density;
-            model.Count = entity.Count;
             model.IsDeleted = entity.IsDeleted;
             model.RoomId = entity.RoomId;
             model.MaterialId = entity.MaterialId;
@@ -89,7 +99,6 @@ namespace HVACrate.Application.Mappers
             entity.AdjustedTemperature = model.AdjustedTemperature;
             entity.HeatTransferCoefficient = model.HeatTransferCoefficient;
             entity.Density = model.Density;
-            entity.Count = model.Count;
             entity.IsDeleted = model.IsDeleted;
             entity.RoomId = model.RoomId;
             entity.MaterialId = model.MaterialId;

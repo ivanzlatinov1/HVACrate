@@ -5,5 +5,7 @@ namespace HVACrate.Application.Models.BuildingEnvelopes
     public class InternalFenceModel : BuildingEnvelopeModel
     {
         public override BuildingEnvelopeType Type => BuildingEnvelopeType.InternalFence;
+
+        public int Count { get; set; }
     }
 }
