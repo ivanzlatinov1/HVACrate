@@ -4,7 +4,6 @@ using HVACrate.Application.Models;
 using HVACrate.Application.Models.Materials;
 using HVACrate.Domain.Entities;
 using HVACrate.Domain.Repositories.Materials;
-using HVACrate.Domain.ValueObjects;
 
 namespace HVACrate.Application.Services
 {
@@ -21,13 +20,13 @@ namespace HVACrate.Application.Services
             await this._materialRepository.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
         }
 
-        public async Task<Result<MaterialModel>> GetAllAsReadOnlyAsync(BaseQueryModel query, CancellationToken cancellationToken = default)
+        public async Task<List<MaterialModel>> GetAllAsReadOnlyAsync(BaseQueryModel query, CancellationToken cancellationToken = default)
         {
             var materials = await this._materialRepository
-                .GetAllAsReadOnlyAsync(query.ToQuery(), null, cancellationToken)
+                .GetAllAsReadOnlyAsync(cancellationToken)
                 .ConfigureAwait(false);
 
-            return new Result<MaterialModel>(materials.Count, [.. materials.Items.Select(x => x.ToModel())]);
+            return [.. materials.Select(x => x.ToModel(false))];
         }
 
         public async Task<MaterialModel> GetByIdAsReadOnlyAsync(Guid id, CancellationToken cancellationToken = default)

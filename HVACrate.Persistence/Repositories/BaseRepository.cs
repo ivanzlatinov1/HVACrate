@@ -1,6 +1,5 @@
 ﻿using HVACrate.Domain.Interfaces;
 using HVACrate.Domain.Repositories;
-using HVACrate.Domain.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 
 namespace HVACrate.Persistence.Repositories
@@ -8,39 +7,6 @@ namespace HVACrate.Persistence.Repositories
     public abstract class BaseRepository<TEntity>(HVACrateDbContext dbContext) : IBaseRepository<TEntity> where TEntity : BaseEntity
     {
         private readonly HVACrateDbContext _context = dbContext;
-
-        public virtual async Task<Result<TEntity>> GetAllAsReadOnlyAsync(BaseQuery query, Guid? filterId = null, CancellationToken cancellationToken = default)
-        {
-            IQueryable<TEntity> baseQuery = _context
-                .Set<TEntity>()
-                .WithSearch(query.SearchParam, x => EF.Property<string>(x, query.QueryParam))
-                .AsNoTracking();
-
-            int totalCount = await baseQuery
-                .CountAsync(cancellationToken);
-
-            TEntity[] entities = await baseQuery
-                .WithPagination(query.Pagination)
-                .ToArrayAsync(cancellationToken);
-
-            return new Result<TEntity>(totalCount, entities);
-        }
-
-        public virtual async Task<Result<TEntity>> GetAllAsync(BaseQuery query, CancellationToken cancellationToken = default)
-        {
-            IQueryable<TEntity> baseQuery = _context
-                .Set<TEntity>()
-                .WithSearch(query.SearchParam, x => EF.Property<string>(x, query.QueryParam));
-
-            int count = await baseQuery
-                .CountAsync(cancellationToken);
-
-            TEntity[] entities = await baseQuery
-                .WithPagination(query.Pagination)
-                .ToArrayAsync(cancellationToken);
-
-            return new Result<TEntity>(count, entities);
-        }
 
         public async Task<TEntity> GetByIdAsReadOnlyAsync(Guid id, CancellationToken cancellationToken = default)
             => await _context.Set<TEntity>()

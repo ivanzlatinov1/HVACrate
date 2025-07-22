@@ -8,7 +8,7 @@ namespace HVACrate.Persistence.Repositories.Projects
     public class ProjectRepository(HVACrateDbContext context)
         : BaseRepository<Project>(context), IProjectRepository
     {
-        public override async Task<Result<Project>> GetAllAsReadOnlyAsync(BaseQuery query, Guid? searchId = null, CancellationToken cancellationToken = default)
+        public async Task<Result<Project>> GetAllAsReadOnlyAsync(BaseQuery query, Guid? searchId = null, CancellationToken cancellationToken = default)
         {
             IQueryable<Project> baseQuery = context.Projects
                 .Where(p => p.HVACUserId == searchId)

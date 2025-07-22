@@ -8,7 +8,7 @@ namespace HVACrate.Persistence.Repositories.Buildings
     public class BuildingRepository(HVACrateDbContext context) : BaseRepository<Building>(context), IBuildingRepository
     {
 
-        public override async Task<Result<Building>> GetAllAsReadOnlyAsync(BaseQuery query, Guid? filterId = null, CancellationToken cancellationToken = default)
+        public async Task<Result<Building>> GetAllAsReadOnlyAsync(BaseQuery query, Guid? filterId = null, CancellationToken cancellationToken = default)
         {
             IQueryable<Building> baseQuery = context.Buildings
                 .Where (p => p.ProjectId == filterId)

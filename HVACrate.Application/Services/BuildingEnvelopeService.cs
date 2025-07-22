@@ -6,7 +6,6 @@ using HVACrate.Domain.Entities;
 using HVACrate.Domain.Entities.BuildingEnvelopes;
 using HVACrate.Domain.Enums;
 using HVACrate.Domain.Repositories.BuildingEnvelopes;
-using HVACrate.Domain.ValueObjects;
 
 namespace HVACrate.Application.Services
 {
@@ -14,13 +13,13 @@ namespace HVACrate.Application.Services
     {
         private readonly IBuildingEnvelopeRepository _buildingEnvelopeRepository = buildingEnvelopeRepository;
 
-        public async Task<Result<BuildingEnvelopeModel>> GetAllAsReadOnlyAsync(BaseQueryModel query, Guid? buildingId, CancellationToken cancellationToken = default)
+        public async Task<List<BuildingEnvelopeModel>> GetAllAsReadOnlyAsync(Guid? roomId, CancellationToken cancellationToken = default)
         {
             var buildingEnvelopes = await this._buildingEnvelopeRepository
-                .GetAllAsReadOnlyAsync(query.ToQuery(), buildingId, cancellationToken)
+                .GetAllAsReadOnlyAsync(roomId, cancellationToken)
                 .ConfigureAwait(false);
 
-            return new Result<BuildingEnvelopeModel>(buildingEnvelopes.Count, [.. buildingEnvelopes.Items.Select(x => x.ToModel())]);
+            return [.. buildingEnvelopes.Select(x => x.ToModel(false))];
         }
 
         public async Task<OuterWallModel?> GetWallByDirectionAsync(Guid roomId, Direction direction, CancellationToken cancellationToken = default)
@@ -123,5 +122,11 @@ namespace HVACrate.Application.Services
 
         public async Task<bool> IsThereAFloorInRoomAsync(Guid roomId, CancellationToken cancellationToken = default)
             => await this._buildingEnvelopeRepository.IsThereAFloorInRoomAsync(roomId, cancellationToken).ConfigureAwait(false);
+
+        public async Task<long> GetInternalFencesCountByRoom(Guid roomId, CancellationToken cancellationToken = default)
+           => await this._buildingEnvelopeRepository.GetInternalFencesCountByRoom(roomId, cancellationToken).ConfigureAwait(false);
+
+        public async Task<long> GetOpeningsCountByRoom(Guid roomId, CancellationToken cancellationToken = default)
+           => await this._buildingEnvelopeRepository.GetOpeningsCountByRoom(roomId, cancellationToken).ConfigureAwait(false);
     }
 }

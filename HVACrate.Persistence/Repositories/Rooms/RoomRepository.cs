@@ -7,7 +7,7 @@ namespace HVACrate.Persistence.Repositories.Rooms
 {
     public class RoomRepository(HVACrateDbContext context) : BaseRepository<Room>(context), IRoomRepository
     {
-        public override async Task<Result<Room>> GetAllAsReadOnlyAsync(BaseQuery query, Guid? filterId = null, CancellationToken cancellationToken = default)
+        public async Task<Result<Room>> GetAllAsReadOnlyAsync(BaseQuery query, Guid? filterId = null, CancellationToken cancellationToken = default)
         {
             IQueryable<Room> baseQuery = context.Rooms
                 .Where(r => r.BuildingId == filterId)
