@@ -12,7 +12,7 @@ namespace HVACrate.Application.Mappers
                 Type = entity.Type,
                 ThermalConductivity = entity.ThermalConductivity,
                 IsDeleted = entity.IsDeleted,
-                BuildingEnvelopes = firstTime ? entity.BuildingEnvelopes.Select(x => x.ToModel(false)).ToList() : null! 
+                BuildingEnvelopes = firstTime ? entity.BuildingEnvelopes.Select(x => x.ToModel(false)).ToList() : null!
             };
 
         public static Material ToEntity(this MaterialModel model, bool firstTime = true)
@@ -22,7 +22,7 @@ namespace HVACrate.Application.Mappers
                 Type = model.Type,
                 ThermalConductivity = model.ThermalConductivity,
                 IsDeleted = model.IsDeleted,
-                BuildingEnvelopes = firstTime ? model.BuildingEnvelopes.Select(x => x.ToEntity(false)).ToList() : null! 
+                BuildingEnvelopes = firstTime ? model.BuildingEnvelopes.Select(x => x.ToEntity(false)).ToList() : null!
             };
     }
 }

@@ -1,8 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
-using static HVACrate.GCommon.GlobalConstants;
 using static HVACrate.Domain.ValidationConstants.Material;
+using static HVACrate.GCommon.GlobalConstants;
 
 namespace HVACrate.Persistence.Configuration
 {

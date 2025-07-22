@@ -11,7 +11,7 @@ namespace HVACrate.Persistence.Repositories.Buildings
         public async Task<Result<Building>> GetAllAsReadOnlyAsync(BaseQuery query, Guid? filterId = null, CancellationToken cancellationToken = default)
         {
             IQueryable<Building> baseQuery = context.Buildings
-                .Where (p => p.ProjectId == filterId)
+                .Where(p => p.ProjectId == filterId)
                 .WithSearch(query.SearchParam, x => EF.Property<string>(x, query.QueryParam))
                 .AsNoTracking();
 

@@ -1,5 +1,4 @@
-﻿using HVACrate.Application.Models;
-using HVACrate.Application.Models.BuildingEnvelopes;
+﻿using HVACrate.Application.Models.BuildingEnvelopes;
 using HVACrate.Domain.Enums;
 
 namespace HVACrate.Application.Interfaces

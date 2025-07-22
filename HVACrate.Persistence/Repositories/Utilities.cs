@@ -1,5 +1,5 @@
-﻿using System.Linq.Expressions;
-using HVACrate.Domain.ValueObjects;
+﻿using HVACrate.Domain.ValueObjects;
+using System.Linq.Expressions;
 
 namespace HVACrate.Persistence.Repositories
 {

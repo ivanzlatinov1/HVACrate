@@ -19,9 +19,9 @@ namespace HVACrate.Application.Services
 
             double totalHeatInfiltration = 0;
 
-            foreach(var room in building.Rooms)
+            foreach (var room in building.Rooms)
             {
-                totalHeatInfiltration += 
+                totalHeatInfiltration +=
                     await this._roomService.CalculateTotalHeatInfiltration(room.Id, cancellationToken);
             }
 
@@ -34,9 +34,9 @@ namespace HVACrate.Application.Services
 
             double totalHeatTransmission = 0;
 
-            foreach(var room in building.Rooms)
+            foreach (var room in building.Rooms)
             {
-                totalHeatTransmission += 
+                totalHeatTransmission +=
                     await this._roomService.CalculateTotalHeatTransmission(room.Id, cancellationToken);
             }
 
@@ -54,9 +54,9 @@ namespace HVACrate.Application.Services
 
         public async Task<Result<BuildingModel>> GetAllAsReadOnlyAsync(BaseQueryModel query, Guid? projectId, CancellationToken cancellationToken = default)
         {
-            Result<Building> projects = 
+            Result<Building> projects =
                 await this._buildingRepository
-                .GetAllAsReadOnlyAsync(query.ToQuery(),projectId, cancellationToken)
+                .GetAllAsReadOnlyAsync(query.ToQuery(), projectId, cancellationToken)
                 .ConfigureAwait(false);
 
             return new Result<BuildingModel>(projects.Count, [.. projects.Items.Select(x => x.ToModel())]);

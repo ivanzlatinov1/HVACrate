@@ -1,6 +1,5 @@
 ﻿using HVACrate.Application.Interfaces;
 using HVACrate.Application.Mappers;
-using HVACrate.Application.Models;
 using HVACrate.Application.Models.BuildingEnvelopes;
 using HVACrate.Domain.Entities;
 using HVACrate.Domain.Entities.BuildingEnvelopes;
