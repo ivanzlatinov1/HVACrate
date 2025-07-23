@@ -1,10 +1,12 @@
 ﻿using HVACrate.Application.Models.BuildingEnvelopes;
 using HVACrate.Domain.Entities;
 using HVACrate.Domain.Entities.BuildingEnvelopes;
+using HVACrate.Domain.Enums;
+using HVACrate.Presentation.Models.BuildingEnvelopes;
 
 namespace HVACrate.Application.Mappers
 {
-    internal static class BuildingEnvelopeMapper
+    public static class BuildingEnvelopeMapper
     {
         public static BuildingEnvelopeModel ToModel(this BuildingEnvelope entity, bool firstTime = true)
         {
@@ -17,6 +19,7 @@ namespace HVACrate.Application.Mappers
                 },
                 Opening opening => new OpeningModel
                 {
+                    Count = opening.Count,
                     JointLength = opening.JointLength,
                     VentilationCoefficient = opening.VentilationCoefficient,
                     Direction = opening.Direction
@@ -31,11 +34,45 @@ namespace HVACrate.Application.Mappers
                 {
                     Count = internalFence.Count,
                 },
-                Roof roof => new RoofModel(),
+                Roof => new RoofModel(),
                 _ => throw new Exception($"Unsupported type: {entity.GetType().Name}")
             };
 
             MapSharedToModel(entity, model, firstTime);
+            return model;
+        }
+
+        public static BuildingEnvelopeModel ToModelFromForm(this BuildingEnvelopeFormModel form)
+        {
+            BuildingEnvelopeModel model = form switch
+            {
+                OuterWallFormModel wall => new OuterWallModel
+                {
+                    ShouldReduceHeatingArea = wall.ShouldReduceHeatingArea,
+                    Direction = Enum.Parse<Direction>(wall.Direction),
+                },
+                OpeningFormModel opening => new OpeningModel
+                {
+                    Count = opening.Count,
+                    JointLength = opening.JointLength,
+                    VentilationCoefficient = opening.VentilationCoefficient,
+                    Direction = Enum.Parse<Direction>(opening.Direction),
+                },
+                FloorFormModel floor => new FloorModel
+                {
+                    ThermalConductivityResistance = floor.ThermalConductivityResistance,
+                    GroundWaterLength = floor.GroundWaterLength,
+                    GroundWaterTemperature = floor.GroundWaterTemperature,
+                },
+                InternalFenceFormModel internalFence => new InternalFenceModel
+                {
+                    Count = internalFence.Count,
+                },
+                RoofFormModel => new RoofModel(),
+                _ => throw new Exception($"Unsupported type: {form.GetType().Name}")
+            };
+
+            MapSharedToModelFromForm(form, model);
             return model;
         }
 
@@ -65,7 +102,7 @@ namespace HVACrate.Application.Mappers
                 {
                     Count = internalFenceModel.Count,
                 },
-                RoofModel roofModel => new Roof(),
+                RoofModel => new Roof(),
                 _ => throw new Exception($"Unsupported type: {model.GetType().Name}")
             };
 
@@ -104,6 +141,19 @@ namespace HVACrate.Application.Mappers
             entity.MaterialId = model.MaterialId;
             entity.Room = firstTime ? model.Room.ToEntity(false) : null!;
             entity.Material = firstTime ? model.Material.ToEntity(false) : null!;
+        }
+
+        private static void MapSharedToModelFromForm(BuildingEnvelopeFormModel form, BuildingEnvelopeModel model)
+        {
+            model.Id = form.Id;
+            model.Height = form.Height;
+            model.Width = form.Width;
+            model.AdjustedTemperature = form.AdjustedTemperature;
+            model.HeatTransferCoefficient = form.HeatTransferCoefficient;
+            model.Density = form.Density;
+            model.IsDeleted = form.IsDeleted;
+            model.RoomId = form.RoomId;
+            model.MaterialId = form.MaterialId;
         }
     }
 }

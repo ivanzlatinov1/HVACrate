@@ -11,8 +11,4 @@
 	<FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\HVACrate.Application\HVACrate.Application.csproj" />
-  </ItemGroup>
-
 </Project>

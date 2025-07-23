@@ -1,5 +1,6 @@
 ﻿using HVACrate.Application.Interfaces;
 using HVACrate.Application.Models.BuildingEnvelopes;
+using HVACrate.Application.Mappers;
 using HVACrate.Domain.Enums;
 using HVACrate.Domain.ValueObjects;
 using HVACrate.Presentation.Models.BuildingEnvelopes;
@@ -89,19 +90,7 @@ namespace HVACrate.Presentation.Controllers
                 return View(nameof(CreateOuterWall), form);
             }
 
-            return await HandleCreateAsync(form, f => new OuterWallModel
-            {
-                Direction = direction,
-                Height = f.Height,
-                Width = f.Width,
-                Area = f.Height * f.Width,
-                AdjustedTemperature = f.AdjustedTemperature,
-                ShouldReduceHeatingArea = f.ShouldReduceHeatingArea,
-                Density = f.Density,
-                HeatTransferCoefficient = f.HeatTransferCoefficient,
-                RoomId = f.RoomId,
-                MaterialId = f.MaterialId
-            }, cancellationToken);
+            return await HandleCreateAsync(form, f => f.ToModelFromForm(), cancellationToken);
         }
 
         [HttpPost]
@@ -136,21 +125,7 @@ namespace HVACrate.Presentation.Controllers
             outerWall.Area -= form.Width * form.Height * form.Count;
             await this._buildingEnvelopeService.UpdateAsync(outerWall, cancellationToken);
 
-            return await HandleCreateAsync(form, f => new OpeningModel
-            {
-                Direction = direction,
-                Height = f.Height,
-                Width = f.Width,
-                Area = f.Height * f.Width,
-                AdjustedTemperature = f.AdjustedTemperature,
-                JointLength = f.JointLength,
-                Count = f.Count,
-                Density = f.Density,
-                VentilationCoefficient = f.VentilationCoefficient,
-                HeatTransferCoefficient = f.HeatTransferCoefficient,
-                RoomId = f.RoomId,
-                MaterialId = f.MaterialId,
-            }, cancellationToken);
+            return await HandleCreateAsync(form, f => f.ToModelFromForm(), cancellationToken);
         }
 
         [HttpPost]
@@ -167,37 +142,13 @@ namespace HVACrate.Presentation.Controllers
                 return View(nameof(CreateFloor), form);
             }
 
-            return await HandleCreateAsync(form, f => new FloorModel
-            {
-                Height = f.Height,
-                Width = f.Width,
-                Area = f.Height * f.Width,
-                AdjustedTemperature = f.AdjustedTemperature,
-                GroundWaterLength = f.GroundWaterLength,
-                GroundWaterTemperature = f.GroundWaterTemperature,
-                ThermalConductivityResistance = f.ThermalConductivityResistance,
-                Density = f.Density,
-                HeatTransferCoefficient = f.HeatTransferCoefficient,
-                RoomId = f.RoomId,
-                MaterialId = f.MaterialId,
-            }, cancellationToken);
+            return await HandleCreateAsync(form, f => f.ToModelFromForm(), cancellationToken);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateInternalFence(InternalFenceFormModel form, CancellationToken cancellationToken = default)
-            => await HandleCreateAsync(form, f => new InternalFenceModel
-            {
-                Height = f.Height,
-                Width = f.Width,
-                Area = f.Height * f.Width,
-                AdjustedTemperature = f.AdjustedTemperature,
-                Count = f.Count,
-                Density = f.Density,
-                HeatTransferCoefficient = f.HeatTransferCoefficient,
-                RoomId = f.RoomId,
-                MaterialId = f.MaterialId,
-            }, cancellationToken);
+            => await HandleCreateAsync(form, f => f.ToModelFromForm(), cancellationToken);
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -212,17 +163,7 @@ namespace HVACrate.Presentation.Controllers
                 return View(nameof(CreateRoof), form);
             }
 
-            return await HandleCreateAsync(form, f => new RoofModel
-            {
-                Height = f.Height,
-                Width = f.Width,
-                Area = f.Height * f.Width,
-                AdjustedTemperature = f.AdjustedTemperature,
-                Density = f.Density,
-                HeatTransferCoefficient = f.HeatTransferCoefficient,
-                RoomId = f.RoomId,
-                MaterialId = f.MaterialId,
-            }, cancellationToken);
+            return await HandleCreateAsync(form, f => f.ToModelFromForm(), cancellationToken);
         }
 
         private async Task<IActionResult> HandleCreateAsync<TFormModel, TDomainModel>(
