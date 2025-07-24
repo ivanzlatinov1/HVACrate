@@ -1,9 +1,10 @@
 ﻿using HVACrate.Application.Interfaces;
-using HVACrate.Application.Models.BuildingEnvelopes;
 using HVACrate.Application.Mappers;
+using HVACrate.Application.Models.BuildingEnvelopes;
 using HVACrate.Domain.Enums;
 using HVACrate.Domain.ValueObjects;
 using HVACrate.Presentation.Models.BuildingEnvelopes;
+using HVACrate.Presentation.Models.Buildings;
 using HVACrate.Presentation.Models.Common;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -183,34 +184,9 @@ namespace HVACrate.Presentation.Controllers
             return await HandleCreateAsync(form, f => f.ToModelFromForm(), cancellationToken);
         }
 
-        private async Task<IActionResult> HandleCreateAsync<TFormModel, TDomainModel>(
-            TFormModel form,
-            Func<TFormModel, TDomainModel> mapper,
-            CancellationToken cancellationToken = default)
-            where TFormModel : BuildingEnvelopeFormModel
-            where TDomainModel : BuildingEnvelopeModel
-        {
-            try
-            {
-                if (!ModelState.IsValid)
-                    return View(form);
-
-                var model = mapper(form);
-
-                await _buildingEnvelopeService.CreateAsync(model, cancellationToken);
-
-                return RedirectToAction(nameof(Index), new { id = form.RoomId });
-            }
-            catch (Exception ex)
-            {
-                ModelState.AddModelError(string.Empty, ex.Message);
-                return View(form);
-            }
-        }
-
         // An action for deleting and getting details of building envelopes by room and type
         [HttpGet]
-        public async Task<IActionResult> Manage(Guid roomId, string type, CancellationToken cancellationToken)
+        public async Task<IActionResult> Manage(Guid roomId, string type, CancellationToken cancellationToken = default)
         {
             try
             {
@@ -247,7 +223,59 @@ namespace HVACrate.Presentation.Controllers
             }
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Delete(Guid id, CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                var model = await this._buildingEnvelopeService.GetByIdAsync(id, cancellationToken);
+                Guid roomId = model.RoomId;
+
+                if(model is OuterWallModel outerWall)
+                {
+                    OpeningModel[] openings = await _buildingEnvelopeService
+                        .GetOpeningsByRoomAndDirectionAsync(roomId, outerWall.Direction, cancellationToken);
+
+                    foreach (var opening in openings)
+                    {
+                        await this._buildingEnvelopeService.SoftDeleteAsync(opening.Id, cancellationToken);
+                    }
+                }
+
+                await this._buildingEnvelopeService.SoftDeleteAsync(id, cancellationToken);
+                return this.RedirectToAction(nameof(Index), new { id = roomId });
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Error", "Home", new { ErrorMessage = ex.Message });
+            }
+        }
+
         // Helper private methods
+        private async Task<IActionResult> HandleCreateAsync<TFormModel, TDomainModel>(
+            TFormModel form,
+            Func<TFormModel, TDomainModel> mapper,
+            CancellationToken cancellationToken = default)
+            where TFormModel : BuildingEnvelopeFormModel
+            where TDomainModel : BuildingEnvelopeModel
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                    return View(form);
+
+                var model = mapper(form);
+
+                await _buildingEnvelopeService.CreateAsync(model, cancellationToken);
+
+                return RedirectToAction(nameof(Index), new { id = form.RoomId });
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return View(form);
+            }
+        }
         private async Task<List<SelectListItem>> InitializeMaterials(CancellationToken cancellationToken)
         {
             var materials = await _materialService.GetAllAsReadOnlyAsync(new(), cancellationToken);

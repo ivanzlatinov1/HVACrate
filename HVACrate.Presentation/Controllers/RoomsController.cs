@@ -133,7 +133,6 @@ namespace HVACrate.Presentation.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(RoomViewModel room, CancellationToken cancellationToken = default)
         {
             try

@@ -119,7 +119,6 @@ namespace HVACrate.Presentation.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(ProjectViewModel project, CancellationToken cancellationToken = default)
         {
             try

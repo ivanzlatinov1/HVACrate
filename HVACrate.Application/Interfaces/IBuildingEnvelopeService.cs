@@ -1,4 +1,5 @@
 ﻿using HVACrate.Application.Models.BuildingEnvelopes;
+using HVACrate.Domain.Entities.BuildingEnvelopes;
 using HVACrate.Domain.Enums;
 
 namespace HVACrate.Application.Interfaces
@@ -8,6 +9,7 @@ namespace HVACrate.Application.Interfaces
         Task<List<BuildingEnvelopeModel>> GetAllAsReadOnlyAsync(Guid? roomId, CancellationToken cancellationToken = default);
         Task<OuterWallModel[]> GetOuterWallsByRoomAsync(Guid roomId, CancellationToken cancellationToken = default);
         Task<OpeningModel[]> GetOpeningsByRoomAsync(Guid roomId, CancellationToken cancellationToken = default);
+        Task<OpeningModel[]> GetOpeningsByRoomAndDirectionAsync(Guid roomId, Direction direction, CancellationToken cancellationToken = default);
         Task<InternalFenceModel[]> GetInternalFencesByRoomAsync(Guid roomId, CancellationToken cancellationToken = default);
         Task<FloorModel[]> GetFloorsByRoomAsync(Guid roomId, CancellationToken cancellationToken = default);
         Task<RoofModel[]> GetRoofsByRoomAsync(Guid roomId, CancellationToken cancellationToken = default);

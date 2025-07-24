@@ -116,11 +116,13 @@ namespace HVACrate.Application.Mappers
             {
                 OuterWallModel wall => new OuterWallViewModel
                 {
+                    Id = wall.Id,
                     Type = wall.Type.ToString(),
                     Direction = wall.Direction.ToString(),
                 },
                 OpeningModel opening => new OpeningViewModel
                 {
+                    Id = opening.Id,
                     Type = opening.Type.ToString(),
                     Direction = opening.Direction.ToString(),
                 },

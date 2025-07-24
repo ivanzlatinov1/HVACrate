@@ -20,12 +20,18 @@ namespace HVACrate.Persistence.Repositories.BuildingEnvelopes
                 .Where(x => x.RoomId == roomId)
                 .ToArrayAsync(cancellationToken);
 
-        
+
         public async Task<Opening[]> GetOpeningsByRoomAsync(Guid roomId, CancellationToken cancellationToken = default)
             => await context.BuildingEnvelopes
                 .OfType<Opening>()
                 .Where(x => x.RoomId == roomId)
                 .ToArrayAsync(cancellationToken);
+
+        public async Task<Opening[]> GetOpeningsByRoomAndDirectionAsync(Guid roomId, Direction direction, CancellationToken cancellationToken = default)
+           => await context.BuildingEnvelopes
+               .OfType<Opening>()
+               .Where(x => x.RoomId == roomId && x.Direction == direction)
+               .ToArrayAsync(cancellationToken);
 
         public async Task<InternalFence[]> GetInternalFencesByRoomAsync(Guid roomId, CancellationToken cancellationToken = default)
             => await context.BuildingEnvelopes

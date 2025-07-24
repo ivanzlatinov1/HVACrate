@@ -6,7 +6,6 @@ using HVACrate.Domain.Entities.BuildingEnvelopes;
 using HVACrate.Domain.Enums;
 using HVACrate.Domain.Repositories.BuildingEnvelopes;
 using HVACrate.Domain.Repositories.Rooms;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace HVACrate.Application.Services
 {
@@ -201,6 +200,13 @@ namespace HVACrate.Application.Services
 
         public async Task<long> GetOpeningsCountByRoom(Guid roomId, CancellationToken cancellationToken = default)
            => await this._buildingEnvelopeRepository.GetOpeningsCountByRoom(roomId, cancellationToken).ConfigureAwait(false);
+
+        public async Task<OpeningModel[]> GetOpeningsByRoomAndDirectionAsync(Guid roomId, Direction direction, CancellationToken cancellationToken = default)
+        {
+            Opening[] openings = await this._buildingEnvelopeRepository.GetOpeningsByRoomAndDirectionAsync(roomId, direction, cancellationToken).ConfigureAwait(false);
+
+            return [.. openings.Select(x => (OpeningModel)x.ToModel(false))];
+        }
 
         public async Task<OuterWallModel[]> GetOuterWallsByRoomAsync(Guid roomId, CancellationToken cancellationToken = default)
         {

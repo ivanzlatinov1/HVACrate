@@ -8,6 +8,7 @@ namespace HVACrate.Domain.Repositories.BuildingEnvelopes
         Task<BuildingEnvelope[]> GetAllAsReadOnlyAsync(Guid? filterId = null, CancellationToken cancellationToken = default);
         Task<OuterWall[]> GetOuterWallsByRoomAsync(Guid roomId, CancellationToken cancellationToken = default);
         Task<Opening[]> GetOpeningsByRoomAsync(Guid roomId, CancellationToken cancellationToken = default);
+        Task<Opening[]> GetOpeningsByRoomAndDirectionAsync(Guid roomId, Direction direction, CancellationToken cancellationToken = default);
         Task<InternalFence[]> GetInternalFencesByRoomAsync(Guid roomId, CancellationToken cancellationToken = default);
         Task<Floor[]> GetFloorsByRoomAsync(Guid roomId, CancellationToken cancellationToken = default);
         Task<Roof[]> GetRoofsByRoomAsync(Guid roomId, CancellationToken cancellationToken = default);
