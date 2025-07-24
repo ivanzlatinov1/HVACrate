@@ -110,6 +110,31 @@ namespace HVACrate.Application.Mappers
             return entity;
         }
 
+        public static BuildingEnvelopeViewModel ToView(this BuildingEnvelopeModel model)
+        {
+            BuildingEnvelopeViewModel view = model switch
+            {
+                OuterWallModel wall => new OuterWallViewModel
+                {
+                    Type = wall.Type.ToString(),
+                    Direction = wall.Direction.ToString(),
+                },
+                OpeningModel opening => new OpeningViewModel
+                {
+                    Type = opening.Type.ToString(),
+                    Direction = opening.Direction.ToString(),
+                },
+                BuildingEnvelopeModel buildingEnvelope => new BuildingEnvelopeViewModel
+                {
+                    Id = buildingEnvelope.Id,
+                    Type = buildingEnvelope.Type.ToString(),
+                },
+                _ => throw new Exception($"Unsupported type: {model.GetType().Name}")
+            };
+
+            return view;
+        }
+
         // Helper methods for the common properties
         private static void MapSharedToModel(BuildingEnvelope entity, BuildingEnvelopeModel model, bool firstTime)
         {

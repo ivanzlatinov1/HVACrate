@@ -191,12 +191,43 @@ namespace HVACrate.Presentation.Controllers
             }
         }
 
+        // An action for deleting and getting details of building envelopes by room and type
         [HttpGet]
-        public Task<IActionResult> Manage(Guid roomId, string type, CancellationToken cancellationToken)
+        public async Task<IActionResult> Manage(Guid roomId, string type, CancellationToken cancellationToken)
         {
-            // An action for deleting and getting details of building envelopes by room and type
+            try
+            {
+                BuildingEnvelopeModel[] models;
+                switch (type)
+                {
+                    case "OuterWall":
+                        models = await this._buildingEnvelopeService.GetOuterWallsByRoomAsync(roomId, cancellationToken);
+                        return View(models.Select(x => x.ToView()));
 
-            throw new NotImplementedException();
+                    case "Opening":
+                        models = await this._buildingEnvelopeService.GetOpeningsByRoomAsync(roomId, cancellationToken);
+                        return View(models.Select(x => x.ToView()));
+
+                    case "Floor":
+                        models = await this._buildingEnvelopeService.GetFloorsByRoomAsync(roomId, cancellationToken);
+                        return View(models.Select(x => x.ToView()));
+
+                    case "InternalFence":
+                        models = await this._buildingEnvelopeService.GetInternalFencesByRoomAsync(roomId, cancellationToken);
+                        return View(models.Select(x => x.ToView()));
+
+                    case "Roof":
+                        models = await this._buildingEnvelopeService.GetRoofsByRoomAsync(roomId, cancellationToken);
+                        return View(models.Select(x => x.ToView()));
+
+                    default:
+                        return this.RedirectToAction("Error", "Home");
+                }
+            }
+            catch(Exception)
+            {
+                return this.RedirectToAction("Error", "Home");
+            }
         }
 
         // Helper private methods
