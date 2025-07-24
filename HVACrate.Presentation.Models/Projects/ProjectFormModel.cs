@@ -11,5 +11,8 @@ namespace HVACrate.Presentation.Models.Projects
 
         [DisplayName("Region Temperature")]
         public double RegionTemperature { get; set; }
+
+        // Request Parameter
+        public Guid UserId { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using HVACrate.Application.Interfaces;
+using HVACrate.Application.Mappers;
 using HVACrate.Application.Models.Rooms;
 using HVACrate.Domain.ValueObjects;
 using HVACrate.Presentation.Models.Common;
@@ -30,15 +31,7 @@ namespace HVACrate.Presentation.Controllers
                 Pagination = pagination
             }, id, cancellationToken);
 
-            RoomViewModel[] rooms = [.. roomModels.Items.Select(x => new RoomViewModel
-            {
-                Id = x.Id,
-                Type = x.Type,
-                Number = x.Number,
-                Floor = x.Floor,
-                IsEnclosed = x.IsEnclosed,
-                BuildingId = id,
-            })];
+            RoomViewModel[] rooms = [.. roomModels.Items.Select(x => x.ToView())];
 
             int totalFloors = await this._buildingService.GetTotalFloors(id, cancellationToken);
 
@@ -54,6 +47,7 @@ namespace HVACrate.Presentation.Controllers
                 BuildingId = buildingId,
                 TotalFloors = totalFloors
             };
+
             return View(form);
         }
 
@@ -66,14 +60,7 @@ namespace HVACrate.Presentation.Controllers
                 if (!ModelState.IsValid)
                     return View(form);
 
-                RoomModel model = new()
-                {
-                    Type = form.Type,
-                    Number = form.Number,
-                    Temperature = form.Temperature,
-                    Floor = form.Floor,
-                    BuildingId = form.BuildingId,
-                };
+                RoomModel model = form.ToModel();
 
                 await _roomService.CreateAsync(model, cancellationToken);
 
@@ -91,17 +78,7 @@ namespace HVACrate.Presentation.Controllers
         {
             RoomModel room = await this._roomService.GetByIdAsync(id, cancellationToken);
 
-            RoomDetailsViewModel details = new()
-            {
-                Id = room.Id,
-                Type = room.Type,
-                Number = room.Number,
-                Floor = room.Floor,
-                Temperature = room.Temperature,
-                BuildingId = room.BuildingId,
-                BuildingName = room.Building.Name,
-                IsEnclosed = room.IsEnclosed,
-            };
+            RoomDetailsViewModel details = room.ToDetailsViewModel();
 
             return View(details);
         }
@@ -113,15 +90,7 @@ namespace HVACrate.Presentation.Controllers
 
             RoomModel building = await this._roomService.GetByIdAsync(id.Value, cancellationToken);
 
-            RoomFormModel form = new()
-            {
-                Id = building.Id,
-                Type = building.Type,
-                Number = building.Number,
-                Floor = building.Floor,
-                Temperature = building.Temperature,
-                BuildingId = building.BuildingId,
-            };
+            RoomFormModel form = building.ToForm();
 
             return View(form);
         }
@@ -135,10 +104,7 @@ namespace HVACrate.Presentation.Controllers
                 try
                 {
                     RoomModel model = await this._roomService.GetByIdAsync(form.Id, cancellationToken);
-                    model.Type = form.Type;
-                    model.Number = form.Number;
-                    model.Floor = form.Floor;
-                    model.Temperature = form.Temperature;
+                    model.UpdateFromForm(form);
 
                     await this._roomService.UpdateAsync(model, cancellationToken);
                 }
@@ -161,14 +127,7 @@ namespace HVACrate.Presentation.Controllers
 
             RoomModel? room = await this._roomService.GetByIdAsync(id.Value, cancellationToken);
 
-            RoomViewModel roomViewModel = new()
-            {
-                Id = room.Id,
-                Type = room.Type,
-                Number = room.Number,
-                Floor = room.Floor,
-                BuildingId = room.BuildingId
-            };
+            RoomViewModel roomViewModel = room.ToView();
 
             return View(roomViewModel);
         }

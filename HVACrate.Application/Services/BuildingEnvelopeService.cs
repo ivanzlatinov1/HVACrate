@@ -138,7 +138,7 @@ namespace HVACrate.Application.Services
 
             bool isEnclosed = true;
 
-            if (!isThereFloor || !isThereRoof || outerWalls.Count == 0)
+            if (!isThereFloor || !isThereRoof)
                 isEnclosed = false;
 
             int totalWalls = outerWalls.Count + internalFences.Sum(x => x.Count);

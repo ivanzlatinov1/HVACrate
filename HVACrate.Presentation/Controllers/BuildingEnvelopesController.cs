@@ -28,11 +28,7 @@ namespace HVACrate.Presentation.Controllers
 
             var buildingEnvelopeModels = await this._buildingEnvelopeService.GetAllAsReadOnlyAsync(id, cancellationToken);
 
-            BuildingEnvelopeViewModel[] buildingEnvelopes = [..buildingEnvelopeModels.Select(x => new BuildingEnvelopeViewModel
-            {
-                Id = x.Id,
-                Type = x.Type.ToString(),
-            })];
+            BuildingEnvelopeViewModel[] buildingEnvelopes = [..buildingEnvelopeModels.Select(x => x.ToView())];
 
             long internalFencesCount = await this._buildingEnvelopeService.GetInternalFencesCountByRoom(id, cancellationToken);
             long openingsCount = await this._buildingEnvelopeService.GetOpeningsCountByRoom(id, cancellationToken);

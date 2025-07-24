@@ -1,5 +1,6 @@
 ﻿using HVACrate.Application.Interfaces;
 using HVACrate.Application.Models.Projects;
+using HVACrate.Application.Mappers;
 using HVACrate.Domain.ValueObjects;
 using HVACrate.Presentation.Extensions;
 using HVACrate.Presentation.Models.Common;
@@ -28,12 +29,7 @@ namespace HVACrate.Presentation.Controllers
                 Pagination = pagination
             }, this.User.GetId(), cancellationToken);
 
-            ProjectViewModel[] projects = [.. projectModels.Items.Select(x => new ProjectViewModel
-            {
-                Id = x.Id,
-                Name = x.Name,
-                LastModified = x.LastModified.ToLocalTime().ToString(DescriptiveDateFormat)
-            })];
+            ProjectViewModel[] projects = [.. projectModels.Items.Select(x => x.ToView())];
 
             return View((projects, projectModels.Count, pagination));
         }
@@ -41,7 +37,14 @@ namespace HVACrate.Presentation.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            return View();
+            Guid? userId = this.User.GetId();
+
+            if (userId == null)
+                return RedirectToAction("Error", "Home", new { ErrorMessage = "User is not authorized. Please log in!" });
+
+            ProjectFormModel form = new() { UserId = (Guid)userId };
+
+            return View(form);
         }
 
         [HttpPost]
@@ -53,17 +56,7 @@ namespace HVACrate.Presentation.Controllers
                 if (!ModelState.IsValid)
                     return View(form);
 
-                Guid? userId = this.User.GetId();
-
-                if (userId == null)
-                    return RedirectToAction("Error", "Home", new { ErrorMessage = "User is not authorized. Please log in!" });
-
-                ProjectModel model = new()
-                {
-                    Name = form.Name,
-                    RegionTemperature = form.RegionTemperature,
-                    HVACUserId = (Guid)userId,
-                };
+                ProjectModel model = form.ToModel();
 
                 await _projectService.CreateAsync(model, cancellationToken);
 
@@ -83,12 +76,7 @@ namespace HVACrate.Presentation.Controllers
 
             ProjectModel project = await this._projectService.GetByIdAsync(id.Value, cancellationToken);
 
-            ProjectFormModel form = new()
-            {
-                Id = project.Id,
-                Name = project.Name,
-                RegionTemperature = project.RegionTemperature,
-            };
+            ProjectFormModel form = project.ToForm(project.HVACUserId);
 
             return View(form);
         }
@@ -102,8 +90,7 @@ namespace HVACrate.Presentation.Controllers
                 try
                 {
                     ProjectModel model = await this._projectService.GetByIdAsync(form.Id, cancellationToken);
-                    model.Name = form.Name;
-                    model.RegionTemperature = form.RegionTemperature;
+                    model.UpdateFromForm(form);
 
                     await this._projectService.UpdateAsync(model, cancellationToken);
                 }
@@ -126,12 +113,7 @@ namespace HVACrate.Presentation.Controllers
 
             ProjectModel? project = await this._projectService.GetByIdAsync(id.Value, cancellationToken);
 
-            ProjectViewModel projectViewModel = new()
-            {
-                Id = project.Id,
-                Name = project.Name,
-                LastModified = project.LastModified.ToLocalTime().ToString(DescriptiveDateFormat)
-            };
+            ProjectViewModel projectViewModel = project.ToView();
 
             return View(projectViewModel);
         }

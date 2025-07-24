@@ -1,4 +1,5 @@
 ﻿using HVACrate.Application.Interfaces;
+using HVACrate.Application.Mappers;
 using HVACrate.Application.Models.Buildings;
 using HVACrate.Domain.ValueObjects;
 using HVACrate.Presentation.Extensions;
@@ -32,14 +33,7 @@ namespace HVACrate.Presentation.Controllers
                 Pagination = pagination
             }, id, cancellationToken);
 
-            BuildingViewModel[] buildings = [.. buildingModels.Items.Select(x => new BuildingViewModel
-            {
-                Id = x.Id,
-                Name = x.Name,
-                Location = x.Location,
-                ProjectId = id,
-                ImageUrl = x.ImageUrl ?? DefaultBuildingImageUrl
-            })];
+            BuildingViewModel[] buildings = [.. buildingModels.Items.Select(x => x.ToView())];
 
             return View((id, buildings, buildingModels.Count, pagination));
         }
@@ -49,19 +43,7 @@ namespace HVACrate.Presentation.Controllers
         {
             BuildingModel building = await this._buildingService.GetByIdAsync(id, cancellationToken);
 
-            BuildingDetailsViewModel details = new()
-            {
-                Id = building.Id,
-                Name = building.Name,
-                Location = building.Location,
-                ImageUrl = building.ImageUrl ?? DefaultBuildingImageUrl,
-                TotalHeight = building.TotalHeight,
-                Floors = building.Floors,
-                Orientation = building.Orientation,
-                ProjectId = building.ProjectId,
-                ProjectName = building.Project.Name,
-                WindSpeed = building.WindSpeed
-            };
+            BuildingDetailsViewModel details = building.ToDetailsView();
 
             return View(details);
         }
@@ -90,17 +72,7 @@ namespace HVACrate.Presentation.Controllers
                     form.ImageUrl = await this._webHostEnvironment.UploadImageAsync(form.Image, form.Name);
                 }
 
-                BuildingModel model = new()
-                {
-                    Name = form.Name,
-                    WindSpeed = form.WindSpeed,
-                    Floors = form.Floors,
-                    ImageUrl = form.ImageUrl,
-                    Location = form.Location,
-                    Orientation = form.Orientation,
-                    TotalHeight = form.TotalHeight,
-                    ProjectId = form.ProjectId,
-                };
+                BuildingModel model = form.ToModel();
 
                 await _buildingService.CreateAsync(model, cancellationToken);
 
@@ -120,18 +92,7 @@ namespace HVACrate.Presentation.Controllers
 
             BuildingModel building = await this._buildingService.GetByIdAsync(id.Value, cancellationToken);
 
-            EditBuildingFormModel form = new()
-            {
-                Id = building.Id,
-                Name = building.Name,
-                WindSpeed = building.WindSpeed,
-                Floors = building.Floors,
-                ImageUrl = building.ImageUrl ?? DefaultBuildingImageUrl,
-                Location = building.Location,
-                Orientation = building.Orientation,
-                TotalHeight = building.TotalHeight,
-                ProjectId = building.ProjectId,
-            };
+            EditBuildingFormModel form = building.ToEditFormModel();
 
             return View(form);
         }
@@ -145,13 +106,7 @@ namespace HVACrate.Presentation.Controllers
                 try
                 {
                     BuildingModel model = await this._buildingService.GetByIdAsync(form.Id, cancellationToken);
-                    model.Name = form.Name;
-                    model.WindSpeed = form.WindSpeed;
-                    model.Floors = form.Floors;
-                    model.Location = form.Location;
-                    model.Orientation = form.Orientation;
-                    model.TotalHeight = form.TotalHeight;
-                    model.ProjectId = form.ProjectId;
+                    model.UpdateFromForm(form);
 
                     if (form.NewImage != null && form.NewImage.Length > 0)
                     {
@@ -177,17 +132,9 @@ namespace HVACrate.Presentation.Controllers
                 return NotFound();
             }
 
-            BuildingModel? building = await this._buildingService.GetByIdAsync(id.Value, cancellationToken);
+            BuildingModel building = await this._buildingService.GetByIdAsync(id.Value, cancellationToken);
 
-            BuildingViewModel buildingViewModel = new()
-            {
-                Id = building.Id,
-                Name = building.Name,
-                ImageUrl = building.ImageUrl ?? DefaultBuildingImageUrl,
-                Location = building.Location,
-                ProjectId = building.ProjectId,
-                ProjectName = building.Project.Name,
-            };
+            BuildingDetailsViewModel buildingViewModel = building.ToDetailsView();
 
             return View(buildingViewModel);
         }

@@ -1,9 +1,12 @@
 ﻿using HVACrate.Application.Models.Projects;
 using HVACrate.Domain.Entities;
+using HVACrate.Presentation.Models.Projects;
+
+using static HVACrate.GCommon.GlobalConstants;
 
 namespace HVACrate.Application.Mappers
 {
-    internal static class ProjectMapper
+    public static class ProjectMapper
     {
         public static ProjectModel ToModel(this Project entity, bool firstTime = true)
             => new()
@@ -32,5 +35,36 @@ namespace HVACrate.Application.Mappers
                 HVACUser = model.HVACUser,
                 Buildings = firstTime ? model.Buildings.Select(b => b.ToEntity(false)).ToList() : null!,
             };
+
+        public static ProjectViewModel ToView(this ProjectModel model)
+            => new()
+            {
+                Id = model.Id,
+                Name = model.Name,
+                LastModified = model.LastModified.ToLocalTime().ToString(DescriptiveDateFormat),
+            };
+
+        public static ProjectFormModel ToForm(this ProjectModel model, Guid userId)
+           => new()
+           {
+               Id = model.Id,
+               Name = model.Name,
+               RegionTemperature = model.RegionTemperature,
+               UserId = userId,
+           };
+
+        public static ProjectModel ToModel(this ProjectFormModel form)
+            => new()
+            {
+                Name = form.Name,
+                RegionTemperature = form.RegionTemperature,
+                HVACUserId = form.UserId,
+            };
+
+        public static void UpdateFromForm(this ProjectModel model, ProjectFormModel form)
+        {
+            model.Name = form.Name;
+            model.RegionTemperature = form.RegionTemperature;
+        }
     }
 }
