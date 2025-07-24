@@ -10,8 +10,39 @@ namespace HVACrate.Persistence.Repositories.BuildingEnvelopes
     {
         public async Task<BuildingEnvelope[]> GetAllAsReadOnlyAsync(Guid? filterId = null, CancellationToken cancellationToken = default)
              => await context.BuildingEnvelopes
-                .Where(p => p.RoomId == filterId)
+                .Where(x => x.RoomId == filterId)
                 .AsNoTracking()
+                .ToArrayAsync(cancellationToken);
+
+        public async Task<OuterWall[]> GetOuterWallsByRoomAsync(Guid roomId, CancellationToken cancellationToken = default)
+             => await context.BuildingEnvelopes
+                .OfType<OuterWall>()
+                .Where(x => x.RoomId == roomId)
+                .ToArrayAsync(cancellationToken);
+
+        
+        public async Task<Opening[]> GetOpeningsByRoomAsync(Guid roomId, CancellationToken cancellationToken = default)
+            => await context.BuildingEnvelopes
+                .OfType<Opening>()
+                .Where(x => x.RoomId == roomId)
+                .ToArrayAsync(cancellationToken);
+
+        public async Task<InternalFence[]> GetInternalFencesByRoomAsync(Guid roomId, CancellationToken cancellationToken = default)
+            => await context.BuildingEnvelopes
+                .OfType<InternalFence>()
+                .Where(x => x.RoomId == roomId)
+                .ToArrayAsync(cancellationToken);
+
+        public async Task<Floor[]> GetFloorsByRoomAsync(Guid roomId, CancellationToken cancellationToken = default)
+            => await context.BuildingEnvelopes
+                .OfType<Floor>()
+                .Where(x => x.RoomId == roomId)
+                .ToArrayAsync(cancellationToken);
+
+        public async Task<Roof[]> GetRoofsByRoomAsync(Guid roomId, CancellationToken cancellationToken = default)
+            => await context.BuildingEnvelopes
+                .OfType<Roof>()
+                .Where(x => x.RoomId == roomId)
                 .ToArrayAsync(cancellationToken);
 
         public async Task<OuterWall?> GetWallByDirectionAsync(Guid roomId, Direction direction, CancellationToken cancellationToken = default)

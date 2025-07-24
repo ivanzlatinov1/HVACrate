@@ -174,5 +174,41 @@ namespace HVACrate.Application.Services
 
         public async Task<long> GetOpeningsCountByRoom(Guid roomId, CancellationToken cancellationToken = default)
            => await this._buildingEnvelopeRepository.GetOpeningsCountByRoom(roomId, cancellationToken).ConfigureAwait(false);
+
+        public async Task<OuterWallModel[]> GetOuterWallsByRoomAsync(Guid roomId, CancellationToken cancellationToken = default)
+        {
+            OuterWall[] outerWalls = await this._buildingEnvelopeRepository.GetOuterWallsByRoomAsync(roomId, cancellationToken).ConfigureAwait(false);
+
+            return [.. outerWalls.Select(x => (OuterWallModel)x.ToModel(false))];
+        }
+
+        public async Task<OpeningModel[]> GetOpeningsByRoomAsync(Guid roomId, CancellationToken cancellationToken = default)
+        {
+            Opening[] openings = await this._buildingEnvelopeRepository.GetOpeningsByRoomAsync(roomId, cancellationToken).ConfigureAwait(false);
+
+            return [.. openings.Select(x => (OpeningModel)x.ToModel(false))];
+        }
+
+        public async Task<InternalFenceModel[]> GetInternalFencesByRoomAsync(Guid roomId, CancellationToken cancellationToken = default)
+        {
+            InternalFence[] openings =
+                await this._buildingEnvelopeRepository.GetInternalFencesByRoomAsync(roomId, cancellationToken).ConfigureAwait(false);
+
+            return [.. openings.Select(x => (InternalFenceModel)x.ToModel(false))];
+        }
+
+        public async Task<FloorModel[]> GetFloorsByRoomAsync(Guid roomId, CancellationToken cancellationToken = default)
+        {
+            Floor[] floors = await this._buildingEnvelopeRepository.GetFloorsByRoomAsync(roomId, cancellationToken).ConfigureAwait(false);
+
+            return [.. floors.Select(x => (FloorModel)x.ToModel(false))];
+        }
+
+        public async Task<RoofModel[]> GetRoofsByRoomAsync(Guid roomId, CancellationToken cancellationToken = default)
+        {
+            Roof[] roofs = await this._buildingEnvelopeRepository.GetRoofsByRoomAsync(roomId, cancellationToken).ConfigureAwait(false);
+
+            return [.. roofs.Select(x => (RoofModel)x.ToModel(false))];
+        }
     }
 }

@@ -6,6 +6,11 @@ namespace HVACrate.Application.Interfaces
     public interface IBuildingEnvelopeService
     {
         Task<List<BuildingEnvelopeModel>> GetAllAsReadOnlyAsync(Guid? roomId, CancellationToken cancellationToken = default);
+        Task<OuterWallModel[]> GetOuterWallsByRoomAsync(Guid roomId, CancellationToken cancellationToken = default);
+        Task<OpeningModel[]> GetOpeningsByRoomAsync(Guid roomId, CancellationToken cancellationToken = default);
+        Task<InternalFenceModel[]> GetInternalFencesByRoomAsync(Guid roomId, CancellationToken cancellationToken = default);
+        Task<FloorModel[]> GetFloorsByRoomAsync(Guid roomId, CancellationToken cancellationToken = default);
+        Task<RoofModel[]> GetRoofsByRoomAsync(Guid roomId, CancellationToken cancellationToken = default);
         Task<BuildingEnvelopeModel> GetByIdAsReadOnlyAsync(Guid id, CancellationToken cancellationToken = default);
         Task<BuildingEnvelopeModel> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
         Task CreateAsync(BuildingEnvelopeModel model, CancellationToken cancellationToken = default);

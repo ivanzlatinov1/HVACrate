@@ -6,6 +6,11 @@ namespace HVACrate.Domain.Repositories.BuildingEnvelopes
     public interface IBuildingEnvelopeRepository : IBaseRepository<BuildingEnvelope>
     {
         Task<BuildingEnvelope[]> GetAllAsReadOnlyAsync(Guid? filterId = null, CancellationToken cancellationToken = default);
+        Task<OuterWall[]> GetOuterWallsByRoomAsync(Guid roomId, CancellationToken cancellationToken = default);
+        Task<Opening[]> GetOpeningsByRoomAsync(Guid roomId, CancellationToken cancellationToken = default);
+        Task<InternalFence[]> GetInternalFencesByRoomAsync(Guid roomId, CancellationToken cancellationToken = default);
+        Task<Floor[]> GetFloorsByRoomAsync(Guid roomId, CancellationToken cancellationToken = default);
+        Task<Roof[]> GetRoofsByRoomAsync(Guid roomId, CancellationToken cancellationToken = default);
         Task<OuterWall?> GetWallByDirectionAsync(Guid roomId, Direction direction, CancellationToken cancellationToken = default);
         Task<bool> IsThereAWallOnDirectionAsync(Guid roomId, Direction direction, CancellationToken cancellationToken = default);
         Task<bool> IsThereAnOpeningOnDirectionAsync(Guid roomId, Direction direction, CancellationToken cancellationToken = default);
