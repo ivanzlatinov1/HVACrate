@@ -1,15 +1,19 @@
 ﻿<ul class="navbar-nav">
     @if (User.IsAuthenticated())
     {
-        <li class="nav-item d-flex align-items-center">
+        <li class="nav-item" style="background: rgba(255, 255, 255, 0.05); border-radius: 8px; margin: 0 5px; padding: 2px 8px; transition: all 0.3s ease; border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px);"
+            onmouseover="this.style.background='rgba(255, 255, 255, 0.15)'; this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(0, 0, 0, 0.3)';"
+            onmouseout="this.style.background='rgba(255, 255, 255, 0.05)'; this.style.transform='translateY(0)'; this.style.boxShadow='none';">
             <a class="nav-link text-light d-flex align-items-center" style="font-family: 'Roboto', sans-serif; margin-right: 15px; transition: color 0.3s ease; color: #ffd700;" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
                 <img src="@User.GetProfilePictureUrl()" alt="Profile Picture" class="rounded-circle me-2" style="width: 32px; height: 32px; object-fit: cover;" />
                 @User.GetName()
             </a>
         </li>
-        <li class="nav-item">
-            <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })" style="margin-top: 5px; margin-right: 15px;">
-                <button type="submit" class="btn btn-link text-light" style="font-family: 'Roboto', sans-serif; text-decoration: none; transition: color 0.3s ease; color: #ffd700;">
+        <li class="nav-item" style="background: rgba(255, 255, 255, 0.05); border-radius: 8px; margin: 0 5px; padding: 2px 8px; transition: all 0.3s ease; border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px);"
+            onmouseover="this.style.background='rgba(255, 255, 255, 0.15)'; this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(0, 0, 0, 0.3)';"
+            onmouseout="this.style.background='rgba(255, 255, 255, 0.05)'; this.style.transform='translateY(0)'; this.style.boxShadow='none';">
+            <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })" style="margin: 0;">
+                <button type="submit" class="btn btn-link text-light" style="font-family: 'Roboto', sans-serif; font-size: 1rem; text-decoration: none; transition: color 0.3s ease; color: rgba(255, 255, 255, 0.9); padding-block: 5px; margin-top: 7px; border: none; background: none;">
                     Logout
                 </button>
             </form>
@@ -17,10 +21,10 @@
     }
     else
     {
-        <li class="nav-item">
-            <a class="nav-link text-light" style="font-family: 'Roboto', sans-serif; margin-right: 15px; transition: color 0.3s ease; color: #ffd700;" asp-area="Identity" asp-page="/Account/Login">
-                Login
-            </a>
+        <li class="nav-item" style="background: rgba(255, 255, 255, 0.05); border-radius: 8px; margin: 0 5px; padding: 2px 8px; transition: all 0.3s ease; border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px);"
+            onmouseover="this.style.background='rgba(255, 255, 255, 0.15)'; this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(0, 0, 0, 0.3)';"
+            onmouseout="this.style.background='rgba(255, 255, 255, 0.05)'; this.style.transform='translateY(0)'; this.style.boxShadow='none';">
+            <a class="nav-link text-light" style="font-family: 'Roboto', sans-serif; font-size: 1rem; transition: color 0.3s ease; color: rgba(255, 255, 255, 0.9);" asp-area="Identity" asp-page="/Account/Login">Login</a>
         </li>
     }
 </ul>

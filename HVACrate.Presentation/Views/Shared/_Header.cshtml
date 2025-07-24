@@ -1,23 +1,38 @@
 ﻿<header style="background: linear-gradient(to right, #0d1b2a, #4a3f35); box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
     <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark" style="padding: 10px 20px;">
         <div class="container-fluid">
-            <a class="navbar-brand" style="font-family: 'Playfair Display', serif; font-size: 1.8rem; color: #ffd700;" asp-area="" asp-controller="Home" asp-action="Index">HVACrate</a>
+            <a class="navbar-brand"
+               style="font-family: 'Playfair Display', serif; font-size: 1.8rem; color: #ffd700; transition: all 0.3s ease; text-decoration: none;"
+               asp-area="" asp-controller="Home" asp-action="Index"
+               onmouseover="this.style.textShadow='0 0 10px #ffd700, 0 0 20px #ffd700, 0 0 30px #ffd700, 0 0 40px #ffd700'; this.style.color='#ffff99';"
+               onmouseout="this.style.textShadow='none'; this.style.color='#ffd700';">
+                HVACrate
+            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation" style="border: none;">
                 <span class="navbar-toggler-icon" style="filter: invert(100%);"></span>
             </button>
             <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                <ul class="navbar-nav flex-grow-1">
-                    @if(User.IsInRole("User"))
+                <ul class="navbar-nav d-flex flex-grow-1 justify-content-center gap-3">
+                    @if (User.IsInRole("User"))
                     {
-                        <li class="nav-item">
-                            <a class="nav-link text-light" style="font-family: 'Roboto', sans-serif; font-size: 1rem; margin-right: 15px; transition: color 0.3s ease;" asp-controller="Projects" asp-action="Index">Projects</a>
+                        <li class="nav-item" style="background: rgba(255, 255, 255, 0.05); border-radius: 8px; margin: 0 5px; padding: 2px 8px; transition: all 0.3s ease; border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px);"
+                            onmouseover="this.style.background='rgba(255, 255, 255, 0.15)'; this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(0, 0, 0, 0.3)';"
+                            onmouseout="this.style.background='rgba(255, 255, 255, 0.05)'; this.style.transform='translateY(0)'; this.style.boxShadow='none';">
+                            <a class="nav-link text-light" style="font-family: 'Roboto', sans-serif; font-size: 1rem; transition: color 0.3s ease; color: rgba(255, 255, 255, 0.9);" asp-controller="Projects" asp-action="Index">Projects</a>
+                        </li>
+                        <li class="nav-item" style="background: rgba(255, 255, 255, 0.05); border-radius: 8px; margin: 0 5px; padding: 2px 8px; transition: all 0.3s ease; border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px);"
+                            onmouseover="this.style.background='rgba(255, 255, 255, 0.15)'; this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(0, 0, 0, 0.3)';"
+                            onmouseout="this.style.background='rgba(255, 255, 255, 0.05)'; this.style.transform='translateY(0)'; this.style.boxShadow='none';">
+                            <a class="nav-link text-light" style="font-family: 'Roboto', sans-serif; font-size: 1rem; transition: color 0.3s ease; color: rgba(255, 255, 255, 0.9);" asp-controller="HeatingLossCalculator" asp-action="Index">Calculate Heating Loss</a>
                         </li>
                     }
                     else if (User.IsInRole("Admin"))
                     {
-                        <li class="nav-item">
-                            <a class="nav-link text-light" style="font-family: 'Roboto', sans-serif; font-size: 1rem; margin-right: 15px; transition: color 0.3s ease;" asp-controller="Users" asp-action="Index">Users</a>
+                        <li class="nav-item" style="background: rgba(255, 255, 255, 0.05); border-radius: 8px; margin: 0 5px; padding: 2px 8px; transition: all 0.3s ease; border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px);"
+                            onmouseover="this.style.background='rgba(255, 255, 255, 0.15)'; this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(0, 0, 0, 0.3)';"
+                            onmouseout="this.style.background='rgba(255, 255, 255, 0.05)'; this.style.transform='translateY(0)'; this.style.boxShadow='none';">
+                            <a class="nav-link text-light" style="font-family: 'Roboto', sans-serif; font-size: 1rem; transition: color 0.3s ease; color: rgba(255, 255, 255, 0.9);" asp-controller="Users" asp-action="Index">Users</a>
                         </li>
                     }
                 </ul>
