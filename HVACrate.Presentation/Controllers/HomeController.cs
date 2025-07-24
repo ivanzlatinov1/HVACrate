@@ -29,13 +29,14 @@ namespace HVACrate.Presentation.Controllers
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error(int? statusCode)
+        public IActionResult Error(int? statusCode, string? errorMessage)
         {
             ViewData["StatusCode"] = statusCode?.ToString() ?? "Unknown";
 
             var errorViewModel = new ErrorViewModel
             {
-                RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
+                RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier,
+                ErrorMessage = errorMessage ?? "The page you are looking for does not exist."
             };
 
             return View(errorViewModel);

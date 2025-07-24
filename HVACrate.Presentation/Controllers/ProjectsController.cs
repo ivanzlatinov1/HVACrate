@@ -56,7 +56,7 @@ namespace HVACrate.Presentation.Controllers
                 Guid? userId = this.User.GetId();
 
                 if (userId == null)
-                    return Unauthorized();
+                    return RedirectToAction("Error", "Home", new { ErrorMessage = "User is not authorized. Please log in!" });
 
                 ProjectModel model = new()
                 {
@@ -107,9 +107,9 @@ namespace HVACrate.Presentation.Controllers
 
                     await this._projectService.UpdateAsync(model, cancellationToken);
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    return RedirectToAction("Error", "Home");
+                    return RedirectToAction("Error", "Home", new { ErrorMessage = ex.Message });
                 }
                 return this.RedirectToAction(nameof(Index));
             }
@@ -148,9 +148,9 @@ namespace HVACrate.Presentation.Controllers
                 }
                 return this.RedirectToAction(nameof(Index));
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return RedirectToAction("Error", "Home");
+                return RedirectToAction("Error", "Home", new { ErrorMessage = ex.Message });
             }
         }
     }

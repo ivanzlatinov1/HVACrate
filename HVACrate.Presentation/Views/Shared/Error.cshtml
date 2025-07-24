@@ -6,9 +6,9 @@
     var statusCode = ViewData["StatusCode"];
 }
 
-<div class="container d-flex align-items-center justify-content-center vh-100 bg-white text-dark">
+<div class="container d-flex align-items-center justify-content-center vh-100 text-dark">
     <div class="text-center p-5">
-        <h1 class="display-4 fw-bold text-dark mb-4">Oops! Something Went Wrong</h1>
+        <h1 class="display-4 fw-bold text-dark mb-4">@Model.ErrorMessage</h1>
 
         <p class="fs-5 text-secondary">
             An unexpected error has occurred. Please try again later.
@@ -22,7 +22,9 @@
         }
 
         <div class="mt-4">
-            <a asp-controller="Home" asp-action="Index" class="btn btn-dark btn-lg">Go to Homepage</a>
+            <a asp-controller="Home" asp-action="Index" class="btn btn-outline-dark btn-lg">
+                <i class="fas fa-home me-2"></i>Go to Homepage
+            </a>
         </div>
     </div>
 </div>

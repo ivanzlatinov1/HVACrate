@@ -160,9 +160,9 @@ namespace HVACrate.Presentation.Controllers
 
                     await this._buildingService.UpdateAsync(model, cancellationToken);
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    return RedirectToAction("Error", "Home");
+                    return RedirectToAction("Error", "Home", new { ErrorMessage = ex.Message });
                 }
                 return this.RedirectToAction(nameof(Index), new { id = form.ProjectId });
             }
@@ -201,9 +201,9 @@ namespace HVACrate.Presentation.Controllers
                 await this._buildingService.SoftDeleteAsync(building.Id, cancellationToken);
                 return this.RedirectToAction(nameof(Index), new { id = building.ProjectId });
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return RedirectToAction("Error", "Home");
+                return RedirectToAction("Error", "Home", new { ErrorMessage = ex.Message });
             }
         }
     }

@@ -71,7 +71,7 @@ namespace HVACrate.Presentation.Controllers
                     return View(nameof(CreateRoof), roofForm);
 
                 default:
-                    return this.RedirectToAction("Error", "Home");
+                    return this.RedirectToAction("Error", "Home", new { ErrorMessage = $"Type {type} does not exist in current context." });
             }
         }
 
@@ -221,12 +221,12 @@ namespace HVACrate.Presentation.Controllers
                         return View(models.Select(x => x.ToView()));
 
                     default:
-                        return this.RedirectToAction("Error", "Home");
+                        return this.RedirectToAction("Error", "Home", new { ErrorMessage = $"Type {type} does not exist in current context." });
                 }
             }
-            catch(Exception)
+            catch (Exception ex)
             {
-                return this.RedirectToAction("Error", "Home");
+                return this.RedirectToAction("Error", "Home", new { ErrorMessage = ex.Message });
             }
         }
 
