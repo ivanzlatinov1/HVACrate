@@ -1,13 +1,21 @@
 ﻿using HVACrate.Application.Models.BuildingEnvelopes;
+using System.ComponentModel.DataAnnotations;
+
+using static HVACrate.Domain.ValidationConstants.ValidationMessages;
+using static HVACrate.Domain.ValidationConstants.Material;
 
 namespace HVACrate.Application.Models.Materials
 {
     public class MaterialModel
     {
+        [Required]
         public Guid Id { get; set; }
 
+        [Required(ErrorMessage = Required)]
+        [StringLength(TypeMaxLength, MinimumLength = TypeMinLength, ErrorMessage = StringLength)]
         public string Type { get; set; } = null!;
 
+        [Required(ErrorMessage = Required)]
         public double ThermalConductivity { get; set; }
 
         public bool IsDeleted { get; set; }

@@ -1,4 +1,7 @@
 ﻿using HVACrate.Domain.Enums;
+using System.ComponentModel.DataAnnotations;
+
+using static HVACrate.Domain.ValidationConstants.ValidationMessages;
 
 namespace HVACrate.Application.Models.BuildingEnvelopes
 {
@@ -6,6 +9,7 @@ namespace HVACrate.Application.Models.BuildingEnvelopes
     {
         public override BuildingEnvelopeType Type => BuildingEnvelopeType.InternalFence;
 
+        [Required(ErrorMessage = Required)]
         public int Count { get; set; }
     }
 }
