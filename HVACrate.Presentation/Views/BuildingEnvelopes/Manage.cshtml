@@ -1,0 +1,52 @@
+﻿@model IEnumerable<BuildingEnvelopeViewModel>
+@{
+    ViewData["Title"] = "Manage Building Envelopes";
+    bool hasDirection = Model.Any(x => x.Type == "OuterWall" || x.Type == "WindowsAndDoors");
+}
+
+<div class="bg-dark text-white h-75 w-100 p-4 rounded-2 border border-warning">
+    <h2 class="text-white mb-3">@ViewData["Title"]</h2>
+    <p class="text-muted mb-4">The order is based on the models' creation time, listed in ascending chronological order</p>
+
+    <table class="table table-dark table-striped">
+        <thead>
+            <tr class="text-center">
+                <th>Type</th>
+                @if (hasDirection)
+                {
+                    <th>Direction</th>
+                }
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr class="text-center">
+                    <td>@item.Type</td>
+                    @if (item is OuterWallViewModel wallViewModel)
+                    {
+                        <td>@wallViewModel.Direction</td>
+                    }
+                    else if (item is OpeningViewModel openingViewModel)
+                    {
+                        <td>@openingViewModel.Direction</td>
+                    }
+                    <td class="d-flex justify-content-center">
+                        <div style="display: flex; gap: 1.25rem;">
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm" style="background-color: white; color: black; border: 1px solid #ced4da;">
+                                <i class="fas fa-edit"></i> Edit
+                            </a>
+
+                            <form asp-action="Delete" asp-route-id="@item.Id" method="post" style="margin: 0;">
+                                <button type="submit" class="btn btn-danger btn-sm">
+                                    <i class="fas fa-trash-alt"></i> Delete
+                                </button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

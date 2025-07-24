@@ -17,6 +17,10 @@ html {
     min-height: 100%;
 }
 
+body {
+    background-color: hsl(0, 0%, 50%, 30%);
+}
+
 main {
     display: flex;
     flex-direction: column;
@@ -33,11 +37,11 @@ main {
     position: relative;
 }
 
-    .profile-picture-box label {
-        cursor: pointer;
-        height: 100%;
-        width: 100%;
-    }
+.profile-picture-box label {
+    cursor: pointer;
+    height: 100%;
+    width: 100%;
+}
 
 .object-fit-cover {
     object-fit: cover;
