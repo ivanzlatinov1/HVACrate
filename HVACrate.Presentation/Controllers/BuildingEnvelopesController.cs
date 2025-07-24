@@ -4,7 +4,6 @@ using HVACrate.Application.Models.BuildingEnvelopes;
 using HVACrate.Domain.Enums;
 using HVACrate.Domain.ValueObjects;
 using HVACrate.Presentation.Models.BuildingEnvelopes;
-using HVACrate.Presentation.Models.Buildings;
 using HVACrate.Presentation.Models.Common;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -184,6 +183,14 @@ namespace HVACrate.Presentation.Controllers
             return await HandleCreateAsync(form, f => f.ToModelFromForm(), cancellationToken);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Details(Guid id, CancellationToken cancellationToken = default)
+        {
+            BuildingEnvelopeModel model = await this._buildingEnvelopeService.GetByIdAsReadOnlyAsync(id, cancellationToken);
+
+            return View(model.ToDetailsView());
+        }
+
         // An action for deleting and getting details of building envelopes by room and type
         [HttpGet]
         public async Task<IActionResult> Manage(Guid roomId, string type, CancellationToken cancellationToken = default)
@@ -276,7 +283,7 @@ namespace HVACrate.Presentation.Controllers
                 return View(form);
             }
         }
-        private async Task<List<SelectListItem>> InitializeMaterials(CancellationToken cancellationToken)
+        private async Task<List<SelectListItem>> InitializeMaterials(CancellationToken cancellationToken = default)
         {
             var materials = await _materialService.GetAllAsReadOnlyAsync(new(), cancellationToken);
             return [.. materials.Select(m => new SelectListItem
@@ -295,7 +302,7 @@ namespace HVACrate.Presentation.Controllers
                     Text = d.ToString()
                 })];
 
-        private async Task SeedFormDropdownsAsync(BuildingEnvelopeFormModel form, CancellationToken cancellationToken)
+        private async Task SeedFormDropdownsAsync(BuildingEnvelopeFormModel form, CancellationToken cancellationToken = default)
         {
             form.Materials = await InitializeMaterials(cancellationToken);
 

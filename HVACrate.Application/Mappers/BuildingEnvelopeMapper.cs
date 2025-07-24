@@ -137,6 +137,21 @@ namespace HVACrate.Application.Mappers
             return view;
         }
 
+        public static BuildingEnvelopeDetailViewModel ToDetailsView(this BuildingEnvelopeModel model)
+            => new()
+            {
+                Id = model.Id,
+                Type = model.Type.ToString(),
+                Width = model.Width,
+                Height = model.Height,
+                Area = model.Area,
+                Density = model.Density,
+                AdjustedTemperature = model.AdjustedTemperature,
+                HeatTransferCoefficient = model.HeatTransferCoefficient,
+                Material = model.Material.Type,
+                RoomName = model.Room.Type + " " + model.Room.Number,
+            };
+
         // Helper methods for the common properties
         private static void MapSharedToModel(BuildingEnvelope entity, BuildingEnvelopeModel model, bool firstTime)
         {

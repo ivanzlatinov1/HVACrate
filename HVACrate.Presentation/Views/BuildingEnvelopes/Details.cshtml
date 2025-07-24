@@ -1,0 +1,156 @@
+﻿@model BuildingEnvelopeDetailViewModel
+@{
+    ViewData["Title"] = $"{Model.Type} Details";
+}
+
+<div class="h-100" style="overflow-y: auto;">
+    <div class="container-fluid h-100 p-3 rounded-3">
+        <div class="card h-100 shadow-lg border-secondary">
+            <div class="card-header bg-dark text-white text-center py-4">
+                <h1 class="card-title mb-0 display-6 fw-bold">@ViewData["Title"]</h1>
+            </div>
+            <div class="card-body bg-light p-4" style="overflow-y: auto;">
+                <div class="row g-3">
+                    <div class="col-12">
+                        <div class="card border-start border-dark border-4 shadow-sm">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center mb-2">
+                                    <svg class="me-2" width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                    <h6 class="text-uppercase fw-bold text-muted mb-0">Type</h6>
+                                </div>
+                                <p class="h5 fw-semibold text-dark mb-0">@Model.Type</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="card border-start border-dark border-4 shadow-sm">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center mb-2">
+                                    <svg class="me-2" width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M4 3a2 2 0 100 4h12a2 2 0 100-4H4z" />
+                                        <path fill-rule="evenodd" d="M3 8a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" />
+                                    </svg>
+                                    <h6 class="text-uppercase fw-bold text-muted mb-0">Height</h6>
+                                </div>
+                                <p class="h5 fw-semibold text-dark mb-0">
+                                    @Model.Height <small class="text-muted fst-italic">m</small>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="card border-start border-dark border-4 shadow-sm">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center mb-2">
+                                    <svg class="me-2" width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" />
+                                    </svg>
+                                    <h6 class="text-uppercase fw-bold text-muted mb-0">Width</h6>
+                                </div>
+                                <p class="h5 fw-semibold text-dark mb-0">
+                                    @Model.Width <small class="text-muted fst-italic">m</small>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="card border-start border-dark border-4 shadow-sm">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center mb-2">
+                                    <svg class="me-2" width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M3 3a1 1 0 000 2v8a2 2 0 002 2h2a2 2 0 002-2V5a1 1 0 100-2H3zm11.5 4.5a.5.5 0 01.5-.5h4a.5.5 0 01.5.5v2a.5.5 0 01-.5.5h-4a.5.5 0 01-.5-.5v-2z" />
+                                    </svg>
+                                    <h6 class="text-uppercase fw-bold text-muted mb-0">Area</h6>
+                                </div>
+                                <p class="h5 fw-semibold text-dark mb-0">
+                                    @Model.Area <small class="text-muted fst-italic">m²</small>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="card border-start border-dark border-4 shadow-sm">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center mb-2">
+                                    <svg class="me-2" width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 1.414L10.586 9H7a1 1 0 100 2h3.586l-1.293 1.293a1 1 0 101.414 1.414l3-3a1 1 0 000-1.414z" />
+                                    </svg>
+                                    <h6 class="text-uppercase fw-bold text-muted mb-0">Density</h6>
+                                </div>
+                                <p class="h5 fw-semibold text-dark mb-0">
+                                    @Model.Density <small class="text-muted fst-italic">kg/m³</small>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="card border-start border-dark border-4 shadow-sm">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center mb-2">
+                                    <svg class="me-2" width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M12.395 2.553a1 1 0 00-1.45-.385c-.345.23-.614.558-.822.88-.214.33-.403.713-.57 1.116-.334.804-.614 1.768-.84 2.734a31.365 31.365 0 00-.613 3.58 2.64 2.64 0 01-.945-1.067c-.328-.68-.398-1.534-.398-2.654A1 1 0 005.05 6.05 6.981 6.981 0 003 11a7 7 0 1011.95-4.95c-.592-.591-.98-.985-1.348-1.467-.363-.476-.724-1.063-1.207-2.03z" />
+                                    </svg>
+                                    <h6 class="text-uppercase fw-bold text-muted mb-0">Heat Transfer Coefficient</h6>
+                                </div>
+                                <p class="h5 fw-semibold text-dark mb-0">
+                                    @Model.HeatTransferCoefficient <small class="text-muted fst-italic">W/(m²·K)</small>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="card border-start border-dark border-4 shadow-sm">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center mb-2">
+                                    <svg class="me-2" width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M10 2a4 4 0 00-4 4v1H5a1 1 0 00-.994.89l-1 9A1 1 0 004 18h12a1 1 0 00.994-1.11l-1-9A1 1 0 0015 7h-1V6a4 4 0 00-4-4zm2 5V6a2 2 0 10-4 0v1h4zm-6 3a1 1 0 112 0 1 1 0 01-2 0zm7-1a1 1 0 100 2 1 1 0 000-2z" />
+                                    </svg>
+                                    <h6 class="text-uppercase fw-bold text-muted mb-0">Adjusted Temperature</h6>
+                                </div>
+                                <p class="h5 fw-semibold text-dark mb-0">
+                                    @Model.AdjustedTemperature <small class="text-muted fst-italic">°C</small>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="card border-start border-dark border-4 shadow-sm">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center mb-2">
+                                    <svg class="me-2" width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M4 4a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2H4zm0 2v8h12V6H4z" />
+                                    </svg>
+                                    <h6 class="text-uppercase fw-bold text-muted mb-0">Room</h6>
+                                </div>
+                                <p class="h5 fw-semibold text-dark mb-0">@Model.RoomName</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="card border-start border-dark border-4 shadow-sm">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center mb-2">
+                                    <svg class="me-2" width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M3 6a3 3 0 013-3h10a1 1 0 01.8 1.6L14.25 8l2.55 3.4A1 1 0 0116 13H6a1 1 0 00-1 1v4a1 1 0 11-2 0V6z" />
+                                    </svg>
+                                    <h6 class="text-uppercase fw-bold text-muted mb-0">Material</h6>
+                                </div>
+                                <p class="h5 fw-semibold text-dark mb-0">@Model.Material</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
