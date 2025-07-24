@@ -23,6 +23,7 @@ namespace HVACrate.Application.Interfaces
         Task<bool> IsThereAFloorInRoomAsync(Guid roomId, CancellationToken cancellationToken = default);
         Task<long> GetInternalFencesCountByRoom(Guid roomId, CancellationToken cancellationToken = default);
         Task<long> GetOpeningsCountByRoom(Guid roomId, CancellationToken cancellationToken = default);
+        double CalculateTemperatureCoefficient(double density, string type);
         double CalculateHeatInfiltration(BuildingEnvelopeModel buildingEnvelope);
         double CalculateHeatTransmission(BuildingEnvelopeModel buildingEnvelope);
     }

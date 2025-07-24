@@ -6,6 +6,7 @@ using HVACrate.Domain.Entities.BuildingEnvelopes;
 using HVACrate.Domain.Enums;
 using HVACrate.Domain.Repositories.BuildingEnvelopes;
 using HVACrate.Domain.Repositories.Rooms;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace HVACrate.Application.Services
 {
@@ -79,6 +80,32 @@ namespace HVACrate.Application.Services
             await this._buildingEnvelopeRepository.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 
             await this.TryMakeRoomEnclosed(buildingEnvelope.RoomId, cancellationToken).ConfigureAwait(false);
+        }
+
+        public double CalculateTemperatureCoefficient(double density, string type)
+        {
+            if (type == "Floor")
+            {
+                if (density >= 150 && density < 250)
+                    return 1.0;
+                else if (density >= 250 && density < 400)
+                    return 2.0;
+                else if (density >= 400)
+                    return 3.0;
+            }
+            else if (type == "Outer Wall" || type == "Roof")
+            {
+                if (density < 400)
+                {
+                    return 1.0;
+                }
+                else if (density >= 400)
+                {
+                    return 2.0;
+                }
+            }
+
+            return 0.0;
         }
 
         public double CalculateHeatInfiltration(BuildingEnvelopeModel buildingEnvelope)

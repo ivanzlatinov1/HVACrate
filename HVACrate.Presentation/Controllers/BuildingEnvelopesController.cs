@@ -28,14 +28,18 @@ namespace HVACrate.Presentation.Controllers
 
             var buildingEnvelopeModels = await this._buildingEnvelopeService.GetAllAsReadOnlyAsync(id, cancellationToken);
 
-            BuildingEnvelopeViewModel[] buildingEnvelopes = [..buildingEnvelopeModels.Select(x => x.ToView())];
+            BuildingEnvelopeViewModel[] buildingEnvelopes = [.. buildingEnvelopeModels.Select(x => x.ToView())];
 
             long internalFencesCount = await this._buildingEnvelopeService.GetInternalFencesCountByRoom(id, cancellationToken);
             long openingsCount = await this._buildingEnvelopeService.GetOpeningsCountByRoom(id, cancellationToken);
             string roomNumber = await this._roomService.GetRoomNumberAsync(id, cancellationToken);
             Guid buildingId = await this._roomService.GetBuildingIdAsync(id, cancellationToken);
 
-            return View((id, buildingId, roomNumber, buildingEnvelopes, internalFencesCount, openingsCount, pagination));
+            bool isRoofAlreadyCreated = await this._buildingEnvelopeService.IsThereARoofInRoomAsync(id, cancellationToken);
+            bool isFloorAlreadyCreated = await this._buildingEnvelopeService.IsThereAFloorInRoomAsync(id, cancellationToken);
+
+            return View((id, buildingId, roomNumber, buildingEnvelopes, internalFencesCount,
+                openingsCount, isRoofAlreadyCreated, isFloorAlreadyCreated, pagination));
         }
 
         [HttpGet]
@@ -86,6 +90,9 @@ namespace HVACrate.Presentation.Controllers
                 return View(nameof(CreateOuterWall), form);
             }
 
+            form.Area = form.Width * form.Height;
+            form.AdjustedTemperature = this._buildingEnvelopeService.CalculateTemperatureCoefficient(form.Density, form.Type);
+
             return await HandleCreateAsync(form, f => f.ToModelFromForm(), cancellationToken);
         }
 
@@ -121,6 +128,9 @@ namespace HVACrate.Presentation.Controllers
             outerWall.Area -= form.Width * form.Height * form.Count;
             await this._buildingEnvelopeService.UpdateAsync(outerWall, cancellationToken);
 
+            form.Area = form.Width * form.Height;
+            form.AdjustedTemperature = this._buildingEnvelopeService.CalculateTemperatureCoefficient(form.Density, form.Type);
+
             return await HandleCreateAsync(form, f => f.ToModelFromForm(), cancellationToken);
         }
 
@@ -138,13 +148,21 @@ namespace HVACrate.Presentation.Controllers
                 return View(nameof(CreateFloor), form);
             }
 
+            form.Area = form.Width * form.Height;
+            form.AdjustedTemperature = this._buildingEnvelopeService.CalculateTemperatureCoefficient(form.Density, form.Type);
+
             return await HandleCreateAsync(form, f => f.ToModelFromForm(), cancellationToken);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateInternalFence(InternalFenceFormModel form, CancellationToken cancellationToken = default)
-            => await HandleCreateAsync(form, f => f.ToModelFromForm(), cancellationToken);
+        {
+            form.Area = form.Width * form.Height;
+            form.AdjustedTemperature = this._buildingEnvelopeService.CalculateTemperatureCoefficient(form.Density, form.Type);
+
+            return await HandleCreateAsync(form, f => f.ToModelFromForm(), cancellationToken);
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -158,6 +176,9 @@ namespace HVACrate.Presentation.Controllers
                 await SeedFormDropdownsAsync(form, cancellationToken);
                 return View(nameof(CreateRoof), form);
             }
+
+            form.Area = form.Width * form.Height;
+            form.AdjustedTemperature = this._buildingEnvelopeService.CalculateTemperatureCoefficient(form.Density, form.Type);
 
             return await HandleCreateAsync(form, f => f.ToModelFromForm(), cancellationToken);
         }

@@ -173,6 +173,7 @@ namespace HVACrate.Application.Mappers
             model.Id = form.Id;
             model.Height = form.Height;
             model.Width = form.Width;
+            model.Area = form.Area;
             model.AdjustedTemperature = form.AdjustedTemperature;
             model.HeatTransferCoefficient = form.HeatTransferCoefficient;
             model.Density = form.Density;

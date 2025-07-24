@@ -42,6 +42,7 @@
                 public const string WidthRange = "Width must be between {1} and {2} meters.";
                 public const string DensityRange = "Density must be between {1} and {2} kg/m³.";
                 public const string HeatTransferCoefficientRange = "Heat transfer coefficient must be between {1} and {2} W/m²·K.";
+                public const string MaterialRequired = "Material is required!";
             }
         }
 

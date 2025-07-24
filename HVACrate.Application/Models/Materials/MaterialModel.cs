@@ -2,13 +2,14 @@
 using System.ComponentModel.DataAnnotations;
 
 using static HVACrate.Domain.ValidationConstants.ValidationMessages;
+using static HVACrate.Domain.ValidationConstants.ValidationMessages.BuildingEnvelopeValidationMessages;
 using static HVACrate.Domain.ValidationConstants.Material;
 
 namespace HVACrate.Application.Models.Materials
 {
     public class MaterialModel
     {
-        [Required]
+        [Required(ErrorMessage = MaterialRequired)]
         public Guid Id { get; set; }
 
         [Required(ErrorMessage = Required)]
