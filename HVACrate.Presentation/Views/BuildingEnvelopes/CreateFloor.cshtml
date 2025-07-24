@@ -3,7 +3,7 @@
     string displayType = Model.Type;
 }
 
-<div class="container-fluid text-white py-3">
+<div class="container-fluid text-white">
     <div class="row justify-content-center">
         <div class="col-lg-10 col-md-11">
             <div class="card bg-black border-secondary">
@@ -39,14 +39,14 @@
                             <div class="col-md-6">
                                 <div class="form-group mb-2">
                                     <label asp-for="Width" class="form-label text-light">Width</label>
-                                    <input asp-for="Width" class="form-control bg-secondary text-white border-secondary form-control-sm" />
+                                    <input asp-for="Width" value="" class="form-control bg-secondary text-white border-secondary form-control-sm" />
                                     <span asp-validation-for="Width" class="text-danger small"></span>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group mb-2">
                                     <label asp-for="Height" class="form-label text-light">Height</label>
-                                    <input asp-for="Height" class="form-control bg-secondary text-white border-secondary form-control-sm" />
+                                    <input asp-for="Height" value="" class="form-control bg-secondary text-white border-secondary form-control-sm" />
                                     <span asp-validation-for="Height" class="text-danger small"></span>
                                 </div>
                             </div>
@@ -54,51 +54,47 @@
 
                         <div class="row mb-2">
                             <div class="col-md-6">
-                                <div class="form-group mb-2">
-                                    <label asp-for="AdjustedTemperature" class="form-label text-light">Adjusted Temperature</label>
-                                    <input asp-for="AdjustedTemperature" class="form-control bg-secondary text-white border-secondary form-control-sm" />
-                                    <span asp-validation-for="AdjustedTemperature" class="text-danger small"></span>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group mb-2">
-                                    <label asp-for="ThermalConductivityResistance" class="form-label text-light">Ventilation Coefficient</label>
-                                    <input asp-for="ThermalConductivityResistance" class="form-control bg-secondary text-white border-secondary form-control-sm" />
-                                    <span asp-validation-for="ThermalConductivityResistance" class="text-danger small"></span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row mb-2">
-                            <div class="col-md-6">
-                                <div class="form-group mb-2">
+                                <div class="form-group mb-4">
                                     <label asp-for="Density" class="form-label text-light">Density</label>
-                                    <input asp-for="Density" class="form-control bg-secondary text-white border-secondary form-control-sm" />
+                                    <div class="input-group input-group-sm">
+                                        <input asp-for="Density" value="" class="form-control bg-secondary text-white border-secondary" />
+                                        <span class="input-group-text bg-secondary text-white border-secondary">kg/m³</span>
+                                    </div>
                                     <span asp-validation-for="Density" class="text-danger small"></span>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group mb-2">
                                     <label asp-for="HeatTransferCoefficient" class="form-label text-light">Heat Transfer Coefficient</label>
-                                    <input asp-for="HeatTransferCoefficient" class="form-control bg-secondary text-white border-secondary form-control-sm" />
+                                    <div class="input-group input-group-sm">
+                                        <input asp-for="HeatTransferCoefficient" value="" class="form-control bg-secondary text-white border-secondary" />
+                                        <span class="input-group-text bg-secondary text-white border-secondary">W/m²·K</span>
+                                    </div>
                                     <span asp-validation-for="HeatTransferCoefficient" class="text-danger small"></span>
                                 </div>
                             </div>
                         </div>
 
                         <div class="row mb-2">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="form-group mb-2">
-                                    <label asp-for="GroundWaterLength" class="form-label text-light">Joint Length</label>
-                                    <input asp-for="GroundWaterLength" class="form-control bg-secondary text-white border-secondary form-control-sm" />
+                                    <label asp-for="GroundWaterLength" class="form-label text-light">Ground Water Length</label>
+                                    <input asp-for="GroundWaterLength" value="" class="form-control bg-secondary text-white border-secondary form-control-sm" />
                                     <span asp-validation-for="GroundWaterLength" class="text-danger small"></span>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="form-group mb-2">
-                                    <label asp-for="GroundWaterTemperature" class="form-label text-light">Ventilation Coefficient</label>
-                                    <input asp-for="GroundWaterTemperature" class="form-control bg-secondary text-white border-secondary form-control-sm" />
+                                    <label asp-for="GroundWaterTemperature" class="form-label text-light">Ground Water Temperature</label>
+                                    <input asp-for="GroundWaterTemperature" value="" class="form-control bg-secondary text-white border-secondary form-control-sm" />
                                     <span asp-validation-for="GroundWaterTemperature" class="text-danger small"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group mb-2">
+                                    <label asp-for="ThermalConductivityResistance" class="form-label text-light">Thermal Conductivity Resistance</label>
+                                    <input asp-for="ThermalConductivityResistance" value="" class="form-control bg-secondary text-white border-secondary form-control-sm" />
+                                    <span asp-validation-for="ThermalConductivityResistance" class="text-danger small"></span>
                                 </div>
                             </div>
                         </div>

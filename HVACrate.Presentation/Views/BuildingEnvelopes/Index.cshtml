@@ -1,10 +1,11 @@
 ﻿@using HVACrate.Application.Models.BuildingEnvelopes
 @using HVACrate.Domain.Entities.BuildingEnvelopes
-@model (Guid RoomId, Guid BuildingId, string RoomNumber, BuildingEnvelopeViewModel[] BuildingEnvelopes, long InternalFencesCount, long OpeningsCount, Pagination Pagination)
+@model (Guid RoomId, Guid BuildingId, string RoomNumber, BuildingEnvelopeViewModel[] BuildingEnvelopes, long InternalFencesCount, long OpeningsCount, bool isRoofCreated, bool isFloorCreated, Pagination Pagination)
 
 @{
     ViewData["Title"] = "Building Envelopes";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    long outerWallsCount = Model.BuildingEnvelopes.Count(x => x.Type == nameof(OuterWall));
 }
 
 <div class="container-fluid">
@@ -42,17 +43,20 @@
                             <tbody>
                                 <tr>
                                     <td>Outer Walls</td>
-                                    <td>@Model.BuildingEnvelopes.Count(x => x.Type == nameof(OuterWall))</td>
+                                    <td>@outerWallsCount</td>
                                     <td class="text-center">
                                         <div class="btn-group" role="group" aria-label="Outer Walls Actions">
                                             <a asp-action="Create" asp-route-roomId="@Model.RoomId" asp-route-type="@nameof(OuterWall)"
                                                class="btn btn-dark btn-sm me-2">
                                                 <i class="fa-solid fa-plus"></i> Add
                                             </a>
-                                            <a asp-action="Manage" asp-route-roomId="@Model.RoomId" asp-route-type="@nameof(OuterWall)"
-                                               class="btn btn-outline-dark btn-sm">
-                                                <i class="fa-solid fa-cog"></i> Manage
-                                            </a>
+                                            @if(outerWallsCount > 0)
+                                            {
+                                                <a asp-action="Manage" asp-route-roomId="@Model.RoomId" asp-route-type="@nameof(OuterWall)"
+                                                   class="btn btn-outline-dark btn-sm">
+                                                    <i class="fa-solid fa-cog"></i> Manage
+                                                </a>
+                                            }
                                         </div>
                                     </td>
                                 </tr>
@@ -65,10 +69,13 @@
                                                class="btn btn-dark btn-sm me-2">
                                                 <i class="fa-solid fa-plus"></i> Add
                                             </a>
-                                            <a asp-action="Manage" asp-route-roomId="@Model.RoomId" asp-route-type="@nameof(Opening)"
-                                               class="btn btn-outline-dark btn-sm">
-                                                <i class="fa-solid fa-cog"></i> Manage
-                                            </a>
+                                            @if(Model.OpeningsCount > 0)
+                                            {
+                                                <a asp-action="Manage" asp-route-roomId="@Model.RoomId" asp-route-type="@nameof(Opening)"
+                                                   class="btn btn-outline-dark btn-sm">
+                                                    <i class="fa-solid fa-cog"></i> Manage
+                                                </a>
+                                            }
                                         </div>
                                     </td>
                                 </tr>
@@ -81,10 +88,13 @@
                                                class="btn btn-dark btn-sm me-2">
                                                 <i class="fa-solid fa-plus"></i> Add
                                             </a>
-                                            <a asp-action="Manage" asp-route-roomId="@Model.RoomId" asp-route-type="@nameof(InternalFence)"
-                                               class="btn btn-outline-dark btn-sm">
-                                                <i class="fa-solid fa-cog"></i> Manage
-                                            </a>
+                                            @if(Model.InternalFencesCount > 0)
+                                            {
+                                                <a asp-action="Manage" asp-route-roomId="@Model.RoomId" asp-route-type="@nameof(InternalFence)"
+                                                   class="btn btn-outline-dark btn-sm">
+                                                    <i class="fa-solid fa-cog"></i> Manage
+                                                </a>
+                                            }
                                         </div>
                                     </td>
                                 </tr>
@@ -93,14 +103,20 @@
                                     <td>@Model.BuildingEnvelopes.Count(x => x.Type == nameof(Floor))</td>
                                     <td class="text-center">
                                         <div class="btn-group" role="group" aria-label="Floors Actions">
-                                            <a asp-action="Create" asp-route-roomId="@Model.RoomId" asp-route-type="@nameof(Floor)"
-                                               class="btn btn-dark btn-sm me-2">
-                                                <i class="fa-solid fa-plus"></i> Add
-                                            </a>
-                                            <a asp-action="Manage" asp-route-roomId="@Model.RoomId" asp-route-type="@nameof(Floor)"
-                                               class="btn btn-outline-dark btn-sm">
-                                                <i class="fa-solid fa-cog"></i> Manage
-                                            </a>
+                                            @if (!Model.isFloorCreated)
+                                            {
+                                                <a asp-action="Create" asp-route-roomId="@Model.RoomId" asp-route-type="@nameof(Floor)"
+                                                   class="btn btn-dark btn-sm me-2">
+                                                    <i class="fa-solid fa-plus"></i> Add
+                                                </a>
+                                            }
+                                            else
+                                            {
+                                                <a asp-action="Manage" asp-route-roomId="@Model.RoomId" asp-route-type="@nameof(Floor)"
+                                                   class="btn btn-outline-dark btn-sm">
+                                                    <i class="fa-solid fa-cog"></i> Manage
+                                                </a>
+                                            }
                                         </div>
                                     </td>
                                 </tr>
@@ -109,14 +125,20 @@
                                     <td>@Model.BuildingEnvelopes.Count(x => x.Type == nameof(Roof))</td>
                                     <td class="text-center">
                                         <div class="btn-group" role="group" aria-label="Floors Actions">
-                                            <a asp-action="Create" asp-route-roomId="@Model.RoomId" asp-route-type="@nameof(Roof)"
-                                               class="btn btn-dark btn-sm me-2">
-                                                <i class="fa-solid fa-plus"></i> Add
-                                            </a>
-                                            <a asp-action="Manage" asp-route-roomId="@Model.RoomId" asp-route-type="@nameof(Roof)"
-                                               class="btn btn-outline-dark btn-sm">
-                                                <i class="fa-solid fa-cog"></i> Manage
-                                            </a>
+                                            @if(!Model.isRoofCreated)
+                                            {
+                                                <a asp-action="Create" asp-route-roomId="@Model.RoomId" asp-route-type="@nameof(Roof)"
+                                                   class="btn btn-dark btn-sm me-2">
+                                                    <i class="fa-solid fa-plus"></i> Add
+                                                </a>
+                                            }
+                                            else
+                                            {
+                                                <a asp-action="Manage" asp-route-roomId="@Model.RoomId" asp-route-type="@nameof(Roof)"
+                                                   class="btn btn-outline-dark btn-sm">
+                                                    <i class="fa-solid fa-cog"></i> Manage
+                                                </a>
+                                            }
                                         </div>
                                     </td>
                                 </tr>
