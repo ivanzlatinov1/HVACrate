@@ -1,4 +1,4 @@
-html {
+﻿html {
     font-size: 14px;
 }
 
@@ -103,4 +103,95 @@ main {
 
 .nav-item:hover::before {
     opacity: 1;
+}
+
+.bg-dark-custom {
+    background: linear-gradient(145deg, #2a2a2a, #1e1e1e) !important;
+}
+
+.card-custom {
+    background: linear-gradient(145deg, #2a2a2a, #1e1e1e);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0.5rem 1.875rem rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.card-custom::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #ffffff, #888888);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.card-custom:hover {
+    transform: translateY(-0.25rem);
+    box-shadow: 0 1.25rem 2.5rem rgba(0, 0, 0, 0.4);
+}
+
+.card-custom:hover::before {
+    opacity: 1;
+}
+
+.header-custom {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.room-type-icon::before {
+    content: '🏠';
+    margin-right: 0.5rem;
+}
+
+.btn-custom {
+    background: linear-gradient(45deg, #ffffff, #f0f0f0);
+    color: #1a1a1a;
+    border: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 0.25rem 0.9375rem rgba(255, 255, 255, 0.1);
+}
+
+.btn-custom:hover {
+    background: linear-gradient(45deg, #f0f0f0, #e0e0e0);
+    color: #1a1a1a;
+    transform: translateY(-0.125rem);
+    box-shadow: 0 0.375rem 1.25rem rgba(255, 255, 255, 0.2);
+}
+
+.room-count-badge {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--bs-light);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.no-rooms-container {
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px dashed rgba(255, 255, 255, 0.2);
+}
+
+.detail-row {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+    .detail-row:last-child {
+        border-bottom: none;
+    }
+
+.text-muted-custom {
+    color: #aaaaaa !important;
+}
+
+.gradient-text {
+    background: linear-gradient(45deg, #ffffff, #cccccc);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }

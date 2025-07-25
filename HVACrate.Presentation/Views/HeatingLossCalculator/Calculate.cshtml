@@ -1,0 +1,183 @@
+﻿@inject HVACrate.Application.Interfaces.IBuildingEnvelopeService BuildingEnvelopeService;
+@model (BuildingEnvelopeCalculatableViewModel[] BuildingEnvelopes, double HeatingLoss)
+@{
+    var exampleModel = Model.BuildingEnvelopes.FirstOrDefault(x => x.Id != null);
+    string room = exampleModel!.RoomName;
+    double roomTemperature = exampleModel.RoomTemperature;
+}
+
+<div class="container-fluid text-white min-vh-75 p-4">
+    <div class="card bg-dark border-light shadow-lg">
+        <div class="card-header bg-black text-white border-bottom border-light">
+            <h4 class="card-title mb-0 text-center">
+                <i class="fas fa-thermometer-half me-2"></i>
+                @room Heat Loss Analysis
+            </h4>
+            <p class="card-subtitle text-muted text-center mt-2 mb-0">
+                RoomTemperature: <span class="text-white fw-bold">@roomTemperature °C</span>
+            </p>
+        </div>
+
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-dark table-hover table-bordered mb-0">
+                    <thead class="table-black">
+                        <tr class="text-center align-middle">
+                            <th class="border-light fw-semibold">
+                                <i class="fas fa-layer-group me-1"></i>Type
+                            </th>
+                            <th class="border-light fw-semibold">
+                                <i class="fas fa-compass me-1"></i>Direction
+                            </th>
+                            <th class="border-light fw-semibold">
+                                <i class="fas fa-hashtag me-1"></i>Count
+                            </th>
+                            <th class="border-light fw-semibold">
+                                <i class="fas fa-ruler-combined me-1"></i>
+                                Measurements<br>
+                                <small class="text-muted">(m × m)</small>
+                            </th>
+                            <th class="border-light fw-semibold">
+                                <i class="fas fa-minus-square me-1"></i>
+                                To be subtracted<br>
+                                <small class="text-muted">(m²)</small>
+                            </th>
+                            <th class="border-light fw-semibold">
+                                <i class="fas fa-exchange-alt me-1"></i>
+                                Heat Transfer Coefficient<br>
+                                <small class="text-muted">(W/(m²·°C))</small>
+                            </th>
+                            <th class="border-light fw-semibold">
+                                <i class="fas fa-adjust me-1"></i>
+                                Correction Temperature<br>
+                                <small class="text-muted">(°C)</small>
+                            </th>
+                            <th class="border-light fw-semibold">
+                                <i class="fas fa-fire me-1"></i>
+                                Heat Loss<br>
+                                <small class="text-muted">(W)</small>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.BuildingEnvelopes)
+                        {
+                            <tr class="text-center align-middle">
+                                <td class="border-light">
+                                    <span class="badge bg-secondary text-white px-2 py-1">@item.Type</span>
+                                </td>
+                                <td class="border-light">
+                                    @(item.Direction != null ? item.Direction : "-")
+                            </td>
+                            <td class="border-light">
+                                <span class="fw-bold">@item.Count</span>
+                            </td>
+                            <td class="border-light">
+                                <span class="font-monospace">
+                                    @item.Width.ToString("F2") × @item.Height.ToString("F2")
+                                </span>
+                            </td>
+                            <td class="border-light">
+                                <span class="font-monospace text-warning">
+                                    @((await this.BuildingEnvelopeService.GetAreaToBeSubtracted(item.Id, CancellationToken.None)).ToString("F2"))
+                                </span>
+                            </td>
+                            <td class="border-light">
+                                <span class="font-monospace text-info">
+                                    @item.HeatTransferCoefficient.ToString("F2")
+                                </span>
+                            </td>
+                            <td class="border-light">
+                                <span class="font-monospace">@item.AdjustedTemperature</span>
+                            </td>
+                            <td class="border-light">
+                                <span class="font-monospace text-danger fw-bold">
+                                    @item.HeatLoss.ToString("F2")
+                                </span>
+                            </td>
+                        </tr>
+                                                }
+                    </tbody>
+                    <tfoot class="table-black">
+                        <tr>
+                            <td colspan="7" class="border-light text-end fw-bold fs-5">
+                                <i class="fas fa-calculator me-2"></i>Total Heat Loss:
+                            </td>
+                            <td class="border-light text-center">
+                                <span class="badge bg-danger fs-6 px-3 py-2">
+                                    @Model.HeatingLoss.ToString("F2") W
+                                </span>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+
+        <div class="card-footer bg-black text-muted border-top border-light">
+            <div class="row">
+                <div class="col text-center">
+                    <small>
+                        <i class="fas fa-info-circle me-1"></i>
+                        Heat loss calculations are based on building envelope thermal properties
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    body {
+        background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+        color: #ffffff;
+        min-height: 100vh;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .table-black {
+        background-color: #000000 !important;
+        color: #ffffff !important;
+    }
+
+    .table-dark th,
+    .table-dark td {
+        border-color: #6c757d !important;
+    }
+
+    .card {
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.5) !important;
+    }
+
+    .badge {
+        font-size: 0.85em;
+    }
+
+    .font-monospace {
+        font-family: 'Courier New', monospace !important;
+    }
+
+    .table-hover tbody tr:hover {
+        background-color: #2d2d2d !important;
+    }
+
+    .fas {
+        opacity: 0.8;
+    }
+
+    @@media (max-width: 768px) {
+        .card-title {
+            font-size: 1.1rem;
+        }
+
+        .table th,
+        .table td {
+            font-size: 0.875rem;
+            padding: 0.5rem 0.25rem;
+        }
+
+        .badge {
+            font-size: 0.75em;
+        }
+    }
+</style>

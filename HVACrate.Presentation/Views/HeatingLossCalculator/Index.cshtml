@@ -1,0 +1,80 @@
+﻿@inject HVACrate.Application.Interfaces.IProjectService ProjectService;
+@model (RoomCalculatableViewModel[] Rooms, Pagination Pagination)
+
+<div class="container py-4">
+    <div class="header-custom rounded-3 text-center p-4 mb-4">
+        <h1 class="display-5 fw-light gradient-text mb-2">HVAC Room Calculator</h1>
+        <p class="lead text-muted mb-0">Select a room to calculate heating loss</p>
+    </div>
+
+    @if (Model.Rooms.Length > 0)
+    {
+        <div class="mb-4">
+            <span class="badge room-count-badge fs-6 px-3 py-2">
+                @Model.Rooms.Length available room@(Model.Rooms.Length > 1 ? "s" : "")
+            </span>
+        </div>
+
+        <div class="row g-4">
+            @foreach (var room in Model.Rooms)
+            {
+                <div class="col-lg-4 col-md-6">
+                    <div class="card card-custom h-100">
+                        <div class="card-body d-flex flex-column">
+
+                            <div class="mb-3">
+                                <h5 class="card-title room-type-icon text-light mb-2">@room.Type</h5>
+                                <h6 class="card-subtitle text-light-emphasis">Room @room.Number</h6>
+                            </div>
+
+                            <div class="mb-4 flex-grow-1">
+                                <div class="detail-row py-2 d-flex justify-content-between">
+                                    <span class="text-muted-custom small fw-medium">Building:</span>
+                                    <span class="text-light small fw-bold text-end" style="max-width: 60%;">
+                                        @room.BuildingName
+                                    </span>
+                                </div>
+                                <div class="detail-row py-2 d-flex justify-content-between">
+                                    <span class="text-muted-custom small fw-medium">Project:</span>
+                                    <span class="text-light small fw-bold text-end" style="max-width: 60%;">
+                                        @(await ProjectService.GetProjectNameAsync(room.ProjectId) ?? "No project name available")
+                                    </span>
+                                </div>
+                            </div>
+
+                            <a asp-action="Calculate" asp-route-roomId="@room.Id"
+                               class="btn btn-custom w-100 mt-auto">
+                                Calculate Heating Loss
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="no-rooms-container rounded-3 text-center p-5 mt-4">
+            <h2 class="h4 text-muted mb-3 fw-light">No Available Rooms</h2>
+            <p class="text-muted mb-0 lh-base">
+                There are currently no rooms available for calculating heating losses.<br>
+                Please enclose rooms to your project's buildings to get started.
+            </p>
+        </div>
+    }
+
+    <div class="mt-5">
+        <partial name="Partials/_PaginationPartial"
+                 view-data="ViewData"
+                 model="((Guid?)null, Model.Rooms.Count(), Model.Pagination)" />
+    </div>
+</div>
+
+<style>
+    body {
+        background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+        color: #ffffff;
+        min-height: 100vh;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+</style>
