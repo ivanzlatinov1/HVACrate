@@ -15,5 +15,6 @@ namespace HVACrate.Application.Interfaces
         Task SoftDeleteAsync(Guid id, CancellationToken cancellationToken = default);
         Task<Guid> GetBuildingIdAsync(Guid id, CancellationToken cancellationToken = default);
         Task<string> GetRoomNumberAsync(Guid id, CancellationToken cancellationToken = default);
+        Task<RoomModel[]> GetAllEnclosedRoomsAsync(Pagination pagination, CancellationToken cancellationToken = default);
     }
 }

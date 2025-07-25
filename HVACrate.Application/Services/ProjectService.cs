@@ -68,5 +68,8 @@ namespace HVACrate.Application.Services
             this._projectRepository.SoftDelete(project);
             await this._projectRepository.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
         }
+
+        public async Task<string?> GetProjectNameAsync(Guid id, CancellationToken cancellationToken = default)
+            => await this._projectRepository.GetProjectNameAsync(id, cancellationToken).ConfigureAwait(false);
     }
 }

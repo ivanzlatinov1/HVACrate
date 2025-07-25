@@ -5,15 +5,17 @@ using HVACrate.Domain.Entities;
 using HVACrate.Domain.Entities.BuildingEnvelopes;
 using HVACrate.Domain.Enums;
 using HVACrate.Domain.Repositories.BuildingEnvelopes;
+using HVACrate.Domain.Repositories.Buildings;
 using HVACrate.Domain.Repositories.Rooms;
 
 namespace HVACrate.Application.Services
 {
     public class BuildingEnvelopeService(IBuildingEnvelopeRepository buildingEnvelopeRepository,
-        IRoomRepository roomRepository) : IBuildingEnvelopeService
+        IRoomRepository roomRepository, IBuildingRepository buildingRepository) : IBuildingEnvelopeService
     {
         private readonly IBuildingEnvelopeRepository _buildingEnvelopeRepository = buildingEnvelopeRepository;
         private readonly IRoomRepository _roomRepository = roomRepository;
+        private readonly IBuildingRepository _buildingRepository = buildingRepository;
 
         public async Task<List<BuildingEnvelopeModel>> GetAllAsReadOnlyAsync(Guid? roomId, CancellationToken cancellationToken = default)
         {
@@ -21,7 +23,7 @@ namespace HVACrate.Application.Services
                 .GetAllAsReadOnlyAsync(roomId, cancellationToken)
                 .ConfigureAwait(false);
 
-            return [.. buildingEnvelopes.Select(x => x.ToModel(false))];
+            return [.. buildingEnvelopes.Select(x => x.ToModel())];
         }
 
         public async Task<OuterWallModel?> GetWallByDirectionAsync(Guid roomId, Direction direction, CancellationToken cancellationToken = default)
@@ -112,12 +114,12 @@ namespace HVACrate.Application.Services
             throw new NotImplementedException();
         }
 
-        public double CalculateHeatTransmission(BuildingEnvelopeModel buildingEnvelope)
+        public async Task<double> CalculateHeatTransmission(BuildingEnvelopeModel buildingEnvelope)
         {
             double area = buildingEnvelope.Area;
             double thermalResistance = 1.0 / buildingEnvelope.HeatTransferCoefficient;
             double roomTemperature = buildingEnvelope.Room.Temperature;
-            double regionTemperature = buildingEnvelope.Room.Building.Project.RegionTemperature;
+            double regionTemperature = await this._buildingRepository.GetProjectRegionTemperature(buildingEnvelope.Room.BuildingId);
             double adjustedTemperature = buildingEnvelope.AdjustedTemperature;
             double orientationCoefficient = 1.0;
 
@@ -243,5 +245,8 @@ namespace HVACrate.Application.Services
 
             return [.. roofs.Select(x => (RoofModel)x.ToModel(false))];
         }
+
+        public async Task<double> GetAreaToBeSubtracted(Guid buildingEnvelopeId, CancellationToken cancellationToken = default)
+           => await this._buildingEnvelopeRepository.GetAreaToBeSubtracted(buildingEnvelopeId, cancellationToken).ConfigureAwait(false);
     }
 }

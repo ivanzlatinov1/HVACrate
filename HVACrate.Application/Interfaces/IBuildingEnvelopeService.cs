@@ -1,5 +1,4 @@
 ﻿using HVACrate.Application.Models.BuildingEnvelopes;
-using HVACrate.Domain.Entities.BuildingEnvelopes;
 using HVACrate.Domain.Enums;
 
 namespace HVACrate.Application.Interfaces
@@ -25,8 +24,9 @@ namespace HVACrate.Application.Interfaces
         Task<bool> IsThereAFloorInRoomAsync(Guid roomId, CancellationToken cancellationToken = default);
         Task<long> GetInternalFencesCountByRoom(Guid roomId, CancellationToken cancellationToken = default);
         Task<long> GetOpeningsCountByRoom(Guid roomId, CancellationToken cancellationToken = default);
+        Task<double> GetAreaToBeSubtracted(Guid buildingEnvelopeId, CancellationToken cancellationToken = default);
         double CalculateTemperatureCoefficient(double density, string type);
         double CalculateHeatInfiltration(BuildingEnvelopeModel buildingEnvelope);
-        double CalculateHeatTransmission(BuildingEnvelopeModel buildingEnvelope);
+        Task<double> CalculateHeatTransmission(BuildingEnvelopeModel buildingEnvelope);
     }
 }

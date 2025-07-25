@@ -94,7 +94,7 @@ namespace HVACrate.Application.Services
             double heatTransmission = 0;
             foreach (var buildingEnvelope in room.BuildingEnvelopes)
             {
-                heatTransmission += this._buildingEnvelopeService
+                heatTransmission += await this._buildingEnvelopeService
                     .CalculateHeatTransmission(buildingEnvelope.ToModel(false));
             }
 
@@ -108,6 +108,15 @@ namespace HVACrate.Application.Services
                 .ConfigureAwait(false);
 
             return room.Number;
+        }
+
+        public async Task<RoomModel[]> GetAllEnclosedRoomsAsync(Pagination pagination, CancellationToken cancellationToken = default)
+        {
+            Room[] rooms = await this._roomRepository
+                .GetAllEnclosedRoomsAsync(pagination, cancellationToken)
+                .ConfigureAwait(false);
+
+            return [.. rooms.Select(x => x.ToModel())];
         }
     }
 }
