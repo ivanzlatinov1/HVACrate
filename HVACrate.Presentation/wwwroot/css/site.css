@@ -195,3 +195,24 @@ main {
     -webkit-text-fill-color: transparent;
     background-clip: text;
 }
+
+@media print {
+    @page {
+        size: landscape;
+    }
+
+    body {
+        margin: 0;
+    }
+
+    #print-section, #print-section * {
+        visibility: visible;
+    }
+
+    #print-section {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+    }
+}
