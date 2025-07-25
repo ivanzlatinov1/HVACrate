@@ -74,6 +74,25 @@
                         </div>
                     </div>
 
+                    @if(Model.Direction != null)
+                    {
+                        <div class="col-12">
+                            <div class="card border-start border-dark border-4 shadow-sm">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="me-2" viewBox="0 0 24 24">
+                                            <path d="M12 2a10 10 0 1 0 10 10A10.011 10.011 0 0 0 12 2Zm3.94 7.06-2 5a1 1 0 0 1-.58.58l-5 2a.25.25 0 0 1-.32-.32l2-5a1 1 0 0 1 .58-.58l5-2a.25.25 0 0 1 .32.32Z" />
+                                        </svg>
+                                        <h6 class="text-uppercase fw-bold text-muted mb-0">Direction</h6>
+                                    </div>
+                                    <p class="h5 fw-semibold text-dark mb-0">
+                                        @Model.Direction
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
                     <div class="col-12">
                         <div class="card border-start border-dark border-4 shadow-sm">
                             <div class="card-body">

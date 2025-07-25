@@ -6,6 +6,8 @@
 
         public string Type { get; set; } = null!;
 
+        public string? Direction { get; set; }
+
         public double Height { get; set; }
 
         public double Width { get; set; }

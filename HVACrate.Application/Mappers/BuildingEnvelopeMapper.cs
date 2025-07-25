@@ -142,6 +142,7 @@ namespace HVACrate.Application.Mappers
             {
                 Id = model.Id,
                 Type = model.Type.ToString(),
+                Direction = model.GetDirection(),
                 Width = model.Width,
                 Height = model.Height,
                 Area = model.Area,
@@ -197,6 +198,15 @@ namespace HVACrate.Application.Mappers
             model.IsDeleted = form.IsDeleted;
             model.RoomId = form.RoomId;
             model.MaterialId = form.MaterialId;
+        }
+
+        private static string? GetDirection(this BuildingEnvelopeModel model)
+        {
+            if(model is OuterWallModel outerWall)
+                return outerWall.Direction.ToString();
+            else if(model is OpeningModel openingModel)
+                return openingModel.Direction.ToString();
+            return null;
         }
     }
 }
