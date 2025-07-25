@@ -31,5 +31,13 @@ namespace HVACrate.Persistence.Repositories.Projects
                 .Where(p => p.Id == id)
                 .Select(p => p.LastModified)
                 .SingleOrDefaultAsync(cancellationToken);
+
+        public async Task<string?> GetProjectNameAsync(Guid id, CancellationToken cancellationToken = default)
+        {
+            var project = await context.Projects
+        .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+
+            return project?.Name;
+        }
     }
 }

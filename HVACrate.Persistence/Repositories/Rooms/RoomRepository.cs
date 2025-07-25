@@ -29,5 +29,12 @@ namespace HVACrate.Persistence.Repositories.Rooms
 
             return new Result<Room>(totalCount, rooms);
         }
+
+        public async Task<Room[]> GetAllEnclosedRoomsAsync(Pagination pagination, CancellationToken cancellationToken = default)
+            => await context.Rooms
+                .AsNoTracking()
+                .Where(x => x.IsEnclosed)
+                .WithPagination(pagination)
+                .ToArrayAsync(cancellationToken);
     }
 }

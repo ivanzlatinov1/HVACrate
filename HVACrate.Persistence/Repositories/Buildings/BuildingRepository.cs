@@ -24,5 +24,12 @@ namespace HVACrate.Persistence.Repositories.Buildings
 
             return new Result<Building>(totalCount, buildings);
         }
+
+        public async Task<double> GetProjectRegionTemperature(Guid buildingId, CancellationToken cancellationToken = default)
+        {
+            var building = await this.GetByIdAsReadOnlyAsync(buildingId, cancellationToken);
+
+            return building.Project.RegionTemperature;
+        }
     }
 }

@@ -94,5 +94,16 @@ namespace HVACrate.Persistence.Repositories.BuildingEnvelopes
                 .AsNoTracking()
                 .Where(x => x.RoomId == roomId)
                 .SumAsync(x => x.Count, cancellationToken);
+
+        public async Task<double> GetAreaToBeSubtracted(Guid buildingEnvelopeId, CancellationToken cancellationToken = default)
+        {
+            BuildingEnvelope buildingEnvelope = await this.GetByIdAsReadOnlyAsync(buildingEnvelopeId, cancellationToken);
+
+            if(buildingEnvelope is OuterWall outerWall && outerWall.ShouldReduceHeatingArea)
+            {
+                return outerWall.Width * outerWall.Height - outerWall.Area;
+            }
+            else return 0;
+        }
     }
 }

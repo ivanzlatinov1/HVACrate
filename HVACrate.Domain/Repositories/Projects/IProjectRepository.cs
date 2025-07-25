@@ -7,5 +7,6 @@ namespace HVACrate.Domain.Repositories.Projects
     {
         Task<Result<Project>> GetAllAsReadOnlyAsync(BaseQuery query, Guid? filterId = null, CancellationToken cancellationToken = default);
         Task<DateTimeOffset> GetLastTimeModifiedDateAsync(Guid id, CancellationToken cancellationToken = default);
+        Task<string?> GetProjectNameAsync(Guid id, CancellationToken cancellationToken = default);
     }
 }

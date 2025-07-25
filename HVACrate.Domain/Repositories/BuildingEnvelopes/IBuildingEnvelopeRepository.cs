@@ -19,5 +19,6 @@ namespace HVACrate.Domain.Repositories.BuildingEnvelopes
         Task<bool> IsThereAFloorInRoomAsync(Guid roomId, CancellationToken cancellationToken = default);
         Task<long> GetOpeningsCountByRoom(Guid roomId, CancellationToken cancellationToken = default);
         Task<long> GetInternalFencesCountByRoom(Guid roomId, CancellationToken cancellationToken = default);
+        Task<double> GetAreaToBeSubtracted(Guid buildingEnvelopeId, CancellationToken cancellationToken = default);
     }
 }
