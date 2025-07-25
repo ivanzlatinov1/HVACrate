@@ -153,6 +153,22 @@ namespace HVACrate.Application.Mappers
                 RoomName = model.Room.Type + " " + model.Room.Number,
             };
 
+        public static BuildingEnvelopeCalculatableViewModel ToCalculatableViewModel(this BuildingEnvelopeModel model)
+            => new()
+            {
+                Id = model.Id,
+                Type = model.Type.ToString(),
+                Direction = model.GetDirection(),
+                Width = model.Width,
+                Height = model.Height,
+                Area = model.Area,
+                Count = model.GetCount(),
+                AdjustedTemperature = model.AdjustedTemperature,
+                RoomTemperature = model.Room.Temperature,
+                HeatTransferCoefficient = model.HeatTransferCoefficient,
+                RoomName = model.Room.Type + " " + model.Room.Number,
+            };
+
         // Helper methods for the common properties
         private static void MapSharedToModel(BuildingEnvelope entity, BuildingEnvelopeModel model, bool firstTime)
         {
@@ -207,6 +223,15 @@ namespace HVACrate.Application.Mappers
             else if(model is OpeningModel openingModel)
                 return openingModel.Direction.ToString();
             return null;
+        }
+
+        private static int GetCount (this BuildingEnvelopeModel model)
+        {
+            if(model is OpeningModel opening)
+                return opening.Count;
+            else if(model is InternalFenceModel internalFence)
+                return internalFence.Count;
+            else return 1;
         }
     }
 }

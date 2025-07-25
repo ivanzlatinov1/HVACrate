@@ -1,7 +1,5 @@
-﻿using HVACrate.Application.Models.Projects;
-using HVACrate.Application.Models.Rooms;
+﻿using HVACrate.Application.Models.Rooms;
 using HVACrate.Domain.Entities;
-using HVACrate.Presentation.Models.Projects;
 using HVACrate.Presentation.Models.Rooms;
 
 namespace HVACrate.Application.Mappers
@@ -82,6 +80,16 @@ namespace HVACrate.Application.Mappers
                BuildingName = model.Building.Name,
                IsEnclosed = model.IsEnclosed,
            };
+
+        public static RoomCalculatableViewModel ToCalculatableViewModel(this RoomModel model)
+            => new()
+            {
+                Id = model.Id,
+                Type = model.Type,
+                Number = model.Number,
+                BuildingName = model.Building.Name,
+                ProjectId = model.Building.ProjectId,
+            };
 
         public static void UpdateFromForm(this RoomModel model, RoomFormModel form)
         {
