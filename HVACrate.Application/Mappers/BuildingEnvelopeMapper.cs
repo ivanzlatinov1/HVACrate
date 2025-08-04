@@ -218,18 +218,18 @@ namespace HVACrate.Application.Mappers
 
         private static string? GetDirection(this BuildingEnvelopeModel model)
         {
-            if(model is OuterWallModel outerWall)
+            if (model is OuterWallModel outerWall)
                 return outerWall.Direction.ToString();
-            else if(model is OpeningModel openingModel)
+            else if (model is OpeningModel openingModel)
                 return openingModel.Direction.ToString();
             return null;
         }
 
-        private static int GetCount (this BuildingEnvelopeModel model)
+        private static int GetCount(this BuildingEnvelopeModel model)
         {
-            if(model is OpeningModel opening)
+            if (model is OpeningModel opening)
                 return opening.Count;
-            else if(model is InternalFenceModel internalFence)
+            else if (model is InternalFenceModel internalFence)
                 return internalFence.Count;
             else return 1;
         }

@@ -1,8 +1,7 @@
 ﻿using HVACrate.Application.Models.Projects;
 using System.ComponentModel.DataAnnotations;
-
-using static HVACrate.Domain.ValidationConstants.ValidationMessages;
 using static HVACrate.Domain.ValidationConstants.HVACUser;
+using static HVACrate.Domain.ValidationConstants.ValidationMessages;
 
 namespace HVACrate.Application.Models.HVACUsers
 {

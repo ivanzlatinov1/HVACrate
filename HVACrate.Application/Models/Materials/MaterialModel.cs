@@ -1,9 +1,8 @@
 ﻿using HVACrate.Application.Models.BuildingEnvelopes;
 using System.ComponentModel.DataAnnotations;
-
+using static HVACrate.Domain.ValidationConstants.Material;
 using static HVACrate.Domain.ValidationConstants.ValidationMessages;
 using static HVACrate.Domain.ValidationConstants.ValidationMessages.BuildingEnvelopeValidationMessages;
-using static HVACrate.Domain.ValidationConstants.Material;
 
 namespace HVACrate.Application.Models.Materials
 {

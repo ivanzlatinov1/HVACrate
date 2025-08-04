@@ -16,7 +16,7 @@ namespace HVACrate.Application.Interfaces
         /// <param name="query">Pagination and filtering options.</param>
         /// <param name="buildingId">Optional ID of the associated building.</param>
         Task<Result<RoomModel>> GetAllAsReadOnlyAsync(BaseQueryModel query, Guid? buildingId, CancellationToken cancellationToken = default);
-        
+
         /// <summary>
         /// Retrieves a room by its ID as a read-only model.
         /// </summary>

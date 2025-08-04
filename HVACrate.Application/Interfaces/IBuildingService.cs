@@ -17,7 +17,7 @@ namespace HVACrate.Application.Interfaces
         /// <param name="query">Pagination and filtering options.</param>
         /// <param name="projectId">Optional ID of the associated project.</param>
         Task<Result<BuildingModel>> GetAllAsReadOnlyAsync(BaseQueryModel query, Guid? projectId, CancellationToken cancellationToken = default);
-        
+
         /// <summary>
         /// Retrieves a single building by its ID as a read-only model.
         /// </summary>

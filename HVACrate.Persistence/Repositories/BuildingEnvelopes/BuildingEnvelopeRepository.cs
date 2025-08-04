@@ -99,7 +99,7 @@ namespace HVACrate.Persistence.Repositories.BuildingEnvelopes
         {
             BuildingEnvelope buildingEnvelope = await this.GetByIdAsReadOnlyAsync(buildingEnvelopeId, cancellationToken);
 
-            if(buildingEnvelope is OuterWall outerWall && outerWall.ShouldReduceHeatingArea)
+            if (buildingEnvelope is OuterWall outerWall && outerWall.ShouldReduceHeatingArea)
             {
                 return outerWall.Width * outerWall.Height - outerWall.Area;
             }

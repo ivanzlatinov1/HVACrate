@@ -18,7 +18,7 @@ namespace HVACrate.Presentation.Controllers
             MaterialFormModel form = new()
             {
                 BuildingEnvelopeRoomId = buildingEnvelopeRoomId,
-                BuildingEnvelopeType = buildingEnvelopeType 
+                BuildingEnvelopeType = buildingEnvelopeType
             };
 
             return View(form);
@@ -37,7 +37,7 @@ namespace HVACrate.Presentation.Controllers
 
                 await _materialService.CreateAsync(model, cancellationToken);
 
-                return this.RedirectToAction(nameof(Create), "BuildingEnvelopes", 
+                return this.RedirectToAction(nameof(Create), "BuildingEnvelopes",
                     new { roomId = form.BuildingEnvelopeRoomId, type = form.BuildingEnvelopeType });
             }
             catch (Exception ex)

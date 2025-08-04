@@ -238,7 +238,7 @@ namespace HVACrate.Presentation.Controllers
                 var model = await this._buildingEnvelopeService.GetByIdAsync(id, cancellationToken);
                 Guid roomId = model.RoomId;
 
-                if(model is OuterWallModel outerWall)
+                if (model is OuterWallModel outerWall)
                 {
                     OpeningModel[] openings = await _buildingEnvelopeService
                         .GetOpeningsByRoomAndDirectionAsync(roomId, outerWall.Direction, cancellationToken);

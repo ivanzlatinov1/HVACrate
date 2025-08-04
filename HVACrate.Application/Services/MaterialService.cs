@@ -15,7 +15,7 @@ namespace HVACrate.Application.Services
         {
             bool materialExists = await this._materialRepository.CheckIfMaterialWithSameTypeExistsAsync(model.Type, cancellationToken);
 
-            if(materialExists)
+            if (materialExists)
             {
                 return;
             }

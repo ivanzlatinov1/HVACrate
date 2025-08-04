@@ -35,7 +35,7 @@ namespace HVACrate.Presentation.Controllers
 
             var buildingEnvelopes = buildingEnvelopeModels.Select(x => x.ToCalculatableViewModel()).ToArray();
 
-            for(int i = 0; i < buildingEnvelopeModels.Count; i++)
+            for (int i = 0; i < buildingEnvelopeModels.Count; i++)
             {
                 double envelopeHeatingLoss = await this._buildingEnvelopeService.CalculateHeatTransmission(buildingEnvelopeModels[i]);
                 heatingLoss += envelopeHeatingLoss;

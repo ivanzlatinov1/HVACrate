@@ -2,7 +2,7 @@
 
 using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace  HVACrate.Presentation.Areas.Identity.Pages.Account.Manage
+namespace HVACrate.Presentation.Areas.Identity.Pages.Account.Manage
 {
     public static class ManageNavPages
     {
