@@ -73,7 +73,7 @@
                         </div>
 
                         <div class="row mb-2">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="form-group mb-2">
                                     <label asp-for="HeatTransferCoefficient" class="form-label text-light">Heat Transfer Coefficient</label>
                                     <div class="input-group input-group-sm">
@@ -93,6 +93,14 @@
                                     </select>
                                     <span asp-validation-for="MaterialId" class="text-danger small"></span>
                                 </div>
+                            </div>
+                            <div class="col-md-2 d-flex align-items-end">
+                                <a asp-controller="Materials" asp-action="Create"
+                                   asp-route-buildingEnvelopeRoomId="@Model.RoomId"
+                                   asp-route-buildingEnvelopeType="@Model.Type"
+                                   class="btn btn-outline-light btn-sm mb-2">
+                                    Add new material
+                                </a>
                             </div>
                         </div>
 

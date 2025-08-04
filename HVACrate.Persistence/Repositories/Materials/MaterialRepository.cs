@@ -9,5 +9,10 @@ namespace HVACrate.Persistence.Repositories.Materials
             => await context.Materials
                     .AsNoTracking()
                     .ToArrayAsync(cancellationToken);
+
+        public async Task<bool> CheckIfMaterialWithSameTypeExistsAsync(string type, CancellationToken cancellationToken = default)
+            => await context.Materials
+                   .AsNoTracking()
+                   .AnyAsync(x => x.Type == type, cancellationToken);
     }
 }

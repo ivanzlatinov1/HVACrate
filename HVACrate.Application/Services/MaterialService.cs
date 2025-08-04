@@ -13,6 +13,13 @@ namespace HVACrate.Application.Services
 
         public async Task CreateAsync(MaterialModel model, CancellationToken cancellationToken = default)
         {
+            bool materialExists = await this._materialRepository.CheckIfMaterialWithSameTypeExistsAsync(model.Type, cancellationToken);
+
+            if(materialExists)
+            {
+                return;
+            }
+
             await this._materialRepository
                 .CreateAsync(model.ToEntity(false), cancellationToken)
                 .ConfigureAwait(false);

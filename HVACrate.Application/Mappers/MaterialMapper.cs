@@ -1,9 +1,10 @@
 ﻿using HVACrate.Application.Models.Materials;
 using HVACrate.Domain.Entities;
+using HVACrate.Presentation.Models.Materials;
 
 namespace HVACrate.Application.Mappers
 {
-    internal static class MaterialMapper
+    public static class MaterialMapper
     {
         public static MaterialModel ToModel(this Material entity, bool firstTime = true)
             => new()
@@ -23,6 +24,14 @@ namespace HVACrate.Application.Mappers
                 ThermalConductivity = model.ThermalConductivity,
                 IsDeleted = model.IsDeleted,
                 BuildingEnvelopes = firstTime ? model.BuildingEnvelopes.Select(x => x.ToEntity(false)).ToList() : null!
+            };
+
+        public static MaterialModel ToModel(this MaterialFormModel form)
+            => new()
+            {
+                Id = form.Id,
+                Type = form.Type,
+                ThermalConductivity = form.ThermalConductivity,
             };
     }
 }
