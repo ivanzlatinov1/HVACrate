@@ -4,12 +4,25 @@
     ViewData["Title"] = "Your account";
     ViewData["ActivePage"] = ManageNavPages.Index;
 }
-
 <h3>@ViewData["Title"]</h3>
 <partial name="_StatusMessage" for="StatusMessage" />
 <div class="row">
     <div class="col-md-6">
         <form id="profile-form" method="post">
+            @if (!string.IsNullOrEmpty(Model.FirstName))
+            {
+                <div class="form-floating mb-3">
+                    <input asp-for="FirstName" class="form-control" placeholder="Please enter your first name." disabled />
+                    <label asp-for="FirstName" class="form-label"></label>
+                </div>
+            }
+            @if (!string.IsNullOrEmpty(Model.LastName))
+            {
+                <div class="form-floating mb-3">
+                    <input asp-for="LastName" class="form-control" placeholder="Please enter your last name." disabled />
+                    <label asp-for="LastName" class="form-label"></label>
+                </div>
+            }
             <div class="form-floating mb-3">
                 <input asp-for="Username" class="form-control" placeholder="Please choose your username." disabled />
                 <label asp-for="Username" class="form-label"></label>
@@ -19,5 +32,15 @@
                 <label asp-for="Email" class="form-label"></label>
             </div>
         </form>
+    </div>
+    <div class="col-md-6">
+        <div class="text-center">
+            <div class="mb-3">
+                <img src="@(Model.ProfilePictureUrl ?? HVACrate.GCommon.GlobalConstants.DefaultProfilePictureUrl)" alt="Profile Picture" class="img-thumbnail rounded-circle" style="width: 220px; height: 220px; object-fit: cover;" />
+            </div>
+            <div class="mb-3">
+                <label asp-for="ProfilePictureUrl" class="form-label">Profile Picture</label>
+            </div>
+        </div>
     </div>
 </div>

@@ -18,6 +18,12 @@ namespace HVACrate.Presentation.Areas.Identity.Pages.Account.Manage
 
         public string Email { get; set; }
 
+        public string? FirstName { get; set; }
+
+        public string? LastName { get; set; }
+
+        public string ProfilePictureUrl { get; set; }
+
         [TempData]
         public string StatusMessage { get; set; }
 
@@ -28,6 +34,9 @@ namespace HVACrate.Presentation.Areas.Identity.Pages.Account.Manage
 
             Username = userName;
             Email = email;
+            FirstName = user.FirstName;
+            LastName = user.LastName;
+            ProfilePictureUrl = user.ProfilePictureUrl;
         }
 
         public async Task<IActionResult> OnGetAsync()
