@@ -33,6 +33,7 @@ namespace HVACrate.Application.Mappers
                 InternalFence internalFence => new InternalFenceModel
                 {
                     Count = internalFence.Count,
+                    AdjacentRoomTemperature = internalFence.AdjacentRoomTemperature,
                 },
                 Roof => new RoofModel(),
                 _ => throw new Exception($"Unsupported type: {entity.GetType().Name}")
@@ -67,6 +68,7 @@ namespace HVACrate.Application.Mappers
                 InternalFenceFormModel internalFence => new InternalFenceModel
                 {
                     Count = internalFence.Count,
+                    AdjacentRoomTemperature = internalFence.AdjacentRoomTemperature,
                 },
                 RoofFormModel => new RoofModel(),
                 _ => throw new Exception($"Unsupported type: {form.GetType().Name}")
@@ -101,6 +103,7 @@ namespace HVACrate.Application.Mappers
                 InternalFenceModel internalFenceModel => new InternalFence
                 {
                     Count = internalFenceModel.Count,
+                    AdjacentRoomTemperature = internalFenceModel.AdjacentRoomTemperature,
                 },
                 RoofModel => new Roof(),
                 _ => throw new Exception($"Unsupported type: {model.GetType().Name}")

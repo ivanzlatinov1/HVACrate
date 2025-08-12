@@ -11,5 +11,8 @@ namespace HVACrate.Application.Models.BuildingEnvelopes
 
         [Required(ErrorMessage = Required)]
         public int Count { get; set; }
+
+        [Required(ErrorMessage = Required)]
+        public int AdjacentRoomTemperature { get; set; }
     }
 }

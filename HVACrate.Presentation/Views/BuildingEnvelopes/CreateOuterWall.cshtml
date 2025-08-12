@@ -65,7 +65,7 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group mb-2">
-                                    <label asp-for="HeatTransferCoefficient" class="form-label text-light">Heat Transfer Coefficient</label>
+                                    <label asp-for="HeatTransferCoefficient" class="form-label text-light">Heat Transfer Coefficient <small class="text-muted fw-normal">U<sub>out</sub></small></label>
                                     <div class="input-group input-group-sm">
                                         <input asp-for="HeatTransferCoefficient" value="" class="form-control bg-secondary text-white border-secondary" />
                                         <span class="input-group-text bg-secondary text-white border-secondary">W/m²·K</span>
@@ -91,6 +91,9 @@
                                         <input asp-for="ShouldReduceHeatingArea" class="form-check-input bg-secondary border-secondary" />
                                         <label asp-for="ShouldReduceHeatingArea" class="form-check-label text-light">Reduce Heating Area</label>
                                     </div>
+                                    <small class="text-white-50 fst-italic w-[125%]" style="display:block; width:120%;">
+                                        <sup>*</sup> Check this if you want to add window or door on this wall
+                                    </small>
                                 </div>
                             </div>
                         </div>

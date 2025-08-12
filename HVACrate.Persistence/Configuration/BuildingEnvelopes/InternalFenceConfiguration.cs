@@ -13,6 +13,12 @@ namespace HVACrate.Persistence.Configuration.BuildingEnvelopes
                 .Property(be => be.Count)
                 .IsRequired()
                 .HasComment("The count of the internal fences");
+
+            // Define constraints for the AdjacentRoomTemperature column
+            entity
+                .Property(be => be.AdjacentRoomTemperature)
+                .IsRequired()
+                .HasComment("The room temperature of the neighboor room");
         }
     }
 }

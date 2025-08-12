@@ -6,5 +6,7 @@ namespace HVACrate.Domain.Entities.BuildingEnvelopes
         public override BuildingEnvelopeType Type => BuildingEnvelopeType.InternalFence;
 
         public int Count { get; set; }
+
+        public int AdjacentRoomTemperature { get; set; }
     }
 }

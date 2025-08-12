@@ -143,6 +143,10 @@ namespace HVACrate.Application.Services
                 orientationCoefficient = GetOrientationCoefficient(opening.Direction);
             }
 
+            if (buildingEnvelope is InternalFenceModel internalFence)
+                return area / thermalResistance *
+                    (roomTemperature - internalFence.AdjacentRoomTemperature - adjustedTemperature) * orientationCoefficient;
+
             return area / thermalResistance *
                 (roomTemperature - regionTemperature - adjustedTemperature) * orientationCoefficient;
         }
