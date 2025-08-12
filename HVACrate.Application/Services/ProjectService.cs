@@ -69,6 +69,17 @@ namespace HVACrate.Application.Services
             await this._projectRepository.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
         }
 
+        public async Task DeleteAsync(Guid id, CancellationToken cancellationToken = default)
+        {
+            Project project = await this._projectRepository
+                .GetByIdAsync(id, cancellationToken)
+                .ConfigureAwait(false)
+                ?? throw new Exception("Project not found");
+
+            this._projectRepository.Delete(project);
+            await this._projectRepository.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+        }
+
         public async Task<string?> GetProjectNameAsync(Guid id, CancellationToken cancellationToken = default)
             => await this._projectRepository.GetProjectNameAsync(id, cancellationToken).ConfigureAwait(false);
     }

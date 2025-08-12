@@ -57,5 +57,11 @@ namespace HVACrate.Application.Interfaces
         /// </summary>
         /// <param name="id">The unique identifier of the project to delete.</param>
         Task SoftDeleteAsync(Guid id, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Deletes the entity from the database.
+        /// </summary>
+        /// <param name="id"></param>
+        Task DeleteAsync(Guid id, CancellationToken cancellationToken = default);
     }
 }

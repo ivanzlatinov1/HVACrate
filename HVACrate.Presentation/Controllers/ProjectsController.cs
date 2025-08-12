@@ -124,7 +124,7 @@ namespace HVACrate.Presentation.Controllers
             {
                 if (project != null)
                 {
-                    await this._projectService.SoftDeleteAsync(project.Id, cancellationToken);
+                    await this._projectService.DeleteAsync(project.Id, cancellationToken);
                 }
                 return this.RedirectToAction(nameof(Index));
             }

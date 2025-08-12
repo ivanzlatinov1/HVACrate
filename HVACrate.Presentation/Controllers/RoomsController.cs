@@ -137,7 +137,7 @@ namespace HVACrate.Presentation.Controllers
         {
             try
             {
-                await this._roomService.SoftDeleteAsync(room.Id, cancellationToken);
+                await this._roomService.DeleteAsync(room.Id, cancellationToken);
                 return this.RedirectToAction(nameof(Index), new { id = room.BuildingId });
             }
             catch (Exception ex)

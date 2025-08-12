@@ -43,6 +43,12 @@ namespace HVACrate.Application.Interfaces
         Task UpdateAsync(BuildingModel model, CancellationToken cancellationToken = default);
 
         /// <summary>
+        /// Deletes the entity from the database.
+        /// </summary>
+        /// <param name="id"></param>
+        Task DeleteAsync(Guid id, CancellationToken cancellationToken = default);
+
+        /// <summary>
         /// Soft deletes a building by marking it as inactive without removing it from the database.
         /// </summary>
         /// <param name="id">The unique identifier of the building to delete.</param>

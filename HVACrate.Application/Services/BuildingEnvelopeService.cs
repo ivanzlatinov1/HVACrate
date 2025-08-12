@@ -83,6 +83,17 @@ namespace HVACrate.Application.Services
             await this.TryMakeRoomEnclosed(buildingEnvelope.RoomId, cancellationToken).ConfigureAwait(false);
         }
 
+        public async Task DeleteAsync(Guid id, CancellationToken cancellationToken = default)
+        {
+            BuildingEnvelope buildingEnvelope = await this._buildingEnvelopeRepository.GetByIdAsync(id, cancellationToken)
+                ?? throw new Exception("Building Envelope not found");
+
+            this._buildingEnvelopeRepository.Delete(buildingEnvelope);
+            await this._buildingEnvelopeRepository.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+
+            await this.TryMakeRoomEnclosed(buildingEnvelope.RoomId, cancellationToken).ConfigureAwait(false);
+        }
+
         public double CalculateTemperatureCoefficient(double density, string type)
         {
             if (type == "Floor")

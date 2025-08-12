@@ -245,11 +245,11 @@ namespace HVACrate.Presentation.Controllers
 
                     foreach (var opening in openings)
                     {
-                        await this._buildingEnvelopeService.SoftDeleteAsync(opening.Id, cancellationToken);
+                        await this._buildingEnvelopeService.DeleteAsync(opening.Id, cancellationToken);
                     }
                 }
 
-                await this._buildingEnvelopeService.SoftDeleteAsync(id, cancellationToken);
+                await this._buildingEnvelopeService.DeleteAsync(id, cancellationToken);
                 return this.RedirectToAction(nameof(Index), new { id = roomId });
             }
             catch (Exception ex)

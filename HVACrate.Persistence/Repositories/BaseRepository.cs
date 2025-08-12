@@ -48,6 +48,20 @@ namespace HVACrate.Persistence.Repositories
             entity.IsDeleted = true;
         }
 
+        public void Delete(IDeletableModel entity)
+        {
+            var trackedEntity = _context.Set<TEntity>().Local.FirstOrDefault(e => e.Id == ((BaseEntity)entity).Id);
+
+            if (trackedEntity != null)
+            {
+                _context.Set<TEntity>().Remove(trackedEntity);
+            }
+            else
+            {
+                _context.Set<TEntity>().Remove((TEntity)entity);
+            }
+        }
+
         // Helper method to track when an entity is updated and to update its project's LastModified property
         private async Task SetLastModifiedTimestamps()
         {

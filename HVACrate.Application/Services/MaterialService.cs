@@ -63,6 +63,15 @@ namespace HVACrate.Application.Services
             await this._materialRepository.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
         }
 
+        public async Task DeleteAsync(Guid id, CancellationToken cancellationToken = default)
+        {
+            Material material = await this._materialRepository.GetByIdAsync(id, cancellationToken)
+                ?? throw new Exception("Material not found");
+
+            this._materialRepository.Delete(material);
+            await this._materialRepository.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+        }
+
         public async Task UpdateAsync(MaterialModel model, CancellationToken cancellationToken = default)
         {
             this._materialRepository.Update(model.ToEntity());

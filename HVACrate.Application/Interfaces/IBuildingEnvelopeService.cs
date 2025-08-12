@@ -83,6 +83,12 @@ namespace HVACrate.Application.Interfaces
         Task SoftDeleteAsync(Guid id, CancellationToken cancellationToken = default);
 
         /// <summary>
+        /// Deletes the entity from the database.
+        /// </summary>
+        /// <param name="id"></param>
+        Task DeleteAsync(Guid id, CancellationToken cancellationToken = default);
+
+        /// <summary>
         /// Gets the outer wall in a given direction for a room, if it exists.
         /// </summary>
         /// <param name="roomId">The ID of the room.</param>

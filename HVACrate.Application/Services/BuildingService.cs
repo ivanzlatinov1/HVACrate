@@ -98,6 +98,15 @@ namespace HVACrate.Application.Services
             await this._buildingRepository.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
         }
 
+        public async Task DeleteAsync(Guid id, CancellationToken cancellationToken = default)
+        {
+            Building building = await this._buildingRepository.GetByIdAsync(id, cancellationToken)
+                ?? throw new Exception("Building not found");
+
+            this._buildingRepository.Delete(building);
+            await this._buildingRepository.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+        }
+
         public async Task UpdateAsync(BuildingModel model, CancellationToken cancellationToken = default)
         {
             this._buildingRepository.Update(model.ToEntity(false));

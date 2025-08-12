@@ -7,6 +7,7 @@
         Task CreateAsync(TEntity entity, CancellationToken cancellationToken = default);
         void Update(TEntity entity);
         void SoftDelete(IDeletableModel entity);
+        void Delete(IDeletableModel entity);
         Task SaveChangesAsync(CancellationToken cancellationToken = default);
     }
 }

@@ -67,6 +67,15 @@ namespace HVACrate.Application.Services
             await this._roomRepository.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
         }
 
+        public async Task DeleteAsync(Guid id, CancellationToken cancellationToken = default)
+        {
+            Room room = await this._roomRepository.GetByIdAsync(id, cancellationToken)
+                ?? throw new Exception("Room not found");
+
+            this._roomRepository.Delete(room);
+            await this._roomRepository.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+        }
+
         public async Task UpdateAsync(RoomModel model, CancellationToken cancellationToken = default)
         {
             this._roomRepository.Update(model.ToEntity(false));
