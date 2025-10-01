@@ -11,14 +11,21 @@ using static HVACrate.GCommon.GlobalConstants;
 
 namespace HVACrate.Presentation.Areas.Identity.Pages.Account
 {
-    public class RegisterModel(
+    public class RegisterModel : PageModel
+    {
+        private readonly SignInManager<HVACUser> _signInManager;
+        private readonly UserManager<HVACUser> _userManager;
+        private readonly IWebHostEnvironment _env;
+
+        public RegisterModel(
         UserManager<HVACUser> userManager,
         SignInManager<HVACUser> signInManager,
-        IWebHostEnvironment env) : PageModel
-    {
-        private readonly SignInManager<HVACUser> _signInManager = signInManager;
-        private readonly UserManager<HVACUser> _userManager = userManager;
-        private readonly IWebHostEnvironment _env = env;
+        IWebHostEnvironment env)
+        {
+            _userManager = userManager;
+            _signInManager = signInManager;
+            _env = env;
+        }
 
         [BindProperty]
         public InputModel Input { get; set; } = null!;
@@ -66,13 +73,13 @@ namespace HVACrate.Presentation.Areas.Identity.Pages.Account
         public async Task OnGetAsync(string returnUrl = null!)
         {
             ReturnUrl = returnUrl;
-            ExternalLogins = [.. (await _signInManager.GetExternalAuthenticationSchemesAsync())];
+            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null!)
         {
             returnUrl ??= Url.Content("~/");
-            ExternalLogins = [.. (await _signInManager.GetExternalAuthenticationSchemesAsync())];
+            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
                 HVACUser user = new()

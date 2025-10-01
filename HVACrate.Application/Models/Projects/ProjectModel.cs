@@ -30,6 +30,6 @@ namespace HVACrate.Application.Models.Projects
 
         public bool IsDeleted { get; set; }
 
-        public virtual ICollection<BuildingModel> Buildings { get; set; } = [];
+        public virtual ICollection<BuildingModel> Buildings { get; set; } = new List<BuildingModel>();
     }
 }

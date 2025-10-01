@@ -7,12 +7,18 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace HVACrate.Presentation.Areas.Identity.Pages.Account.Manage
 {
-    public class IndexModel(
-        UserManager<HVACUser> userManager,
-        SignInManager<HVACUser> signInManager) : PageModel
+    public class IndexModel : PageModel
     {
-        private readonly UserManager<HVACUser> _userManager = userManager;
-        private readonly SignInManager<HVACUser> _signInManager = signInManager;
+        private readonly UserManager<HVACUser> _userManager;
+        private readonly SignInManager<HVACUser> _signInManager;
+
+        public IndexModel(
+        UserManager<HVACUser> userManager,
+        SignInManager<HVACUser> signInManager)
+        {
+            _userManager = userManager;
+            _signInManager = signInManager;
+        }
 
         public string Username { get; set; }
 

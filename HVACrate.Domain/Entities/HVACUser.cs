@@ -14,6 +14,6 @@ namespace HVACrate.Domain.Entities
 
         public DateTimeOffset RegisteredOn { get; set; } = DateTimeOffset.UtcNow;
 
-        public virtual ICollection<Project> Projects { get; set; } = [];
+        public virtual ICollection<Project> Projects { get; set; } = new List<Project>();
     }
 }

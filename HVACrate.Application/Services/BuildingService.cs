@@ -8,10 +8,15 @@ using HVACrate.Domain.ValueObjects;
 
 namespace HVACrate.Application.Services
 {
-    public class BuildingService(IBuildingRepository buildingRepository, IRoomService roomService) : IBuildingService
+    public class BuildingService : IBuildingService
     {
-        private readonly IBuildingRepository _buildingRepository = buildingRepository;
-        private readonly IRoomService _roomService = roomService;
+        private readonly IBuildingRepository _buildingRepository;
+        private readonly IRoomService _roomService;
+        public BuildingService(IBuildingRepository buildingRepository, IRoomService roomService)
+        {
+            _buildingRepository = buildingRepository;
+            _roomService = roomService;
+        }
 
         public async Task<double> CalculateTotalHeatInfiltration(Guid id, CancellationToken cancellationToken)
         {
@@ -59,7 +64,7 @@ namespace HVACrate.Application.Services
                 .GetAllAsReadOnlyAsync(query.ToQuery(), projectId, cancellationToken)
                 .ConfigureAwait(false);
 
-            return new Result<BuildingModel>(projects.Count, [.. projects.Items.Select(x => x.ToModel(false))]);
+            return new Result<BuildingModel>(projects.Count, projects.Items.Select(x => x.ToModel(false)).ToArray());
         }
 
         public async Task<BuildingModel> GetByIdAsReadOnlyAsync(Guid id, CancellationToken cancellationToken = default)

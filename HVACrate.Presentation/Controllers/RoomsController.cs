@@ -12,10 +12,16 @@ using static HVACrate.GCommon.GlobalConstants.QueryProperties;
 namespace HVACrate.Presentation.Controllers
 {
     [Authorize(Roles = "User")]
-    public class RoomsController(IRoomService roomService, IBuildingService buildingService) : Controller
+    public class RoomsController : Controller
     {
-        private readonly IRoomService _roomService = roomService;
-        private readonly IBuildingService _buildingService = buildingService;
+        private readonly IRoomService _roomService;
+        private readonly IBuildingService _buildingService;
+
+        public RoomsController(IRoomService roomService, IBuildingService buildingService)
+        {
+            _roomService = roomService;
+            _buildingService = buildingService;
+        }
 
         [HttpGet]
         public async Task<IActionResult> Index(Guid id, BaseQueryFormModel query, CancellationToken cancellationToken = default)
@@ -31,7 +37,7 @@ namespace HVACrate.Presentation.Controllers
                 Pagination = pagination
             }, id, cancellationToken);
 
-            RoomViewModel[] rooms = [.. roomModels.Items.Select(x => x.ToView())];
+            RoomViewModel[] rooms = roomModels.Items.Select(x => x.ToView()).ToArray();
 
             int totalFloors = await this._buildingService.GetTotalFloors(id, cancellationToken);
 

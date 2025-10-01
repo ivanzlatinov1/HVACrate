@@ -5,11 +5,18 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HVACrate.Persistence.Repositories.Rooms
 {
-    public class RoomRepository(HVACrateDbContext context) : BaseRepository<Room>(context), IRoomRepository
+    public class RoomRepository : BaseRepository<Room>, IRoomRepository
     {
+
+        private readonly HVACrateDbContext _context;
+        public RoomRepository(HVACrateDbContext dbContext) : base(dbContext)
+        {
+            _context = dbContext;
+        }
+
         public async Task<Result<Room>> GetAllAsReadOnlyAsync(BaseQuery query, Guid? filterId = null, CancellationToken cancellationToken = default)
         {
-            IQueryable<Room> baseQuery = context.Rooms
+            IQueryable<Room> baseQuery = _context.Rooms
                 .Where(r => r.BuildingId == filterId)
                 .AsNoTracking();
 
@@ -31,7 +38,7 @@ namespace HVACrate.Persistence.Repositories.Rooms
         }
 
         public async Task<Room[]> GetAllEnclosedRoomsAsync(Pagination pagination, CancellationToken cancellationToken = default)
-            => await context.Rooms
+            => await _context.Rooms
                 .AsNoTracking()
                 .Where(x => x.IsEnclosed)
                 .WithPagination(pagination)

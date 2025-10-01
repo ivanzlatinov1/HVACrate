@@ -5,9 +5,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HVACrate.Persistence.Repositories.Users
 {
-    public class HVACUserRepository(HVACrateDbContext context) : IUserRepository
+    public class HVACUserRepository : IUserRepository
     {
-        private readonly HVACrateDbContext _context = context;
+        private readonly HVACrateDbContext _context;
+
+        public HVACUserRepository(HVACrateDbContext dbContext)
+        {
+            _context = dbContext;
+        }
 
         public async Task<Result<HVACUser>> GetAllAsync(BaseQuery query, CancellationToken cancellationToken = default)
         {

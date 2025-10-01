@@ -12,12 +12,19 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 namespace HVACrate.Presentation.Controllers
 {
     [Authorize(Roles = "User")]
-    public class BuildingEnvelopesController(IBuildingEnvelopeService buildingEnvelopeService,
-        IRoomService roomService, IMaterialService materialService) : Controller
+    public class BuildingEnvelopesController : Controller
     {
-        private readonly IBuildingEnvelopeService _buildingEnvelopeService = buildingEnvelopeService;
-        private readonly IRoomService _roomService = roomService;
-        private readonly IMaterialService _materialService = materialService;
+        private readonly IBuildingEnvelopeService _buildingEnvelopeService;
+        private readonly IRoomService _roomService;
+        private readonly IMaterialService _materialService;
+
+        public BuildingEnvelopesController(IBuildingEnvelopeService buildingEnvelopeService,
+        IRoomService roomService, IMaterialService materialService)
+        {
+            _buildingEnvelopeService = buildingEnvelopeService;
+            _roomService = roomService;
+            _materialService = materialService;
+        }
 
         [HttpGet]
         public async Task<IActionResult> Index(Guid id, BaseQueryFormModel query, CancellationToken cancellationToken = default)
@@ -28,7 +35,7 @@ namespace HVACrate.Presentation.Controllers
 
             var buildingEnvelopeModels = await this._buildingEnvelopeService.GetAllAsReadOnlyAsync(id, cancellationToken);
 
-            BuildingEnvelopeViewModel[] buildingEnvelopes = [.. buildingEnvelopeModels.Select(x => x.ToView())];
+            BuildingEnvelopeViewModel[] buildingEnvelopes = buildingEnvelopeModels.Select(x => x.ToView()).ToArray();
 
             long internalFencesCount = await this._buildingEnvelopeService.GetInternalFencesCountByRoom(id, cancellationToken);
             long openingsCount = await this._buildingEnvelopeService.GetOpeningsCountByRoom(id, cancellationToken);
@@ -286,21 +293,21 @@ namespace HVACrate.Presentation.Controllers
         private async Task<List<SelectListItem>> InitializeMaterials(CancellationToken cancellationToken = default)
         {
             var materials = await _materialService.GetAllAsReadOnlyAsync(new(), cancellationToken);
-            return [.. materials.Select(m => new SelectListItem
+            return materials.Select(m => new SelectListItem
             {
                 Value = m.Id.ToString(),
                 Text = m.Type
-            })];
+            }).ToList();
         }
 
         private static List<SelectListItem> InitializeDirections()
-            => [.. Enum.GetValues(typeof(Direction))
+            => Enum.GetValues(typeof(Direction))
                 .Cast<Direction>()
                 .Select(d => new SelectListItem
                 {
                     Value = ((int)d).ToString(),
                     Text = d.ToString()
-                })];
+                }).ToList();
 
         private async Task SeedFormDropdownsAsync(BuildingEnvelopeFormModel form, CancellationToken cancellationToken = default)
         {

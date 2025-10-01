@@ -9,10 +9,16 @@ using static HVACrate.GCommon.GlobalConstants;
 
 namespace HVACrate.Presentation.Areas.Identity.Pages.Account
 {
-    public class LoginModel(SignInManager<HVACUser> signInManager, UserManager<HVACUser> userManager) : PageModel
+    public class LoginModel : PageModel
     {
-        private readonly SignInManager<HVACUser> _signInManager = signInManager;
-        private readonly UserManager<HVACUser> _userManager = userManager;
+        private readonly SignInManager<HVACUser> _signInManager;
+        private readonly UserManager<HVACUser> _userManager;
+
+        public LoginModel(SignInManager<HVACUser> signInManager, UserManager<HVACUser> userManager)
+        {
+            _signInManager = signInManager;
+            _userManager = userManager;
+        }
 
         [BindProperty]
         public InputModel Input { get; set; } = null!;

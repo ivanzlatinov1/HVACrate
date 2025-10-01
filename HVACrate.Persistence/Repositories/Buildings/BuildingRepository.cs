@@ -5,12 +5,18 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HVACrate.Persistence.Repositories.Buildings
 {
-    public class BuildingRepository(HVACrateDbContext context) : BaseRepository<Building>(context), IBuildingRepository
+    public class BuildingRepository : BaseRepository<Building>, IBuildingRepository
     {
+
+        private readonly HVACrateDbContext _context;
+        public BuildingRepository(HVACrateDbContext dbContext) : base(dbContext)
+        {
+            _context = dbContext;
+        }
 
         public async Task<Result<Building>> GetAllAsReadOnlyAsync(BaseQuery query, Guid? filterId = null, CancellationToken cancellationToken = default)
         {
-            IQueryable<Building> baseQuery = context.Buildings
+            IQueryable<Building> baseQuery = _context.Buildings
                 .Where(p => p.ProjectId == filterId)
                 .WithSearch(query.SearchParam, x => EF.Property<string>(x, query.QueryParam))
                 .AsNoTracking();

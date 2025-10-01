@@ -1,16 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
-
 namespace HVACrate.Persistence.Migrations
 {
-    /// <inheritdoc />
-    public partial class InitialMigration : Migration
+    public partial class Initial_Migration : Migration
     {
-        /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
@@ -32,6 +29,10 @@ namespace HVACrate.Persistence.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    FirstName = table.Column<string>(type: "character varying(80)", maxLength: 80, nullable: true),
+                    LastName = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    ProfilePictureUrl = table.Column<string>(type: "character varying(2048)", maxLength: 2048, nullable: true),
+                    RegisteredOn = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     UserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
@@ -58,7 +59,8 @@ namespace HVACrate.Persistence.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false, comment: "Material's unique identifier"),
                     Type = table.Column<string>(type: "character varying(60)", maxLength: 60, nullable: false, comment: "Material's type, e.g., Brick, Concrete"),
-                    ThermalConductivity = table.Column<double>(type: "double precision", nullable: false, comment: "Thermal conductivity in W/mK")
+                    ThermalConductivity = table.Column<double>(type: "double precision", precision: 18, scale: 2, nullable: false, comment: "Thermal conductivity in W/mK"),
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false)
                 },
                 constraints: table =>
                 {
@@ -111,8 +113,8 @@ namespace HVACrate.Persistence.Migrations
                 name: "AspNetUserLogins",
                 columns: table => new
                 {
-                    LoginProvider = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
-                    ProviderKey = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
+                    LoginProvider = table.Column<string>(type: "text", nullable: false),
+                    ProviderKey = table.Column<string>(type: "text", nullable: false),
                     ProviderDisplayName = table.Column<string>(type: "text", nullable: true),
                     UserId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
@@ -156,8 +158,8 @@ namespace HVACrate.Persistence.Migrations
                 columns: table => new
                 {
                     UserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    LoginProvider = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
-                    Name = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
+                    LoginProvider = table.Column<string>(type: "text", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false),
                     Value = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
@@ -178,8 +180,10 @@ namespace HVACrate.Persistence.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false, comment: "Project's unique identifier"),
                     Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false, comment: "Name of the project"),
                     RegionTemperature = table.Column<double>(type: "double precision", precision: 18, scale: 2, nullable: false, comment: "Average external temperature of the region"),
-                    CreatedAt = table.Column<DateOnly>(type: "date", nullable: false, defaultValueSql: "CURRENT_DATE", comment: "The date when the project was created"),
-                    HVACUserId = table.Column<Guid>(type: "uuid", nullable: true)
+                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false, defaultValue: new DateTimeOffset(new DateTime(2025, 10, 1, 17, 58, 13, 729, DateTimeKind.Unspecified).AddTicks(9690), new TimeSpan(0, 0, 0, 0, 0)), comment: "The date when the project was created"),
+                    LastModified = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false, defaultValue: new DateTimeOffset(new DateTime(2025, 10, 1, 17, 58, 13, 729, DateTimeKind.Unspecified).AddTicks(9784), new TimeSpan(0, 0, 0, 0, 0)), comment: "The date when the project was modified for the last time"),
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
+                    HVACUserId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -188,7 +192,8 @@ namespace HVACrate.Persistence.Migrations
                         name: "FK_Projects_AspNetUsers_HVACUserId",
                         column: x => x.HVACUserId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -196,12 +201,15 @@ namespace HVACrate.Persistence.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false, comment: "Building's unique identifier"),
-                    Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false, comment: "Name of the building"),
+                    Name = table.Column<string>(type: "character varying(80)", maxLength: 80, nullable: false, comment: "Name of the building"),
                     Location = table.Column<string>(type: "character varying(120)", maxLength: 120, nullable: false, comment: "Building's geographical placement"),
                     TotalHeight = table.Column<double>(type: "double precision", precision: 18, scale: 2, nullable: false, comment: "Total height of the building"),
                     WindSpeed = table.Column<double>(type: "double precision", precision: 18, scale: 2, nullable: false, comment: "Wind speed used for infiltration"),
+                    Floors = table.Column<int>(type: "integer", nullable: false, comment: "The number of floors in the building"),
+                    Orientation = table.Column<string>(type: "text", nullable: false, comment: "Is the building landscape or portrait"),
+                    ImageUrl = table.Column<string>(type: "character varying(2048)", maxLength: 2048, nullable: true, comment: "An image of the building"),
                     ProjectId = table.Column<Guid>(type: "uuid", nullable: false, comment: "Reference to the project this building belongs to"),
-                    ImageUrl = table.Column<string>(type: "character varying(2048)", maxLength: 2048, nullable: true, comment: "An image of the building")
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false)
                 },
                 constraints: table =>
                 {
@@ -211,7 +219,7 @@ namespace HVACrate.Persistence.Migrations
                         column: x => x.ProjectId,
                         principalTable: "Projects",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -220,10 +228,11 @@ namespace HVACrate.Persistence.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false, comment: "Room's unique identifier"),
                     Type = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false, comment: "The type of the room, e.g., Bathroom, Bedroom"),
-                    Number = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: true, comment: "Number of the room, e.g., A101, B102"),
-                    Temperature = table.Column<double>(type: "double precision", precision: 5, scale: 2, nullable: false, comment: "Internal room temperature"),
-                    HeatLossTransmission = table.Column<double>(type: "double precision", precision: 10, scale: 2, nullable: false, comment: "Calculated heat loss from transmission"),
-                    HeatLossInfiltration = table.Column<double>(type: "double precision", precision: 10, scale: 2, nullable: false, comment: "Calculated heat loss from infiltration"),
+                    Number = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: false, comment: "Number of the room, e.g., A101, B102"),
+                    Temperature = table.Column<double>(type: "double precision", precision: 18, scale: 2, nullable: false, comment: "Internal room temperature"),
+                    Floor = table.Column<int>(type: "integer", nullable: false, comment: "The room's floor"),
+                    IsEnclosed = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
                     BuildingId = table.Column<Guid>(type: "uuid", nullable: false, comment: "Reference to the building this room belongs to")
                 },
                 constraints: table =>
@@ -234,7 +243,7 @@ namespace HVACrate.Persistence.Migrations
                         column: x => x.BuildingId,
                         principalTable: "Buildings",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -242,11 +251,28 @@ namespace HVACrate.Persistence.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false, comment: "Building envelope's unique identifier"),
-                    Type = table.Column<string>(type: "text", nullable: false, comment: "Type of the building envelope, e.g., Wall, Roof, Floor"),
-                    Direction = table.Column<string>(type: "text", nullable: false, comment: "The direction of the building envelope, e.g., North, East"),
-                    ZOrientationCoefficient = table.Column<double>(type: "double precision", precision: 18, scale: 2, nullable: false, comment: "Orientation coefficient (Zo)"),
+                    Type = table.Column<string>(type: "text", nullable: false, comment: "Type of the building envelope, e.g., OuterWall, Roof, Floor"),
+                    Height = table.Column<double>(type: "double precision", precision: 18, scale: 2, nullable: false, comment: "The height of the building envelope"),
+                    Width = table.Column<double>(type: "double precision", precision: 18, scale: 2, nullable: false, comment: "The width of the building envelope"),
+                    Area = table.Column<double>(type: "double precision", precision: 18, scale: 2, nullable: false, comment: "The area of the building envelope"),
+                    Density = table.Column<double>(type: "double precision", precision: 18, scale: 2, nullable: false, comment: "The density of the building envelope"),
+                    AdjustedTemperature = table.Column<double>(type: "double precision", precision: 18, scale: 2, nullable: false, defaultValue: 0.0, comment: "Effective exterior temperature used in thermal transmission calculations (°C)"),
+                    HeatTransferCoefficient = table.Column<double>(type: "double precision", precision: 18, scale: 2, nullable: false, comment: "Overall heat transfer coefficient (U-value) in W/m²·K"),
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
                     RoomId = table.Column<Guid>(type: "uuid", nullable: false, comment: "Reference to the room this building envelope belongs to"),
-                    MaterialId = table.Column<Guid>(type: "uuid", nullable: false, comment: "Reference to the material of the building envelope")
+                    MaterialId = table.Column<Guid>(type: "uuid", nullable: false, comment: "Reference to the material of the building envelope"),
+                    BuildingEnvelopeType = table.Column<string>(type: "text", nullable: false),
+                    ThermalConductivityResistance = table.Column<double>(type: "double precision", precision: 18, scale: 2, nullable: true, comment: "Resistance to heat flow through the floor structure (W·m²/K)"),
+                    GroundWaterLength = table.Column<double>(type: "double precision", precision: 18, scale: 2, nullable: true, comment: "Length of the floor's contact with groundwater (m)"),
+                    GroundWaterTemperature = table.Column<double>(type: "double precision", precision: 18, scale: 2, nullable: true, comment: "Temperature of groundwater under the floor (°C)"),
+                    Count = table.Column<int>(type: "integer", nullable: true, comment: "The count of the internal fences"),
+                    AdjacentRoomTemperature = table.Column<int>(type: "integer", nullable: true, comment: "The room temperature of the neighboor room"),
+                    Direction = table.Column<string>(type: "text", nullable: true, comment: "The direction of the building envelope, e.g., North, East"),
+                    JointLength = table.Column<double>(type: "double precision", precision: 18, scale: 2, nullable: true, comment: "Length of joints surrounding the opening, used in heat loss calculation (m)"),
+                    VentilationCoefficient = table.Column<double>(type: "double precision", precision: 18, scale: 2, nullable: true, comment: "Air exchange coefficient for ventilation through the opening"),
+                    Opening_Count = table.Column<int>(type: "integer", nullable: true, comment: "The count of the openings"),
+                    OuterWall_Direction = table.Column<string>(type: "text", nullable: true, comment: "The direction of the building envelope, e.g., North, East"),
+                    ShouldReduceHeatingArea = table.Column<bool>(type: "boolean", nullable: true, defaultValue: false, comment: "Indicates if heat transmission area should be reduced by window/door area on this wall")
                 },
                 constraints: table =>
                 {
@@ -256,13 +282,13 @@ namespace HVACrate.Persistence.Migrations
                         column: x => x.MaterialId,
                         principalTable: "Materials",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_BuildingEnvelopes_Rooms_RoomId",
                         column: x => x.RoomId,
                         principalTable: "Rooms",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.InsertData(
@@ -343,7 +369,6 @@ namespace HVACrate.Persistence.Migrations
                 column: "BuildingId");
         }
 
-        /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(

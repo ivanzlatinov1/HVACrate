@@ -13,11 +13,17 @@ using static HVACrate.GCommon.GlobalConstants.QueryProperties;
 namespace HVACrate.Presentation.Controllers
 {
     [Authorize(Roles = "Admin")]
-    public class UsersController(IUserService userService,
-        IWebHostEnvironment webHostEnvironment) : Controller
+    public class UsersController : Controller
     {
-        private readonly IUserService _userService = userService;
-        private readonly IWebHostEnvironment _webHostEnvironment = webHostEnvironment;
+        private readonly IUserService _userService;
+        private readonly IWebHostEnvironment _webHostEnvironment;
+
+        public UsersController(IUserService userService,
+        IWebHostEnvironment webHostEnvironment)
+        {
+            _userService = userService;
+            _webHostEnvironment = webHostEnvironment;
+        }
 
         [HttpGet]
         public async Task<IActionResult> Index(BaseQueryFormModel query, CancellationToken cancellationToken = default)
@@ -31,14 +37,14 @@ namespace HVACrate.Presentation.Controllers
                 Pagination = pagination
             }, cancellationToken);
 
-            Dictionary<Guid, string> roles = await this._userService.GetRolesAsync([.. userModels.Items.Select(x => x.Id)], cancellationToken);
+            Dictionary<Guid, string> roles = await this._userService.GetRolesAsync(userModels.Items.Select(x => x.Id).ToArray(), cancellationToken);
 
-            HVACUserViewModel[] users = [.. userModels.Items.Select(x => new HVACUserViewModel
+            HVACUserViewModel[] users = userModels.Items.Select(x => new HVACUserViewModel
             {
                 Id = x.Id,
                 Username = x.Username,
                 Role = roles[x.Id]
-            })];
+            }).ToArray();
 
             return View((users, userModels.Count, pagination));
         }

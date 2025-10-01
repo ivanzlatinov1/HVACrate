@@ -8,9 +8,14 @@ using Microsoft.AspNetCore.Mvc;
 namespace HVACrate.Presentation.Controllers
 {
     [Authorize(Roles = "User")]
-    public class MaterialsController(IMaterialService materialService) : Controller
+    public class MaterialsController : Controller
     {
-        private readonly IMaterialService _materialService = materialService;
+        private readonly IMaterialService _materialService;
+
+        public MaterialsController(IMaterialService materialService)
+        {
+            _materialService = materialService;
+        }
 
         [HttpGet]
         public IActionResult Create(Guid buildingEnvelopeRoomId, string buildingEnvelopeType)

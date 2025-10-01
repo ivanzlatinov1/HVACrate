@@ -5,10 +5,15 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace HVACrate.Presentation.Areas.Identity.Pages.Account.Manage
 {
-    public class PersonalDataModel(
-        UserManager<HVACUser> userManager) : PageModel
+    public class PersonalDataModel : PageModel
     {
-        private readonly UserManager<HVACUser> _userManager = userManager;
+        private readonly UserManager<HVACUser> _userManager;
+
+        public PersonalDataModel(
+        UserManager<HVACUser> userManager)
+        {
+            _userManager = userManager;
+        }
 
         public async Task<IActionResult> OnGet()
         {

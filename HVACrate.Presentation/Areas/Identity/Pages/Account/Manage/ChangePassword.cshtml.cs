@@ -8,14 +8,21 @@ using System.ComponentModel.DataAnnotations;
 
 namespace HVACrate.Presentation.Areas.Identity.Pages.Account.Manage
 {
-    public class ChangePasswordModel(
+    public class ChangePasswordModel : PageModel
+    {
+        private readonly UserManager<HVACUser> _userManager;
+        private readonly SignInManager<HVACUser> _signInManager;
+        private readonly ILogger<ChangePasswordModel> _logger;
+
+        public ChangePasswordModel(
         UserManager<HVACUser> userManager,
         SignInManager<HVACUser> signInManager,
-        ILogger<ChangePasswordModel> logger) : PageModel
-    {
-        private readonly UserManager<HVACUser> _userManager = userManager;
-        private readonly SignInManager<HVACUser> _signInManager = signInManager;
-        private readonly ILogger<ChangePasswordModel> _logger = logger;
+        ILogger<ChangePasswordModel> logger)
+        {
+            _userManager = userManager;
+            _signInManager = signInManager;
+            _logger = logger;
+        }
 
         [BindProperty]
         public InputModel Input { get; set; }

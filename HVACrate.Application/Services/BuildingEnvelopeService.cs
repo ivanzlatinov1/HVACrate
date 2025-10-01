@@ -10,12 +10,18 @@ using HVACrate.Domain.Repositories.Rooms;
 
 namespace HVACrate.Application.Services
 {
-    public class BuildingEnvelopeService(IBuildingEnvelopeRepository buildingEnvelopeRepository,
-        IRoomRepository roomRepository, IBuildingRepository buildingRepository) : IBuildingEnvelopeService
+    public class BuildingEnvelopeService : IBuildingEnvelopeService
     {
-        private readonly IBuildingEnvelopeRepository _buildingEnvelopeRepository = buildingEnvelopeRepository;
-        private readonly IRoomRepository _roomRepository = roomRepository;
-        private readonly IBuildingRepository _buildingRepository = buildingRepository;
+        private readonly IBuildingEnvelopeRepository _buildingEnvelopeRepository;
+        private readonly IRoomRepository _roomRepository;
+        private readonly IBuildingRepository _buildingRepository;
+        public BuildingEnvelopeService(IBuildingEnvelopeRepository buildingEnvelopeRepository,
+        IRoomRepository roomRepository, IBuildingRepository buildingRepository)
+        {
+            _buildingEnvelopeRepository = buildingEnvelopeRepository;
+            _roomRepository = roomRepository;
+            _buildingRepository = buildingRepository;
+        }
 
         public async Task<List<BuildingEnvelopeModel>> GetAllAsReadOnlyAsync(Guid? roomId, CancellationToken cancellationToken = default)
         {
@@ -23,7 +29,7 @@ namespace HVACrate.Application.Services
                 .GetAllAsReadOnlyAsync(roomId, cancellationToken)
                 .ConfigureAwait(false);
 
-            return [.. buildingEnvelopes.Select(x => x.ToModel())];
+            return buildingEnvelopes.Select(x => x.ToModel()).ToList();
         }
 
         public async Task<OuterWallModel?> GetWallByDirectionAsync(Guid roomId, Direction direction, CancellationToken cancellationToken = default)
@@ -168,8 +174,8 @@ namespace HVACrate.Application.Services
                 .GetByIdAsync(roomId, cancellationToken)
                 .ConfigureAwait(false);
 
-            List<OuterWall> outerWalls = [.. room.BuildingEnvelopes.OfType<OuterWall>()];
-            List<InternalFence> internalFences = [.. room.BuildingEnvelopes.OfType<InternalFence>()];
+            List<OuterWall> outerWalls = room.BuildingEnvelopes.OfType<OuterWall>().ToList();
+            List<InternalFence> internalFences = room.BuildingEnvelopes.OfType<InternalFence>().ToList();
 
             bool isThereFloor = await this._buildingEnvelopeRepository
                 .IsThereAFloorInRoomAsync(roomId, cancellationToken)
@@ -222,21 +228,21 @@ namespace HVACrate.Application.Services
         {
             Opening[] openings = await this._buildingEnvelopeRepository.GetOpeningsByRoomAndDirectionAsync(roomId, direction, cancellationToken).ConfigureAwait(false);
 
-            return [.. openings.Select(x => (OpeningModel)x.ToModel(false))];
+            return openings.Select(x => (OpeningModel)x.ToModel(false)).ToArray();
         }
 
         public async Task<OuterWallModel[]> GetOuterWallsByRoomAsync(Guid roomId, CancellationToken cancellationToken = default)
         {
             OuterWall[] outerWalls = await this._buildingEnvelopeRepository.GetOuterWallsByRoomAsync(roomId, cancellationToken).ConfigureAwait(false);
 
-            return [.. outerWalls.Select(x => (OuterWallModel)x.ToModel(false))];
+            return outerWalls.Select(x => (OuterWallModel)x.ToModel(false)).ToArray();
         }
 
         public async Task<OpeningModel[]> GetOpeningsByRoomAsync(Guid roomId, CancellationToken cancellationToken = default)
         {
             Opening[] openings = await this._buildingEnvelopeRepository.GetOpeningsByRoomAsync(roomId, cancellationToken).ConfigureAwait(false);
 
-            return [.. openings.Select(x => (OpeningModel)x.ToModel(false))];
+            return openings.Select(x => (OpeningModel)x.ToModel(false)).ToArray();
         }
 
         public async Task<InternalFenceModel[]> GetInternalFencesByRoomAsync(Guid roomId, CancellationToken cancellationToken = default)
@@ -244,21 +250,21 @@ namespace HVACrate.Application.Services
             InternalFence[] openings =
                 await this._buildingEnvelopeRepository.GetInternalFencesByRoomAsync(roomId, cancellationToken).ConfigureAwait(false);
 
-            return [.. openings.Select(x => (InternalFenceModel)x.ToModel(false))];
+            return openings.Select(x => (InternalFenceModel)x.ToModel(false)).ToArray();
         }
 
         public async Task<FloorModel[]> GetFloorsByRoomAsync(Guid roomId, CancellationToken cancellationToken = default)
         {
             Floor[] floors = await this._buildingEnvelopeRepository.GetFloorsByRoomAsync(roomId, cancellationToken).ConfigureAwait(false);
 
-            return [.. floors.Select(x => (FloorModel)x.ToModel(false))];
+            return floors.Select(x => (FloorModel)x.ToModel(false)).ToArray();
         }
 
         public async Task<RoofModel[]> GetRoofsByRoomAsync(Guid roomId, CancellationToken cancellationToken = default)
         {
             Roof[] roofs = await this._buildingEnvelopeRepository.GetRoofsByRoomAsync(roomId, cancellationToken).ConfigureAwait(false);
 
-            return [.. roofs.Select(x => (RoofModel)x.ToModel(false))];
+            return roofs.Select(x => (RoofModel)x.ToModel(false)).ToArray();
         }
 
         public async Task<double> GetAreaToBeSubtracted(Guid buildingEnvelopeId, CancellationToken cancellationToken = default)

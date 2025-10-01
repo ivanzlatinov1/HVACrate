@@ -14,6 +14,6 @@ namespace HVACrate.Presentation.Models.BuildingEnvelopes
 
         public int Count { get; set; }
 
-        public List<SelectListItem> Directions { get; set; } = [];
+        public List<SelectListItem> Directions { get; set; } = new List<SelectListItem>();
     }
 }

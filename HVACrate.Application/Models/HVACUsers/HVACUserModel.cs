@@ -28,6 +28,6 @@ namespace HVACrate.Application.Models.HVACUsers
         [Url(ErrorMessage = InvalidUrl)]
         public string? ProfilePictureUrl { get; set; }
 
-        public ICollection<ProjectModel> Projects { get; set; } = [];
+        public ICollection<ProjectModel> Projects { get; set; } = new List<ProjectModel>();
     }
 }

@@ -8,9 +8,14 @@ using HVACrate.Domain.ValueObjects;
 
 namespace HVACrate.Application.Services
 {
-    public class ProjectService(IProjectRepository projectRepository) : IProjectService
+    public class ProjectService : IProjectService
     {
-        private readonly IProjectRepository _projectRepository = projectRepository;
+        private readonly IProjectRepository _projectRepository;
+
+        public ProjectService(IProjectRepository projectRepository)
+        {
+            _projectRepository = projectRepository;
+        }
 
         public async Task<Result<ProjectModel>> GetAllAsReadOnlyAsync(BaseQueryModel query, Guid? creatorId, CancellationToken cancellationToken = default)
         {
@@ -18,7 +23,7 @@ namespace HVACrate.Application.Services
                 .GetAllAsReadOnlyAsync(query.ToQuery(), creatorId, cancellationToken)
                 .ConfigureAwait(false);
 
-            return new Result<ProjectModel>(projects.Count, [.. projects.Items.Select(x => x.ToModel(false))]);
+            return new Result<ProjectModel>(projects.Count, projects.Items.Select(x => x.ToModel(false)).ToArray());
         }
 
         public async Task<ProjectModel> GetByIdAsReadOnlyAsync(Guid id, CancellationToken cancellationToken = default)

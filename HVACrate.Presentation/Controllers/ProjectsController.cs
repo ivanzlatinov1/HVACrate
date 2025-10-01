@@ -12,9 +12,14 @@ using static HVACrate.GCommon.GlobalConstants;
 namespace HVACrate.Presentation.Controllers
 {
     [Authorize(Roles = "User")]
-    public class ProjectsController(IProjectService projectService) : Controller
+    public class ProjectsController : Controller
     {
-        private readonly IProjectService _projectService = projectService;
+        private readonly IProjectService _projectService;
+
+        public ProjectsController(IProjectService projectService)
+        {
+            _projectService = projectService;
+        }
 
         [HttpGet]
         public async Task<IActionResult> Index(BaseQueryFormModel query, CancellationToken cancellationToken = default)
@@ -28,7 +33,7 @@ namespace HVACrate.Presentation.Controllers
                 Pagination = pagination
             }, this.User.GetId(), cancellationToken);
 
-            ProjectViewModel[] projects = [.. projectModels.Items.Select(x => x.ToView())];
+            ProjectViewModel[] projects = projectModels.Items.Select(x => x.ToView()).ToArray();
 
             return View((projects, projectModels.Count, pagination));
         }

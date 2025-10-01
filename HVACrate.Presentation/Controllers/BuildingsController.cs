@@ -13,11 +13,17 @@ using static HVACrate.GCommon.GlobalConstants;
 namespace HVACrate.Presentation.Controllers
 {
     [Authorize(Roles = "User")]
-    public class BuildingsController(IBuildingService buildingService,
-        IWebHostEnvironment webHostEnvironment) : Controller
+    public class BuildingsController : Controller
     {
-        private readonly IBuildingService _buildingService = buildingService;
-        private readonly IWebHostEnvironment _webHostEnvironment = webHostEnvironment;
+        private readonly IBuildingService _buildingService;
+        private readonly IWebHostEnvironment _webHostEnvironment;
+
+        public BuildingsController(IBuildingService buildingService,
+        IWebHostEnvironment webHostEnvironment)
+        {
+            _buildingService = buildingService;
+            _webHostEnvironment = webHostEnvironment;
+        }
 
         [HttpGet]
         public async Task<IActionResult> Index(Guid id, BaseQueryFormModel query, CancellationToken cancellationToken = default)
@@ -33,7 +39,7 @@ namespace HVACrate.Presentation.Controllers
                 Pagination = pagination
             }, id, cancellationToken);
 
-            BuildingViewModel[] buildings = [.. buildingModels.Items.Select(x => x.ToView())];
+            BuildingViewModel[] buildings = buildingModels.Items.Select(x => x.ToView()).ToArray();
 
             return View((id, buildings, buildingModels.Count, pagination));
         }

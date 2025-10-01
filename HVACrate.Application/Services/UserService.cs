@@ -8,9 +8,14 @@ using HVACrate.Domain.ValueObjects;
 
 namespace HVACrate.Application.Services
 {
-    public class UserService(IUserRepository userRepository) : IUserService
+    public class UserService : IUserService
     {
-        private readonly IUserRepository _userRepository = userRepository;
+        private readonly IUserRepository _userRepository;
+
+        public UserService(IUserRepository userRepository)
+        {
+            _userRepository = userRepository;
+        }
 
         public async Task<Result<HVACUserModel>> GetAllAsync(BaseQueryModel query, CancellationToken cancellationToken = default)
         {
@@ -18,7 +23,7 @@ namespace HVACrate.Application.Services
                 .GetAllAsync(query.ToQuery(), cancellationToken)
                 .ConfigureAwait(false);
 
-            return new Result<HVACUserModel>(users.Count, [.. users.Items.Select(x => x.ToModel(false))]);
+            return new Result<HVACUserModel>(users.Count, users.Items.Select(x => x.ToModel(false)).ToArray());
         }
 
         public async Task<Dictionary<Guid, string>> GetRolesAsync(Guid[] ids, CancellationToken cancellationToken = default)

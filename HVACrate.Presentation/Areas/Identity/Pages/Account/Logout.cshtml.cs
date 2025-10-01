@@ -7,10 +7,16 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace HVACrate.Presentation.Areas.Identity.Pages.Account
 {
-    public class LogoutModel(SignInManager<HVACUser> signInManager, ILogger<LogoutModel> logger) : PageModel
+    public class LogoutModel : PageModel
     {
-        private readonly SignInManager<HVACUser> _signInManager = signInManager;
-        private readonly ILogger<LogoutModel> _logger = logger;
+        private readonly SignInManager<HVACUser> _signInManager;
+        private readonly ILogger<LogoutModel> _logger;
+
+        public LogoutModel(SignInManager<HVACUser> signInManager, ILogger<LogoutModel> logger)
+        {
+            _signInManager = signInManager;
+            _logger = logger;
+        }
 
         public async Task<IActionResult> OnPost(string returnUrl = null)
         {

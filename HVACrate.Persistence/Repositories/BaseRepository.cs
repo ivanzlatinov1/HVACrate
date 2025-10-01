@@ -4,9 +4,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HVACrate.Persistence.Repositories
 {
-    public abstract class BaseRepository<TEntity>(HVACrateDbContext dbContext) : IBaseRepository<TEntity> where TEntity : BaseEntity
+    public abstract class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : BaseEntity
     {
-        private readonly HVACrateDbContext _context = dbContext;
+        private readonly HVACrateDbContext _context;
+        public BaseRepository(HVACrateDbContext dbContext)
+        {
+            _context = dbContext;
+        }
 
         public async Task<TEntity> GetByIdAsReadOnlyAsync(Guid id, CancellationToken cancellationToken = default)
             => await _context.Set<TEntity>()
@@ -65,7 +69,7 @@ namespace HVACrate.Persistence.Repositories
         // Helper method to track when an entity is updated and to update its project's LastModified property
         private async Task SetLastModifiedTimestamps()
         {
-            HashSet<Project> modifiedProjects = [];
+            HashSet<Project> modifiedProjects = new HashSet<Project>();
 
             var modifiedEntries = _context.ChangeTracker
                 .Entries<BaseEntity>()

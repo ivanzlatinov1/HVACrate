@@ -8,6 +8,6 @@
 
         public bool IsDeleted { get; set; }
 
-        public virtual ICollection<BuildingEnvelope> BuildingEnvelopes { get; set; } = [];
+        public virtual ICollection<BuildingEnvelope> BuildingEnvelopes { get; set; } = new List<BuildingEnvelope>();
     }
 }

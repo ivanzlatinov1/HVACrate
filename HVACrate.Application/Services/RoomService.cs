@@ -8,10 +8,16 @@ using HVACrate.Domain.ValueObjects;
 
 namespace HVACrate.Application.Services
 {
-    public class RoomService(IRoomRepository roomRepository, IBuildingEnvelopeService buildingEnvelopeService) : IRoomService
+    public class RoomService : IRoomService
     {
-        private readonly IRoomRepository _roomRepository = roomRepository;
-        private readonly IBuildingEnvelopeService _buildingEnvelopeService = buildingEnvelopeService;
+        private readonly IRoomRepository _roomRepository;
+        private readonly IBuildingEnvelopeService _buildingEnvelopeService;
+
+        public RoomService(IRoomRepository roomRepository, IBuildingEnvelopeService buildingEnvelopeService)
+        {
+            _roomRepository = roomRepository;
+            _buildingEnvelopeService = buildingEnvelopeService;
+        }
 
         public async Task<Result<RoomModel>> GetAllAsReadOnlyAsync(BaseQueryModel query, Guid? buildingId, CancellationToken cancellationToken = default)
         {
@@ -19,7 +25,7 @@ namespace HVACrate.Application.Services
                 .GetAllAsReadOnlyAsync(query.ToQuery(), buildingId, cancellationToken)
                 .ConfigureAwait(false);
 
-            return new Result<RoomModel>(rooms.Count, [.. rooms.Items.Select(x => x.ToModel(false))]);
+            return new Result<RoomModel>(rooms.Count, rooms.Items.Select(x => x.ToModel(false)).ToArray());
         }
 
         public async Task CreateAsync(RoomModel model, CancellationToken cancellationToken = default)
@@ -125,7 +131,7 @@ namespace HVACrate.Application.Services
                 .GetAllEnclosedRoomsAsync(pagination, cancellationToken)
                 .ConfigureAwait(false);
 
-            return [.. rooms.Select(x => x.ToModel())];
+            return rooms.Select(x => x.ToModel()).ToArray();
         }
     }
 }

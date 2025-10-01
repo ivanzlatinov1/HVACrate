@@ -10,10 +10,16 @@ using Microsoft.AspNetCore.Mvc;
 namespace HVACrate.Presentation.Controllers
 {
     [Authorize(Roles = "User")]
-    public class HeatingLossCalculatorController(IRoomService roomService, IBuildingEnvelopeService buildingEnvelopeService) : Controller
+    public class HeatingLossCalculatorController : Controller
     {
-        private readonly IRoomService _roomService = roomService;
-        private readonly IBuildingEnvelopeService _buildingEnvelopeService = buildingEnvelopeService;
+        private readonly IRoomService _roomService;
+        private readonly IBuildingEnvelopeService _buildingEnvelopeService;
+
+        public HeatingLossCalculatorController(IRoomService roomService, IBuildingEnvelopeService buildingEnvelopeService)
+        {
+            _roomService = roomService;
+            _buildingEnvelopeService = buildingEnvelopeService;
+        }
 
         [HttpGet]
         public async Task<IActionResult> Index(BaseQueryFormModel query, CancellationToken cancellationToken = default)

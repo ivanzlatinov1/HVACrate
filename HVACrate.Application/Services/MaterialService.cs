@@ -7,9 +7,14 @@ using HVACrate.Domain.Repositories.Materials;
 
 namespace HVACrate.Application.Services
 {
-    public class MaterialService(IMaterialRepository materialRepository) : IMaterialService
+    public class MaterialService : IMaterialService
     {
-        private readonly IMaterialRepository _materialRepository = materialRepository;
+        private readonly IMaterialRepository _materialRepository;
+
+        public MaterialService(IMaterialRepository materialRepository)
+        {
+            _materialRepository = materialRepository;
+        }
 
         public async Task CreateAsync(MaterialModel model, CancellationToken cancellationToken = default)
         {
@@ -33,7 +38,7 @@ namespace HVACrate.Application.Services
                 .GetAllAsReadOnlyAsync(cancellationToken)
                 .ConfigureAwait(false);
 
-            return [.. materials.Select(x => x.ToModel(false))];
+            return materials.Select(x => x.ToModel(false)).ToList();
         }
 
         public async Task<MaterialModel> GetByIdAsReadOnlyAsync(Guid id, CancellationToken cancellationToken = default)

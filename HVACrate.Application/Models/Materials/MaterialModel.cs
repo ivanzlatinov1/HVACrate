@@ -20,6 +20,6 @@ namespace HVACrate.Application.Models.Materials
 
         public bool IsDeleted { get; set; }
 
-        public virtual ICollection<BuildingEnvelopeModel> BuildingEnvelopes { get; set; } = [];
+        public virtual ICollection<BuildingEnvelopeModel> BuildingEnvelopes { get; set; } = new List<BuildingEnvelopeModel>();
     }
 }

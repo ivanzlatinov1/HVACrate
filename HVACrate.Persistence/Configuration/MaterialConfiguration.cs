@@ -59,7 +59,7 @@ namespace HVACrate.Persistence.Configuration
         private static List<Material> SeedMaterials()
         {
             List<Material> materials =
-            [
+            new() {
                 new Material
                 {
                     Id = Guid.Parse("3fdb3840-69b2-459b-8942-cb8fe226b3aa"),
@@ -108,7 +108,7 @@ namespace HVACrate.Persistence.Configuration
                     Type = "Rubber",
                     ThermalConductivity = 0.15
                 }
-            ];
+            };
 
             return materials;
         }

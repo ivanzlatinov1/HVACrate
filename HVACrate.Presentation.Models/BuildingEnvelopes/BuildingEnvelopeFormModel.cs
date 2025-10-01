@@ -26,6 +26,6 @@ namespace HVACrate.Presentation.Models.BuildingEnvelopes
 
         public Guid MaterialId { get; set; }
 
-        public List<SelectListItem> Materials { get; set; } = [];
+        public List<SelectListItem> Materials { get; set; } = new List<SelectListItem>();
     }
 }

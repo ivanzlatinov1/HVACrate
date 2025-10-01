@@ -17,10 +17,7 @@ namespace HVACrate.Persistence.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.13")
-                .HasAnnotation("Proxies:ChangeTracking", false)
-                .HasAnnotation("Proxies:CheckEquality", false)
-                .HasAnnotation("Proxies:LazyLoading", true)
+                .HasAnnotation("ProductVersion", "6.0.22")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -108,8 +105,7 @@ namespace HVACrate.Persistence.Migrations
 
                     b.Property<string>("BuildingEnvelopeType")
                         .IsRequired()
-                        .HasMaxLength(21)
-                        .HasColumnType("character varying(21)");
+                        .HasColumnType("text");
 
                     b.Property<double>("Density")
                         .HasPrecision(18, 2)
@@ -158,8 +154,6 @@ namespace HVACrate.Persistence.Migrations
                     b.ToTable("BuildingEnvelopes", (string)null);
 
                     b.HasDiscriminator<string>("BuildingEnvelopeType").HasValue("BuildingEnvelope");
-
-                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("HVACrate.Domain.Entities.HVACUser", b =>
@@ -341,7 +335,7 @@ namespace HVACrate.Persistence.Migrations
                     b.Property<DateTimeOffset>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
-                        .HasDefaultValue(new DateTimeOffset(new DateTime(2025, 8, 12, 8, 34, 38, 787, DateTimeKind.Unspecified).AddTicks(3364), new TimeSpan(0, 0, 0, 0, 0)))
+                        .HasDefaultValue(new DateTimeOffset(new DateTime(2025, 10, 1, 17, 58, 13, 729, DateTimeKind.Unspecified).AddTicks(9690), new TimeSpan(0, 0, 0, 0, 0)))
                         .HasComment("The date when the project was created");
 
                     b.Property<Guid>("HVACUserId")
@@ -355,7 +349,7 @@ namespace HVACrate.Persistence.Migrations
                     b.Property<DateTimeOffset>("LastModified")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
-                        .HasDefaultValue(new DateTimeOffset(new DateTime(2025, 8, 12, 8, 34, 38, 787, DateTimeKind.Unspecified).AddTicks(3582), new TimeSpan(0, 0, 0, 0, 0)))
+                        .HasDefaultValue(new DateTimeOffset(new DateTime(2025, 10, 1, 17, 58, 13, 729, DateTimeKind.Unspecified).AddTicks(9784), new TimeSpan(0, 0, 0, 0, 0)))
                         .HasComment("The date when the project was modified for the last time");
 
                     b.Property<string>("Name")
@@ -601,6 +595,7 @@ namespace HVACrate.Persistence.Migrations
 
                     b.Property<int>("Count")
                         .HasColumnType("integer")
+                        .HasColumnName("Opening_Count")
                         .HasComment("The count of the openings");
 
                     b.Property<string>("Direction")
@@ -618,12 +613,6 @@ namespace HVACrate.Persistence.Migrations
                         .HasColumnType("double precision")
                         .HasComment("Air exchange coefficient for ventilation through the opening");
 
-                    b.ToTable("BuildingEnvelopes", t =>
-                        {
-                            t.Property("Count")
-                                .HasColumnName("Opening_Count");
-                        });
-
                     b.HasDiscriminator().HasValue("WindowsAndDoors");
                 });
 
@@ -634,6 +623,7 @@ namespace HVACrate.Persistence.Migrations
                     b.Property<string>("Direction")
                         .IsRequired()
                         .HasColumnType("text")
+                        .HasColumnName("OuterWall_Direction")
                         .HasComment("The direction of the building envelope, e.g., North, East");
 
                     b.Property<bool>("ShouldReduceHeatingArea")
@@ -641,12 +631,6 @@ namespace HVACrate.Persistence.Migrations
                         .HasColumnType("boolean")
                         .HasDefaultValue(false)
                         .HasComment("Indicates if heat transmission area should be reduced by window/door area on this wall");
-
-                    b.ToTable("BuildingEnvelopes", t =>
-                        {
-                            t.Property("Direction")
-                                .HasColumnName("OuterWall_Direction");
-                        });
 
                     b.HasDiscriminator().HasValue("OuterWall");
                 });

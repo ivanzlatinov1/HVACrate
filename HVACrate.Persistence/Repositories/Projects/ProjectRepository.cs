@@ -5,12 +5,19 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HVACrate.Persistence.Repositories.Projects
 {
-    public class ProjectRepository(HVACrateDbContext context)
-        : BaseRepository<Project>(context), IProjectRepository
+    public class ProjectRepository
+        : BaseRepository<Project>, IProjectRepository
     {
+
+        private readonly HVACrateDbContext _context;
+        public ProjectRepository(HVACrateDbContext dbContext) : base(dbContext)
+        {
+            _context = dbContext;
+        }
+
         public async Task<Result<Project>> GetAllAsReadOnlyAsync(BaseQuery query, Guid? searchId = null, CancellationToken cancellationToken = default)
         {
-            IQueryable<Project> baseQuery = context.Projects
+            IQueryable<Project> baseQuery = _context.Projects
                 .Where(p => p.HVACUserId == searchId)
                 .WithSearch(query.SearchParam, x => EF.Property<string>(x, query.QueryParam))
                 .AsNoTracking();
@@ -26,7 +33,7 @@ namespace HVACrate.Persistence.Repositories.Projects
         }
 
         public async Task<DateTimeOffset> GetLastTimeModifiedDateAsync(Guid id, CancellationToken cancellationToken = default)
-            => await context.Projects
+            => await _context.Projects
                 .AsNoTracking()
                 .Where(p => p.Id == id)
                 .Select(p => p.LastModified)
@@ -34,7 +41,7 @@ namespace HVACrate.Persistence.Repositories.Projects
 
         public async Task<string?> GetProjectNameAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            var project = await context.Projects
+            var project = await _context.Projects
         .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
 
             return project?.Name;

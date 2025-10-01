@@ -35,6 +35,6 @@ namespace HVACrate.Application.Models.Rooms
 
         public virtual BuildingModel Building { get; set; } = null!;
 
-        public virtual ICollection<BuildingEnvelopeModel> BuildingEnvelopes { get; set; } = [];
+        public virtual ICollection<BuildingEnvelopeModel> BuildingEnvelopes { get; set; } = new List<BuildingEnvelopeModel>();
     }
 }

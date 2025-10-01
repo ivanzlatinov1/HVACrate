@@ -18,7 +18,7 @@ namespace HVACrate.Persistence.Seeding
 
         private static async Task SeedRolesAsync(RoleManager<IdentityRole<Guid>> roleManager)
         {
-            string[] roles = ["Admin", "User"];
+            string[] roles = new string[] { "Admin", "User" };
 
             foreach (var role in roles)
             {

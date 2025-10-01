@@ -17,6 +17,6 @@
 
         public virtual HVACUser HVACUser { get; set; } = null!;
 
-        public virtual ICollection<Building> Buildings { get; set; } = [];
+        public virtual ICollection<Building> Buildings { get; set; } = new List<Building>();
     }
 }
