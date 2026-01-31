@@ -1,7 +1,7 @@
 ﻿@inject HVACrate.Application.Interfaces.IBuildingEnvelopeService BuildingEnvelopeService;
 @model (BuildingEnvelopeCalculatableViewModel[] BuildingEnvelopes, double HeatingLoss)
 @{
-    var exampleModel = Model.BuildingEnvelopes.FirstOrDefault(x => x.Id != null);
+    var exampleModel = Model.BuildingEnvelopes.FirstOrDefault();
     string room = exampleModel!.RoomName;
     double roomTemperature = exampleModel.RoomTemperature;
 }
@@ -79,7 +79,8 @@
                                 </td>
                                 <td class="border-light">
                                     <span class="font-monospace text-warning">
-                                        @((await this.BuildingEnvelopeService.GetAreaToBeSubtracted(item.Id, CancellationToken.None)).ToString("F2"))
+                                        @((await this.BuildingEnvelopeService.GetAreaToBeSubtracted(item.Id,
+                                                                            CancellationToken.None)).ToString("F2"))
                                     </span>
                                 </td>
                                 <td class="border-light">

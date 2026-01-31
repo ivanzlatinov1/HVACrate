@@ -17,6 +17,7 @@ namespace HVACrate.Persistence.Repositories.Rooms
         public async Task<Result<Room>> GetAllAsReadOnlyAsync(BaseQuery query, Guid? filterId = null, CancellationToken cancellationToken = default)
         {
             IQueryable<Room> baseQuery = _context.Rooms
+                .Include(r => r.Building)
                 .Where(r => r.BuildingId == filterId)
                 .AsNoTracking();
 
@@ -39,9 +40,11 @@ namespace HVACrate.Persistence.Repositories.Rooms
 
         public async Task<Room[]> GetAllEnclosedRoomsAsync(Pagination pagination, CancellationToken cancellationToken = default)
             => await _context.Rooms
-                .AsNoTracking()
+                .Include(r => r.Building)
+                .Include(r => r.BuildingEnvelopes)
                 .Where(x => x.IsEnclosed)
                 .WithPagination(pagination)
+                .AsNoTracking()
                 .ToArrayAsync(cancellationToken);
     }
 }

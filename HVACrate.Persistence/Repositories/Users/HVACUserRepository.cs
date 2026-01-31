@@ -39,9 +39,8 @@ namespace HVACrate.Persistence.Repositories.Users
             .Join(_context.Roles,
                 userRoles => userRoles.RoleId,
                 role => role.Id,
-                (userRoles, role) => new { RoleName = role.Name!, userRoles.UserId })
-            .GroupBy(x => x.UserId)
-            .ToDictionaryAsync(k => k.Key, v => v.Single().RoleName, cancellationToken);
+                (userRoles, role) => new { userRoles.UserId, RoleName = role.Name! })
+            .ToDictionaryAsync(x => x.UserId, x => x.RoleName, cancellationToken);
 
         public async Task<string?> GetUserRoleAsync(Guid id, CancellationToken cancellationToken = default)
             => (await _context.UserRoles

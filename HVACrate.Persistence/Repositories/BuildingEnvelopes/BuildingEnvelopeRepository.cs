@@ -16,6 +16,8 @@ namespace HVACrate.Persistence.Repositories.BuildingEnvelopes
 
         public async Task<BuildingEnvelope[]> GetAllAsReadOnlyAsync(Guid? filterId = null, CancellationToken cancellationToken = default)
              => await _context.BuildingEnvelopes
+                .Include(x => x.Room)
+                .Include(x => x.Material)
                 .Where(x => x.RoomId == filterId)
                 .AsNoTracking()
                 .ToArrayAsync(cancellationToken);

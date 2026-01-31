@@ -38,7 +38,7 @@ namespace HVACrate.Persistence.Seeding
         {
             string adminEmail = config["AdminUser:Email"] ?? throw new Exception("Admin email is missing from the config.");
             string adminPassword = config["AdminUser:Password"] ?? throw new Exception("Admin password is missing from the config.");
-
+            System.Console.WriteLine(adminPassword);
             var adminUser = await userManager.FindByEmailAsync(adminEmail);
             if (adminUser == null)
             {

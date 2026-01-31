@@ -18,6 +18,7 @@ namespace HVACrate.Persistence.Repositories.Projects
         public async Task<Result<Project>> GetAllAsReadOnlyAsync(BaseQuery query, Guid? searchId = null, CancellationToken cancellationToken = default)
         {
             IQueryable<Project> baseQuery = _context.Projects
+                .Include(p => p.HVACUser)
                 .Where(p => p.HVACUserId == searchId)
                 .WithSearch(query.SearchParam, x => EF.Property<string>(x, query.QueryParam))
                 .AsNoTracking();

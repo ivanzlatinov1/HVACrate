@@ -62,7 +62,7 @@ namespace HVACrate.Presentation.Controllers
                 Username = user.Username,
                 Email = user.Email,
                 RegisteredOn = user.RegisteredOn.ToString(DateFormat),
-                Role = await this._userService.GetRoleAsync(id),
+                Role = await this._userService.GetRoleAsync(id, cancellationToken),
                 ProfilePictureUrl = user.ProfilePictureUrl ?? DefaultProfilePictureUrl,
                 ProjectsCount = user.Projects.Count,
             };
