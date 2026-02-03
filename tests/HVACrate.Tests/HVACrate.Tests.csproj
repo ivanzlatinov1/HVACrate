@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="../../src/HVACrate.Application/HVACrate.Application.csproj" />
     <ProjectReference Include="..\HVACrate.Application\HVACrate.Application.csproj" />
   </ItemGroup>
 
