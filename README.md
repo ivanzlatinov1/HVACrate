@@ -22,16 +22,6 @@ Here are some of the app's key features:
 
 ---
 
-## 📸 Project Screenshots
-
-<img src="https://media.discordapp.net/attachments/552165958635094019/1402543369237954570/image.png?ex=68944bcd&amp;is=6892fa4d&amp;hm=8d1760f67b8676a52420815ad86bfce375306768e4e33b0de422ee8e65e79fc8&amp;=&amp;format=webp&amp;quality=lossless&amp;width=1860&amp;height=688" alt="project-screenshot" width="1200">
-
-<img src="https://media.discordapp.net/attachments/552165958635094019/1402543658741399552/image.png?ex=68944c12&amp;is=6892fa92&amp;hm=1cb59c32d68e6ae390896c230010860ed9597a0500ff7e81a8cb596e74c4446a&amp;=&amp;format=webp&amp;quality=lossless&amp;width=1860&amp;height=826" alt="project-screenshot" width="1200">
-
-<img src="https://cdn.discordapp.com/attachments/552165958635094019/1402544422557716670/image.png?ex=68944cc8&amp;is=6892fb48&amp;hm=0a4d163f73ab631c6f773b344c51e5e204ccfd9c5729b3e8d7f1c9eb5a1947a4&amp;" alt="project-screenshot" width="1200">
-
----
-
 ## ⚙️ Installation Guide (ASP.NET Core MVC - C#)
 
 To get HVACrate up and running on your local machine:
@@ -74,17 +64,3 @@ To get HVACrate up and running on your local machine:
 - **ASP.NET Core MVC (6.0+)**
 - **Electron**
 - **PostgreSQL**
-
----
-
-## 🤝 Contributing
-
-Contributions are welcome!
-
-If you'd like to improve the project or have suggestions, feel free to fork the repository, open issues, or submit a pull request.
-
-For direct communication or questions, please contact me at:
-
-📧 **ivanzlatinov006@gmail.com**
-
-
