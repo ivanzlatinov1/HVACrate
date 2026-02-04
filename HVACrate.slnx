@@ -1,0 +1,9 @@
+<Solution>
+  <Project Path="src/HVACrate.Application/HVACrate.Application.csproj" />
+  <Project Path="src/HVACrate.Domain/HVACrate.Domain.csproj" />
+  <Project Path="src/HVACrate.GCommon/HVACrate.GCommon.csproj" />
+  <Project Path="src/HVACrate.Persistence/HVACrate.Persistence.csproj" />
+  <Project Path="src/HVACrate.Presentation.Models/HVACrate.Presentation.Models.csproj" />
+  <Project Path="src/HVACrate.Presentation/HVACrate.Presentation.csproj" />
+  <Project Path="tests/HVACrate.Tests/HVACrate.Tests.csproj" />
+</Solution>
