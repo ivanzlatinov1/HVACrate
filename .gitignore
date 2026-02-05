@@ -364,4 +364,6 @@ FodyWeavers.xsd
 
 # Images
 */wwwroot/images/
-/static
+
+# Downloads
+/static/downloads
