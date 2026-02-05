@@ -1,6 +1,18 @@
 using HVACrate.Extensions;
+using ElectronNET.API;
+using ElectronNET.API.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Builder Configurations for Electron
+builder.Configuration
+       .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+       .AddEnvironmentVariables();
+builder.Configuration.AddUserSecrets<Program>(optional: true);
+
+// Configure Electron
+builder.WebHost.UseElectron(args);
+builder.Services.AddElectron();
 
 // Database concerns
 builder.Services.AddApplicationDbContext(builder.Configuration);
@@ -46,4 +58,15 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 app.MapRazorPages();
 
-app.Run();
+await app.StartAsync();
+
+var window = await Electron.WindowManager.CreateWindowAsync(new BrowserWindowOptions
+{
+    Width = 1920,
+    Height = 1080,
+    Show = false
+});
+
+window.OnReadyToShow += () => window.Show();
+
+await app.WaitForShutdownAsync();

@@ -27,13 +27,19 @@ public static class ProgramExtensions
     public static void AddApplicationDbContext(this IServiceCollection services, IConfiguration configs)
     {
         var connectionString = configs.GetConnectionString("DefaultConnection")
-            ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+        ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+
+        var dbPassword = configs["DB_PASSWORD"];
+        if (string.IsNullOrWhiteSpace(dbPassword))
+            Console.WriteLine("WARNING: DB_PASSWORD is empty!");
+        else
+            connectionString = connectionString.Replace("${DB_PASSWORD}", dbPassword);
 
         services.AddDbContext<HVACrateDbContext>(options =>
-            {
-                options.UseNpgsql(connectionString);
-                options.UseLazyLoadingProxies();
-            });
+        {
+            options.UseNpgsql(connectionString);
+            options.UseLazyLoadingProxies();
+        });
     }
 
     public static void AddIdentity(this IServiceCollection services)
