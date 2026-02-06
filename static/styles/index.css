@@ -7,19 +7,34 @@ body {
   font-family: "Space Grotesk", sans-serif;
 }
 
+#digital canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 0;
+}
+
 nav {
-  padding: 1rem;
-  background-color: hsl(0, 0%, 42%, 70%);
-  color: white;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  position: relative;
+  padding: 0.8rem 2rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  color: white;
+}
+
+.logo {
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: #9ea0a3;
 }
 
 .links {
   display: flex;
-  gap: 2rem;
+  gap: 1.5rem;
 }
 
 .link {
@@ -27,6 +42,25 @@ nav {
   cursor: pointer;
   text-decoration: none;
   color: white;
+  position: relative;
+  transition: all 0.3s ease;
+  font-weight: 500;
+}
+
+.link::after {
+  content: "";
+  display: block;
+  height: 2px;
+  width: 0%;
+  background: #696969;
+  transition: width 0.3s;
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+}
+
+.link:hover::after {
+  width: 100%;
 }
 
 .link:visited,
@@ -40,10 +74,10 @@ nav {
 nav .menu {
   position: absolute;
   font-size: 1.4rem;
-  right: 1rem;
+  right: 2rem;
   top: 50%;
   transform: translateY(-50%);
-  display: none; /* instead of visibility */
+  display: none;
   cursor: pointer;
 }
 
@@ -52,30 +86,25 @@ nav .menu {
   top: 100%;
   right: 1rem;
   margin-top: 0.5rem;
-
-  background-color: hsl(0, 0%, 20%, 90%);
+  background-color: hsla(0, 0%, 20%, 0.9);
   backdrop-filter: blur(10px);
-
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
-
   padding: 0.8rem 1rem;
   border-radius: 1rem;
-
   width: min(220px, 70vw);
   text-align: left;
-
   opacity: 0;
   pointer-events: none;
   transform: translateY(-10px);
   transition: 0.2s ease;
-  z-index: 999;
+  z-index: 11;
 }
 
 .options.open {
   opacity: 1;
-  pointer-events: auto;
+  pointer-events: all;
   transform: translateY(0);
 }
 

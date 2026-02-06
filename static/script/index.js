@@ -28,5 +28,3 @@ document.addEventListener("click", (e) => {
     options.classList.remove("open");
   }
 });
-
-document.getElementById("year").textContent = new Date().getFullYear();
