@@ -16,7 +16,17 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-document.getElementById("menu").addEventListener("click", () => {
-  options = document.getElementById("options");
-  options.style.visibility = "visible";
+const menu = document.getElementById("menu");
+const options = document.getElementById("options");
+
+menu.addEventListener("click", () => {
+  options.classList.toggle("open");
 });
+
+document.addEventListener("click", (e) => {
+  if (!menu.contains(e.target) && !options.contains(e.target)) {
+    options.classList.remove("open");
+  }
+});
+
+document.getElementById("year").textContent = new Date().getFullYear();

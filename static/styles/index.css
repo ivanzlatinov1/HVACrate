@@ -4,6 +4,7 @@ body {
   height: 100dvh;
   display: flex;
   flex-direction: column;
+  font-family: "Space Grotesk", sans-serif;
 }
 
 nav {
@@ -12,6 +13,8 @@ nav {
   color: white;
   display: flex;
   justify-content: center;
+  align-items: center;
+  position: relative;
 }
 
 .links {
@@ -34,6 +37,48 @@ nav {
   color: inherit;
 }
 
+nav .menu {
+  position: absolute;
+  font-size: 1.4rem;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  display: none; /* instead of visibility */
+  cursor: pointer;
+}
+
+.options {
+  position: absolute;
+  top: 100%;
+  right: 1rem;
+  margin-top: 0.5rem;
+
+  background-color: hsl(0, 0%, 20%, 90%);
+  backdrop-filter: blur(10px);
+
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+
+  padding: 0.8rem 1rem;
+  border-radius: 1rem;
+
+  width: min(220px, 70vw);
+  text-align: left;
+
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-10px);
+  transition: 0.2s ease;
+  z-index: 999;
+}
+
+.options.open {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
 main {
   flex: 1;
   color: white;
@@ -51,33 +96,12 @@ main h2 {
   margin-top: -1rem;
 }
 
-nav .menu {
-  position: absolute;
-  font-size: 1.2rem;
-  right: 2%;
-  visibility: hidden;
-}
-
-.options {
-  background-color: hsl(0, 0%, 42%, 70%);
-  display: flex;
-  flex-direction: column;
-  color: white;
-  gap: 0.5rem;
-  width: 10%;
-  text-align: right;
-  border-bottom-left-radius: 20%;
-  padding: 0.4rem;
-  align-self: flex-end;
-  visibility: hidden;
-}
-
 @media (max-width: 500px) {
   nav .menu {
-    visibility: visible;
+    display: block;
   }
 
   nav .links {
-    visibility: hidden;
+    display: none;
   }
 }
