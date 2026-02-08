@@ -21,22 +21,35 @@ Here are some of the app's key features:
 - Full **CRUD operations** on projects, buildings, floors, and rooms.
 
 ---
+## 💻 Download from the site
 
+1. **Head over to the HVACrate site**  
+   👉 https://hvacrate.onrender.com/
+
+2. **Pick your operating system**  
+   - Supported: **Windows**  & **Linux** 
+   - Download the app
+
+3. **Run the app**  
+   - Follow the instructions given on the site and you’re good to go ✨
+
+---
 ## ⚙️ Installation Guide (ASP.NET Core MVC - C#)
 
-To get HVACrate up and running on your local machine:
+To get HVACrate up and running on your local machine from this repository you need to:
 
 1. **Clone the repository**:
+ 
    ```bash
    git clone https://github.com/ivanzlatinov1/HVACrate.git
    cd HVACrate
    ```
-2. **Install prerequisites**:
-   - [.NET SDK 6.0+](https://dotnet.microsoft.com/en-us/download/dotnet/6.0)
-   - [Node.js (for Electron integration)](https://nodejs.org/)
+   
+3. **Install prerequisites**:
+   - [.NET SDK 6.0](https://dotnet.microsoft.com/en-us/download/dotnet/6.0)
    - [PostgreSQL](https://www.postgresql.org/download/)
 
-3. **Set up the database**:
+4. **Set up the database**:
    - Create a PostgreSQL database manually or via a GUI tool like pgAdmin.
    - Update your connection string in `appsettings.json`:
 
@@ -45,13 +58,18 @@ To get HVACrate up and running on your local machine:
         "DefaultConnection": "Host=localhost;Port=5432;Database=HVACrate;Username=your_username;Password=your_password"
      },
      ```
+5. **Restore Dependencies**:
+   
+   ```bash
+   dotnet restore
+   ```
 
-4. **Apply Entity Framework migrations**:
+6. **Apply Database Migrations**:
 
    ```bash
    dotnet ef database update
    ```
-5. **Run the application**:
+7. **Run The Application**:
 
    ```bash
    dotnet run
@@ -60,7 +78,6 @@ To get HVACrate up and running on your local machine:
 
 ## 🧰 Technologies Used
 
-- **C#**
-- **ASP.NET Core MVC (6.0+)**
-- **Electron**
+- **ASP.NET Core MVC (6.0)**
+- **Electron.NET**
 - **PostgreSQL**
