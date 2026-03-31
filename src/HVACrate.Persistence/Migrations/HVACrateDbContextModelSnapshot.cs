@@ -4,7 +4,6 @@ using HVACrate.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
@@ -16,65 +15,61 @@ namespace HVACrate.Persistence.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.22")
-                .HasAnnotation("Relational:MaxIdentifierLength", 63);
-
-            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+            modelBuilder.HasAnnotation("ProductVersion", "6.0.13");
 
             modelBuilder.Entity("HVACrate.Domain.Entities.Building", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
+                        .HasColumnType("TEXT")
                         .HasComment("Building's unique identifier");
 
                     b.Property<int>("Floors")
-                        .HasColumnType("integer")
+                        .HasColumnType("INTEGER")
                         .HasComment("The number of floors in the building");
 
                     b.Property<string>("ImageUrl")
                         .HasMaxLength(2048)
                         .IsUnicode(true)
-                        .HasColumnType("character varying(2048)")
+                        .HasColumnType("TEXT")
                         .HasComment("An image of the building");
 
                     b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("boolean")
+                        .HasColumnType("INTEGER")
                         .HasDefaultValue(false);
 
                     b.Property<string>("Location")
                         .IsRequired()
                         .HasMaxLength(120)
                         .IsUnicode(true)
-                        .HasColumnType("character varying(120)")
+                        .HasColumnType("TEXT")
                         .HasComment("Building's geographical placement");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(80)
                         .IsUnicode(true)
-                        .HasColumnType("character varying(80)")
+                        .HasColumnType("TEXT")
                         .HasComment("Name of the building");
 
                     b.Property<string>("Orientation")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .HasColumnType("TEXT")
                         .HasComment("Is the building landscape or portrait");
 
                     b.Property<Guid>("ProjectId")
-                        .HasColumnType("uuid")
+                        .HasColumnType("TEXT")
                         .HasComment("Reference to the project this building belongs to");
 
                     b.Property<double>("TotalHeight")
                         .HasPrecision(18, 2)
-                        .HasColumnType("double precision")
+                        .HasColumnType("REAL")
                         .HasComment("Total height of the building");
 
                     b.Property<double>("WindSpeed")
                         .HasPrecision(18, 2)
-                        .HasColumnType("double precision")
+                        .HasColumnType("REAL")
                         .HasComment("Wind speed used for infiltration");
 
                     b.HasKey("Id");
@@ -88,61 +83,61 @@ namespace HVACrate.Persistence.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
+                        .HasColumnType("TEXT")
                         .HasComment("Building envelope's unique identifier");
 
                     b.Property<double>("AdjustedTemperature")
                         .ValueGeneratedOnAdd()
                         .HasPrecision(18, 2)
-                        .HasColumnType("double precision")
+                        .HasColumnType("REAL")
                         .HasDefaultValue(0.0)
                         .HasComment("Effective exterior temperature used in thermal transmission calculations (°C)");
 
                     b.Property<double>("Area")
                         .HasPrecision(18, 2)
-                        .HasColumnType("double precision")
+                        .HasColumnType("REAL")
                         .HasComment("The area of the building envelope");
 
                     b.Property<string>("BuildingEnvelopeType")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("TEXT");
 
                     b.Property<double>("Density")
                         .HasPrecision(18, 2)
-                        .HasColumnType("double precision")
+                        .HasColumnType("REAL")
                         .HasComment("The density of the building envelope");
 
                     b.Property<double>("HeatTransferCoefficient")
                         .HasPrecision(18, 2)
-                        .HasColumnType("double precision")
+                        .HasColumnType("REAL")
                         .HasComment("Overall heat transfer coefficient (U-value) in W/m²·K");
 
                     b.Property<double>("Height")
                         .HasPrecision(18, 2)
-                        .HasColumnType("double precision")
+                        .HasColumnType("REAL")
                         .HasComment("The height of the building envelope");
 
                     b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("boolean")
+                        .HasColumnType("INTEGER")
                         .HasDefaultValue(false);
 
                     b.Property<Guid>("MaterialId")
-                        .HasColumnType("uuid")
+                        .HasColumnType("TEXT")
                         .HasComment("Reference to the material of the building envelope");
 
                     b.Property<Guid>("RoomId")
-                        .HasColumnType("uuid")
+                        .HasColumnType("TEXT")
                         .HasComment("Reference to the room this building envelope belongs to");
 
                     b.Property<string>("Type")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .HasColumnType("TEXT")
                         .HasComment("Type of the building envelope, e.g., OuterWall, Roof, Floor");
 
                     b.Property<double>("Width")
                         .HasPrecision(18, 2)
-                        .HasColumnType("double precision")
+                        .HasColumnType("REAL")
                         .HasComment("The width of the building envelope");
 
                     b.HasKey("Id");
@@ -160,71 +155,71 @@ namespace HVACrate.Persistence.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("AccessFailedCount")
-                        .HasColumnType("integer");
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
-                        .HasColumnType("text");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
+                        .HasColumnType("TEXT");
 
                     b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("boolean");
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("FirstName")
                         .HasMaxLength(80)
                         .IsUnicode(true)
-                        .HasColumnType("character varying(80)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("LastName")
                         .HasMaxLength(100)
                         .IsUnicode(true)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("TEXT");
 
                     b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("boolean");
+                        .HasColumnType("INTEGER");
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("NormalizedUserName")
                         .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("PasswordHash")
-                        .HasColumnType("text");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("PhoneNumber")
-                        .HasColumnType("text");
+                        .HasColumnType("TEXT");
 
                     b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("boolean");
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("ProfilePictureUrl")
                         .HasMaxLength(2048)
-                        .HasColumnType("character varying(2048)");
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTimeOffset>("RegisteredOn")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("SecurityStamp")
-                        .HasColumnType("text");
+                        .HasColumnType("TEXT");
 
                     b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("boolean");
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
@@ -242,24 +237,24 @@ namespace HVACrate.Persistence.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
+                        .HasColumnType("TEXT")
                         .HasComment("Material's unique identifier");
 
                     b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("boolean")
+                        .HasColumnType("INTEGER")
                         .HasDefaultValue(false);
 
                     b.Property<double>("ThermalConductivity")
                         .HasPrecision(18, 2)
-                        .HasColumnType("double precision")
+                        .HasColumnType("REAL")
                         .HasComment("Thermal conductivity in W/mK");
 
                     b.Property<string>("Type")
                         .IsRequired()
                         .HasMaxLength(60)
                         .IsUnicode(true)
-                        .HasColumnType("character varying(60)")
+                        .HasColumnType("TEXT")
                         .HasComment("Material's type, e.g., Brick, Concrete");
 
                     b.HasKey("Id");
@@ -329,39 +324,39 @@ namespace HVACrate.Persistence.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
+                        .HasColumnType("TEXT")
                         .HasComment("Project's unique identifier");
 
                     b.Property<DateTimeOffset>("CreatedAt")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
-                        .HasDefaultValue(new DateTimeOffset(new DateTime(2025, 10, 1, 17, 58, 13, 729, DateTimeKind.Unspecified).AddTicks(9690), new TimeSpan(0, 0, 0, 0, 0)))
+                        .HasColumnType("TEXT")
+                        .HasDefaultValue(new DateTimeOffset(new DateTime(2026, 3, 31, 19, 16, 31, 484, DateTimeKind.Unspecified).AddTicks(1605), new TimeSpan(0, 0, 0, 0, 0)))
                         .HasComment("The date when the project was created");
 
                     b.Property<Guid>("HVACUserId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("TEXT");
 
                     b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("boolean")
+                        .HasColumnType("INTEGER")
                         .HasDefaultValue(false);
 
                     b.Property<DateTimeOffset>("LastModified")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
-                        .HasDefaultValue(new DateTimeOffset(new DateTime(2025, 10, 1, 17, 58, 13, 729, DateTimeKind.Unspecified).AddTicks(9784), new TimeSpan(0, 0, 0, 0, 0)))
+                        .HasColumnType("TEXT")
+                        .HasDefaultValue(new DateTimeOffset(new DateTime(2026, 3, 31, 19, 16, 31, 484, DateTimeKind.Unspecified).AddTicks(1695), new TimeSpan(0, 0, 0, 0, 0)))
                         .HasComment("The date when the project was modified for the last time");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
                         .IsUnicode(true)
-                        .HasColumnType("character varying(100)")
+                        .HasColumnType("TEXT")
                         .HasComment("Name of the project");
 
                     b.Property<double>("RegionTemperature")
                         .HasPrecision(18, 2)
-                        .HasColumnType("double precision")
+                        .HasColumnType("REAL")
                         .HasComment("Average external temperature of the region");
 
                     b.HasKey("Id");
@@ -375,44 +370,44 @@ namespace HVACrate.Persistence.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
+                        .HasColumnType("TEXT")
                         .HasComment("Room's unique identifier");
 
                     b.Property<Guid>("BuildingId")
-                        .HasColumnType("uuid")
+                        .HasColumnType("TEXT")
                         .HasComment("Reference to the building this room belongs to");
 
                     b.Property<int>("Floor")
-                        .HasColumnType("integer")
+                        .HasColumnType("INTEGER")
                         .HasComment("The room's floor");
 
                     b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("boolean")
+                        .HasColumnType("INTEGER")
                         .HasDefaultValue(false);
 
                     b.Property<bool>("IsEnclosed")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("boolean")
+                        .HasColumnType("INTEGER")
                         .HasDefaultValue(false);
 
                     b.Property<string>("Number")
                         .IsRequired()
                         .HasMaxLength(10)
                         .IsUnicode(true)
-                        .HasColumnType("character varying(10)")
+                        .HasColumnType("TEXT")
                         .HasComment("Number of the room, e.g., A101, B102");
 
                     b.Property<double>("Temperature")
                         .HasPrecision(18, 2)
-                        .HasColumnType("double precision")
+                        .HasColumnType("REAL")
                         .HasComment("Internal room temperature");
 
                     b.Property<string>("Type")
                         .IsRequired()
                         .HasMaxLength(50)
                         .IsUnicode(true)
-                        .HasColumnType("character varying(50)")
+                        .HasColumnType("TEXT")
                         .HasComment("The type of the room, e.g., Bathroom, Bedroom");
 
                     b.HasKey("Id");
@@ -426,19 +421,19 @@ namespace HVACrate.Persistence.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
-                        .HasColumnType("text");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
                         .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("NormalizedName")
                         .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
@@ -453,18 +448,16 @@ namespace HVACrate.Persistence.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("ClaimType")
-                        .HasColumnType("text");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("ClaimValue")
-                        .HasColumnType("text");
+                        .HasColumnType("TEXT");
 
                     b.Property<Guid>("RoleId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
@@ -477,18 +470,16 @@ namespace HVACrate.Persistence.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("ClaimType")
-                        .HasColumnType("text");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("ClaimValue")
-                        .HasColumnType("text");
+                        .HasColumnType("TEXT");
 
                     b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
@@ -500,16 +491,16 @@ namespace HVACrate.Persistence.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("text");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("ProviderKey")
-                        .HasColumnType("text");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("ProviderDisplayName")
-                        .HasColumnType("text");
+                        .HasColumnType("TEXT");
 
                     b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("TEXT");
 
                     b.HasKey("LoginProvider", "ProviderKey");
 
@@ -521,10 +512,10 @@ namespace HVACrate.Persistence.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
                 {
                     b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("TEXT");
 
                     b.Property<Guid>("RoleId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("TEXT");
 
                     b.HasKey("UserId", "RoleId");
 
@@ -536,16 +527,16 @@ namespace HVACrate.Persistence.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
                 {
                     b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("text");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
-                        .HasColumnType("text");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Value")
-                        .HasColumnType("text");
+                        .HasColumnType("TEXT");
 
                     b.HasKey("UserId", "LoginProvider", "Name");
 
@@ -558,17 +549,17 @@ namespace HVACrate.Persistence.Migrations
 
                     b.Property<double>("GroundWaterLength")
                         .HasPrecision(18, 2)
-                        .HasColumnType("double precision")
+                        .HasColumnType("REAL")
                         .HasComment("Length of the floor's contact with groundwater (m)");
 
                     b.Property<double>("GroundWaterTemperature")
                         .HasPrecision(18, 2)
-                        .HasColumnType("double precision")
+                        .HasColumnType("REAL")
                         .HasComment("Temperature of groundwater under the floor (°C)");
 
                     b.Property<double>("ThermalConductivityResistance")
                         .HasPrecision(18, 2)
-                        .HasColumnType("double precision")
+                        .HasColumnType("REAL")
                         .HasComment("Resistance to heat flow through the floor structure (W·m²/K)");
 
                     b.HasDiscriminator().HasValue("Floor");
@@ -579,11 +570,11 @@ namespace HVACrate.Persistence.Migrations
                     b.HasBaseType("HVACrate.Domain.Entities.BuildingEnvelope");
 
                     b.Property<int>("AdjacentRoomTemperature")
-                        .HasColumnType("integer")
+                        .HasColumnType("INTEGER")
                         .HasComment("The room temperature of the neighboor room");
 
                     b.Property<int>("Count")
-                        .HasColumnType("integer")
+                        .HasColumnType("INTEGER")
                         .HasComment("The count of the internal fences");
 
                     b.HasDiscriminator().HasValue("InternalFence");
@@ -594,23 +585,23 @@ namespace HVACrate.Persistence.Migrations
                     b.HasBaseType("HVACrate.Domain.Entities.BuildingEnvelope");
 
                     b.Property<int>("Count")
-                        .HasColumnType("integer")
+                        .HasColumnType("INTEGER")
                         .HasColumnName("Opening_Count")
                         .HasComment("The count of the openings");
 
                     b.Property<string>("Direction")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .HasColumnType("TEXT")
                         .HasComment("The direction of the building envelope, e.g., North, East");
 
                     b.Property<double>("JointLength")
                         .HasPrecision(18, 2)
-                        .HasColumnType("double precision")
+                        .HasColumnType("REAL")
                         .HasComment("Length of joints surrounding the opening, used in heat loss calculation (m)");
 
                     b.Property<double>("VentilationCoefficient")
                         .HasPrecision(18, 2)
-                        .HasColumnType("double precision")
+                        .HasColumnType("REAL")
                         .HasComment("Air exchange coefficient for ventilation through the opening");
 
                     b.HasDiscriminator().HasValue("WindowsAndDoors");
@@ -622,13 +613,13 @@ namespace HVACrate.Persistence.Migrations
 
                     b.Property<string>("Direction")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .HasColumnType("TEXT")
                         .HasColumnName("OuterWall_Direction")
                         .HasComment("The direction of the building envelope, e.g., North, East");
 
                     b.Property<bool>("ShouldReduceHeatingArea")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("boolean")
+                        .HasColumnType("INTEGER")
                         .HasDefaultValue(false)
                         .HasComment("Indicates if heat transmission area should be reduced by window/door area on this wall");
 

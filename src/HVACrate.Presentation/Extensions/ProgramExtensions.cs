@@ -24,20 +24,20 @@ namespace HVACrate.Extensions;
 
 public static class ProgramExtensions
 {
-    public static void AddApplicationDbContext(this IServiceCollection services, IConfiguration configs)
+    public static void AddApplicationDbContext(this IServiceCollection services)
     {
-        var connectionString = configs.GetConnectionString("DefaultConnection")
-        ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+        const string appName = "HVACrate";
 
-        var dbPassword = configs["DB_PASSWORD"];
-        if (string.IsNullOrWhiteSpace(dbPassword))
-            Console.WriteLine("WARNING: DB_PASSWORD is empty!");
-        else
-            connectionString = connectionString.Replace("${DB_PASSWORD}", dbPassword);
+        var basePath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+        var appFolder = Path.Combine(basePath, appName);
+
+        Directory.CreateDirectory(appFolder);
+
+        var dbPath = Path.Combine(appFolder, "hvacrate.db");
 
         services.AddDbContext<HVACrateDbContext>(options =>
         {
-            options.UseNpgsql(connectionString);
+            options.UseSqlite($"Data Source={dbPath}");
             options.UseLazyLoadingProxies();
         });
     }
@@ -80,13 +80,22 @@ public static class ProgramExtensions
         services.AddScoped<IMaterialService, MaterialService>();
     }
 
+    public static async Task ApplyMigrations(this IServiceProvider serviceProvider)
+    {
+        using IServiceScope scope = serviceProvider.CreateScope();
+        IServiceProvider scopedServices = scope.ServiceProvider;
+
+        HVACrateDbContext db = scopedServices.GetRequiredService<HVACrateDbContext>();
+        await db.Database.MigrateAsync();
+    }
+
     public static async Task SeedIdentityDataAsync(this IServiceProvider serviceProvider)
     {
-        using var scope = serviceProvider.CreateScope();
-        var scopedServices = scope.ServiceProvider;
+        using IServiceScope scope = serviceProvider.CreateScope();
+        IServiceProvider scopedServices = scope.ServiceProvider;
 
-        var config = scopedServices.GetRequiredService<IConfiguration>();
-        var logger = scopedServices.GetRequiredService<ILoggerFactory>().CreateLogger("Seeding");
+        IConfiguration config = scopedServices.GetRequiredService<IConfiguration>();
+        ILogger logger = scopedServices.GetRequiredService<ILoggerFactory>().CreateLogger("Seeding");
 
         await IdentityData.SeedDataAsync(scopedServices, config, logger);
     }

@@ -15,7 +15,7 @@ builder.WebHost.UseElectron(args);
 builder.Services.AddElectron();
 
 // Database concerns
-builder.Services.AddApplicationDbContext(builder.Configuration);
+builder.Services.AddApplicationDbContext();
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 // App concerns
@@ -28,6 +28,9 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
 var app = builder.Build();
+
+// Apply database migrations
+await app.Services.ApplyMigrations();
 
 // Seed identity data
 await app.Services.SeedIdentityDataAsync();
@@ -62,9 +65,11 @@ await app.StartAsync();
 
 var window = await Electron.WindowManager.CreateWindowAsync(new BrowserWindowOptions
 {
+    Title = "HVACrate",
     Width = 1920,
     Height = 1080,
-    Show = false
+    Show = false,
+    AutoHideMenuBar = true
 });
 
 window.OnReadyToShow += () => window.Show();
