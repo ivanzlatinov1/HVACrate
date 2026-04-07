@@ -36,27 +36,28 @@ namespace HVACrate.Persistence.Seeding
 
         private static async Task SeedAdminUserAsync(UserManager<HVACUser> userManager, IConfiguration config, ILogger logger)
         {
-            string adminEmail = config["AdminUser:Email"] ?? throw new Exception("Admin email is missing from the config.");
-            string adminPassword = config["AdminUser:Password"] ?? throw new Exception("Admin password is missing from the config.");
-            System.Console.WriteLine(adminPassword);
-            var adminUser = await userManager.FindByEmailAsync(adminEmail);
+            // Use these credentials to access your local admin panel:
+            string adminEmail = "hvacadmin@gmail.com";
+            string adminPassword = "Admin@Pass123!";
+
+            HVACUser adminUser = await userManager.FindByEmailAsync(adminEmail);
             if (adminUser == null)
             {
-                var newAdmin = new HVACUser
+                HVACUser newAdmin = new()
                 {
                     UserName = adminEmail,
                     Email = adminEmail,
                     EmailConfirmed = true
                 };
 
-                var createResult = await userManager.CreateAsync(newAdmin, adminPassword);
+                IdentityResult createResult = await userManager.CreateAsync(newAdmin, adminPassword);
                 if (!createResult.Succeeded)
                 {
                     logger.LogError("Failed to create admin user: {Errors}", string.Join(", ", createResult.Errors.Select(e => e.Description)));
                     throw new Exception("Failed to create admin user.");
                 }
 
-                var addToRoleResult = await userManager.AddToRoleAsync(newAdmin, "Admin");
+                IdentityResult addToRoleResult = await userManager.AddToRoleAsync(newAdmin, "Admin");
                 if (!addToRoleResult.Succeeded)
                 {
                     logger.LogError("Failed to assign Admin role: {Errors}", string.Join(", ", addToRoleResult.Errors.Select(e => e.Description)));
