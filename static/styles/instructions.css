@@ -182,3 +182,38 @@ p.muted span {
     width: 100%;
   }
 }
+
+@media (max-width: 480px) {
+  body {
+    padding: 24px 0;
+  }
+
+  body h1 {
+    font-size: 1.7rem;
+    margin: 0 0 20px;
+    padding: 0 16px;
+    text-align: center;
+  }
+
+  .container {
+    width: 94%;
+  }
+
+  .container > div {
+    padding: 20px 16px;
+  }
+
+  .container h2 {
+    font-size: 1.4rem;
+  }
+
+  .container p,
+  .container li,
+  .container li span {
+    font-size: 0.9rem;
+  }
+
+  hr {
+    width: 80%;
+  }
+}
